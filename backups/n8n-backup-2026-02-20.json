@@ -1,16 +1,16 @@
 {
   "version": "1.0.6",
-  "timestamp": "2026-02-20T07:29:22.879Z",
-  "workflowCount": 4,
-  "credentialsCount": 6,
+  "timestamp": "2026-02-20T13:52:21.833Z",
+  "workflowCount": 5,
+  "credentialsCount": 5,
   "credentialsError": null,
-  "credentialsInfo": "Successfully extracted 6 credentials from workflows",
+  "credentialsInfo": "Successfully extracted 5 credentials from workflows",
   "workflows": [
     {
-      "updatedAt": "2026-02-20T06:35:11.597Z",
+      "updatedAt": "2026-02-20T10:33:57.156Z",
       "createdAt": "2026-02-20T06:35:11.597Z",
       "id": "o5LFZ44iJ8wt9VcX",
-      "name": "Notification from VK to Telegram",
+      "name": "Notification from VK group",
       "description": null,
       "active": true,
       "isArchived": false,
@@ -35,27 +35,79 @@
         },
         {
           "parameters": {
-            "chatId": "=8593464393",
-            "text": "=📬 *VK Группа · Новое сообщение*\n\n👤 *Отправитель:* `{{ $json.body.object.message.from_id }}`\n🕓 *Время:* {{ DateTime.fromMillis($json.body.object.message.date).setLocale('ru').toLocaleString({ month: 'long', day: 'numeric', hour: 'numeric', minute: '2-digit' }) }}\n\n━━━━━━━━━━━━━━\n{{ $json.body.object.message.text }}\n━━━━━━━━━━━━━━",
-            "additionalFields": {
-              "appendAttribution": false
+            "workflowId": {
+              "__rl": true,
+              "value": "0GNr1mrgOjgfbGgJ",
+              "mode": "list",
+              "cachedResultUrl": "/workflow/0GNr1mrgOjgfbGgJ",
+              "cachedResultName": "Telegram Notification Service"
+            },
+            "workflowInputs": {
+              "mappingMode": "defineBelow",
+              "value": {
+                "message": "={{ $json.body.object.message.text }}",
+                "time": "={{ $json.body.object.message.date }}",
+                "title": "VK Группа · Новое сообщение",
+                "url": "https://vk.com/gim229013867"
+              },
+              "matchingColumns": [],
+              "schema": [
+                {
+                  "id": "time",
+                  "displayName": "time",
+                  "required": false,
+                  "defaultMatch": false,
+                  "display": true,
+                  "canBeUsedToMatch": true,
+                  "type": "number",
+                  "removed": false
+                },
+                {
+                  "id": "title",
+                  "displayName": "title",
+                  "required": false,
+                  "defaultMatch": false,
+                  "display": true,
+                  "canBeUsedToMatch": true,
+                  "type": "string",
+                  "removed": false
+                },
+                {
+                  "id": "message",
+                  "displayName": "message",
+                  "required": false,
+                  "defaultMatch": false,
+                  "display": true,
+                  "canBeUsedToMatch": true,
+                  "type": "string",
+                  "removed": false
+                },
+                {
+                  "id": "url",
+                  "displayName": "url",
+                  "required": false,
+                  "defaultMatch": false,
+                  "display": true,
+                  "canBeUsedToMatch": true,
+                  "type": "string",
+                  "removed": false
+                }
+              ],
+              "attemptToConvertTypes": false,
+              "convertFieldsToString": true
+            },
+            "options": {
+              "waitForSubWorkflow": false
             }
           },
-          "type": "n8n-nodes-base.telegram",
-          "typeVersion": 1.2,
+          "type": "n8n-nodes-base.executeWorkflow",
+          "typeVersion": 1.3,
           "position": [
-            208,
+            224,
             0
           ],
-          "id": "5f4f93b7-98cb-4c67-9e46-7cab0e3ea14c",
-          "name": "Send a text message",
-          "webhookId": "7eee7f09-b77f-42e8-bdd7-2c3f71fd3ba5",
-          "credentials": {
-            "telegramApi": {
-              "id": "31G0PoTb4LqbBRW5",
-              "name": "Telegram account | Notification Bot"
-            }
-          }
+          "id": "3ed317c9-b346-49a3-86a7-fad4bed8f407",
+          "name": "Call 'Telegram Notification Service'"
         }
       ],
       "connections": {
@@ -63,7 +115,7 @@
           "main": [
             [
               {
-                "node": "Send a text message",
+                "node": "Call 'Telegram Notification Service'",
                 "type": "main",
                 "index": 0
               }
@@ -80,9 +132,9 @@
         "templateCredsSetupCompleted": true
       },
       "pinData": {},
-      "versionId": "91f647ea-95a9-4324-9579-6b7cdf5ec493",
-      "activeVersionId": "91f647ea-95a9-4324-9579-6b7cdf5ec493",
-      "versionCounter": 3,
+      "versionId": "593f5420-f149-4f17-bef4-b2e9b4df5c74",
+      "activeVersionId": "593f5420-f149-4f17-bef4-b2e9b4df5c74",
+      "versionCounter": 8,
       "triggerCount": 1,
       "shared": [
         {
@@ -131,9 +183,9 @@
       ],
       "tags": [],
       "activeVersion": {
-        "updatedAt": "2026-02-20T06:35:18.606Z",
-        "createdAt": "2026-02-20T06:35:11.597Z",
-        "versionId": "91f647ea-95a9-4324-9579-6b7cdf5ec493",
+        "updatedAt": "2026-02-20T10:15:50.739Z",
+        "createdAt": "2026-02-20T10:15:40.901Z",
+        "versionId": "593f5420-f149-4f17-bef4-b2e9b4df5c74",
         "workflowId": "o5LFZ44iJ8wt9VcX",
         "nodes": [
           {
@@ -156,27 +208,79 @@
           },
           {
             "parameters": {
-              "chatId": "=8593464393",
-              "text": "=📬 *VK Группа · Новое сообщение*\n\n👤 *Отправитель:* `{{ $json.body.object.message.from_id }}`\n🕓 *Время:* {{ DateTime.fromMillis($json.body.object.message.date).setLocale('ru').toLocaleString({ month: 'long', day: 'numeric', hour: 'numeric', minute: '2-digit' }) }}\n\n━━━━━━━━━━━━━━\n{{ $json.body.object.message.text }}\n━━━━━━━━━━━━━━",
-              "additionalFields": {
-                "appendAttribution": false
+              "workflowId": {
+                "__rl": true,
+                "value": "0GNr1mrgOjgfbGgJ",
+                "mode": "list",
+                "cachedResultUrl": "/workflow/0GNr1mrgOjgfbGgJ",
+                "cachedResultName": "Telegram Notification Service"
+              },
+              "workflowInputs": {
+                "mappingMode": "defineBelow",
+                "value": {
+                  "message": "={{ $json.body.object.message.text }}",
+                  "time": "={{ $json.body.object.message.date }}",
+                  "title": "VK Группа · Новое сообщение",
+                  "url": "https://vk.com/gim229013867"
+                },
+                "matchingColumns": [],
+                "schema": [
+                  {
+                    "id": "time",
+                    "displayName": "time",
+                    "required": false,
+                    "defaultMatch": false,
+                    "display": true,
+                    "canBeUsedToMatch": true,
+                    "type": "number",
+                    "removed": false
+                  },
+                  {
+                    "id": "title",
+                    "displayName": "title",
+                    "required": false,
+                    "defaultMatch": false,
+                    "display": true,
+                    "canBeUsedToMatch": true,
+                    "type": "string",
+                    "removed": false
+                  },
+                  {
+                    "id": "message",
+                    "displayName": "message",
+                    "required": false,
+                    "defaultMatch": false,
+                    "display": true,
+                    "canBeUsedToMatch": true,
+                    "type": "string",
+                    "removed": false
+                  },
+                  {
+                    "id": "url",
+                    "displayName": "url",
+                    "required": false,
+                    "defaultMatch": false,
+                    "display": true,
+                    "canBeUsedToMatch": true,
+                    "type": "string",
+                    "removed": false
+                  }
+                ],
+                "attemptToConvertTypes": false,
+                "convertFieldsToString": true
+              },
+              "options": {
+                "waitForSubWorkflow": false
               }
             },
-            "type": "n8n-nodes-base.telegram",
-            "typeVersion": 1.2,
+            "type": "n8n-nodes-base.executeWorkflow",
+            "typeVersion": 1.3,
             "position": [
-              208,
+              224,
               0
             ],
-            "id": "5f4f93b7-98cb-4c67-9e46-7cab0e3ea14c",
-            "name": "Send a text message",
-            "webhookId": "7eee7f09-b77f-42e8-bdd7-2c3f71fd3ba5",
-            "credentials": {
-              "telegramApi": {
-                "id": "31G0PoTb4LqbBRW5",
-                "name": "Telegram account | Notification Bot"
-              }
-            }
+            "id": "3ed317c9-b346-49a3-86a7-fad4bed8f407",
+            "name": "Call 'Telegram Notification Service'"
           }
         ],
         "connections": {
@@ -184,7 +288,7 @@
             "main": [
               [
                 {
-                  "node": "Send a text message",
+                  "node": "Call 'Telegram Notification Service'",
                   "type": "main",
                   "index": 0
                 }
@@ -193,15 +297,15 @@
           }
         },
         "authors": "Admin Admin",
-        "name": "Version 91f647ea",
+        "name": "Version 593f5420",
         "description": "",
         "autosaved": false,
         "workflowPublishHistory": [
           {
-            "createdAt": "2026-02-20T06:35:18.604Z",
-            "id": 1,
+            "createdAt": "2026-02-20T10:15:50.728Z",
+            "id": 6,
             "workflowId": "o5LFZ44iJ8wt9VcX",
-            "versionId": "91f647ea-95a9-4324-9579-6b7cdf5ec493",
+            "versionId": "593f5420-f149-4f17-bef4-b2e9b4df5c74",
             "event": "activated",
             "userId": "ebcf2b09-cd83-42f3-b5e0-89c4fcaad4a1"
           }
@@ -209,10 +313,10 @@
       }
     },
     {
-      "updatedAt": "2026-02-20T06:41:56.602Z",
+      "updatedAt": "2026-02-20T10:33:53.312Z",
       "createdAt": "2026-02-20T06:41:56.602Z",
       "id": "B2QRqtVwapqY1zsf",
-      "name": "Boosty subs to Google Sheets",
+      "name": "Boosty subs to Data Table",
       "description": null,
       "active": true,
       "isArchived": false,
@@ -244,7 +348,7 @@
           "type": "n8n-nodes-base.httpRequest",
           "typeVersion": 4.3,
           "position": [
-            400,
+            416,
             -96
           ],
           "id": "86aee0c5-08b1-4c96-bf25-4e8acb76e53b",
@@ -264,185 +368,11 @@
           "type": "n8n-nodes-base.splitOut",
           "typeVersion": 1,
           "position": [
-            608,
+            640,
             -96
           ],
           "id": "205f56b7-926c-49ec-a9d0-64df6d6a8410",
           "name": "Split Out"
-        },
-        {
-          "parameters": {
-            "operation": "appendOrUpdate",
-            "documentId": {
-              "__rl": true,
-              "value": "1Gc5uUKoYkTBOITi7gojfiCqomyWpHb9GHX4fr1BZzgI",
-              "mode": "list",
-              "cachedResultName": "Ведение Бизнеса",
-              "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1Gc5uUKoYkTBOITi7gojfiCqomyWpHb9GHX4fr1BZzgI/edit?usp=drivesdk"
-            },
-            "sheetName": {
-              "__rl": true,
-              "value": 422581622,
-              "mode": "list",
-              "cachedResultName": "Платные подписчики в Boosty",
-              "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1Gc5uUKoYkTBOITi7gojfiCqomyWpHb9GHX4fr1BZzgI/edit#gid=422581622"
-            },
-            "columns": {
-              "mappingMode": "defineBelow",
-              "value": {
-                "id": "={{ $json.id }}",
-                "name": "={{ $json.name }}",
-                "email": "={{ $json.email }}",
-                "status": "={{ $json.status }}",
-                "subscribed": "={{ $json.subscribed }}",
-                "level_name": "={{ $json.level.name }}",
-                "price": "={{ $json.level.price }}",
-                "payments": "={{ $json.payments }}",
-                "onTime": "={{ DateTime.fromSeconds($json.onTime).format('dd-MM-yyyy HH:mm:ss') }}"
-              },
-              "matchingColumns": [
-                "id"
-              ],
-              "schema": [
-                {
-                  "id": "id",
-                  "displayName": "id",
-                  "required": false,
-                  "defaultMatch": true,
-                  "display": true,
-                  "type": "string",
-                  "canBeUsedToMatch": true,
-                  "removed": false
-                },
-                {
-                  "id": "name",
-                  "displayName": "name",
-                  "required": false,
-                  "defaultMatch": false,
-                  "display": true,
-                  "type": "string",
-                  "canBeUsedToMatch": true
-                },
-                {
-                  "id": "email",
-                  "displayName": "email",
-                  "required": false,
-                  "defaultMatch": false,
-                  "display": true,
-                  "type": "string",
-                  "canBeUsedToMatch": true
-                },
-                {
-                  "id": "status",
-                  "displayName": "status",
-                  "required": false,
-                  "defaultMatch": false,
-                  "display": true,
-                  "type": "string",
-                  "canBeUsedToMatch": true
-                },
-                {
-                  "id": "subscribed",
-                  "displayName": "subscribed",
-                  "required": false,
-                  "defaultMatch": false,
-                  "display": true,
-                  "type": "string",
-                  "canBeUsedToMatch": true
-                },
-                {
-                  "id": "level_name",
-                  "displayName": "level_name",
-                  "required": false,
-                  "defaultMatch": false,
-                  "display": true,
-                  "type": "string",
-                  "canBeUsedToMatch": true
-                },
-                {
-                  "id": "price",
-                  "displayName": "price",
-                  "required": false,
-                  "defaultMatch": false,
-                  "display": true,
-                  "type": "string",
-                  "canBeUsedToMatch": true
-                },
-                {
-                  "id": "payments",
-                  "displayName": "payments",
-                  "required": false,
-                  "defaultMatch": false,
-                  "display": true,
-                  "type": "string",
-                  "canBeUsedToMatch": true
-                },
-                {
-                  "id": "onTime",
-                  "displayName": "onTime",
-                  "required": false,
-                  "defaultMatch": false,
-                  "display": true,
-                  "type": "string",
-                  "canBeUsedToMatch": true
-                }
-              ],
-              "attemptToConvertTypes": false,
-              "convertFieldsToString": false
-            },
-            "options": {}
-          },
-          "type": "n8n-nodes-base.googleSheets",
-          "typeVersion": 4.7,
-          "position": [
-            816,
-            -96
-          ],
-          "id": "af061e7b-fc2e-43a5-826c-ee41bd61a182",
-          "name": "Append or update row in sheet",
-          "credentials": {
-            "googleSheetsOAuth2Api": {
-              "id": "8vrwGyi32Hp1irKM",
-              "name": "Google Sheets account"
-            }
-          }
-        },
-        {
-          "parameters": {
-            "chatId": "8593464393",
-            "text": "=✅ Подписчики Boosty обновлены  📊 Google Sheets: данные синхронизированы 🕒 {{ DateTime.now().setLocale('ru').toLocaleString({ month: 'long', day: 'numeric', hour: 'numeric', minute: '2-digit' }) }}",
-            "additionalFields": {
-              "appendAttribution": false
-            }
-          },
-          "type": "n8n-nodes-base.telegram",
-          "typeVersion": 1.2,
-          "position": [
-            1232,
-            -96
-          ],
-          "id": "5cce43ae-ed02-4053-a86f-28e41554aadb",
-          "name": "Send a text message",
-          "webhookId": "41150648-a0e6-4a38-ad7a-effba0839589",
-          "credentials": {
-            "telegramApi": {
-              "id": "31G0PoTb4LqbBRW5",
-              "name": "Telegram account | Notification Bot"
-            }
-          }
-        },
-        {
-          "parameters": {
-            "keep": "lastItems"
-          },
-          "type": "n8n-nodes-base.limit",
-          "typeVersion": 1,
-          "position": [
-            1024,
-            -96
-          ],
-          "id": "6118b0af-f590-4530-b7f5-7114d0cd126d",
-          "name": "Limit"
         },
         {
           "parameters": {
@@ -462,6 +392,232 @@
           ],
           "id": "0c334e6d-0236-4515-8727-59c4ef46f6eb",
           "name": "Schedule Trigger"
+        },
+        {
+          "parameters": {
+            "operation": "upsert",
+            "dataTableId": {
+              "__rl": true,
+              "value": "25QXaM48qGmKjxHa",
+              "mode": "list",
+              "cachedResultName": "Boosty subs",
+              "cachedResultUrl": "/projects/XeBXiP5yJsi5DYCS/datatables/25QXaM48qGmKjxHa"
+            },
+            "filters": {
+              "conditions": [
+                {
+                  "keyName": "userId",
+                  "keyValue": "={{ $json.id }}"
+                }
+              ]
+            },
+            "columns": {
+              "mappingMode": "defineBelow",
+              "value": {
+                "subscribed": "={{ $json.subscribed }}",
+                "price": "={{ $json.level.price }}",
+                "payments": "={{ $json.payments }}",
+                "userId": "={{ $json.id }}",
+                "name": "={{ $json.name }}",
+                "email": "={{ $json.email }}",
+                "status": "={{ $json.status }}",
+                "levelName": "={{ $json.level.name }}",
+                "onTime": "={{ DateTime.fromSeconds($json.onTime) }}"
+              },
+              "matchingColumns": [],
+              "schema": [
+                {
+                  "id": "userId",
+                  "displayName": "userId",
+                  "required": false,
+                  "defaultMatch": false,
+                  "display": true,
+                  "type": "string",
+                  "readOnly": false,
+                  "removed": false
+                },
+                {
+                  "id": "name",
+                  "displayName": "name",
+                  "required": false,
+                  "defaultMatch": false,
+                  "display": true,
+                  "type": "string",
+                  "readOnly": false,
+                  "removed": false
+                },
+                {
+                  "id": "email",
+                  "displayName": "email",
+                  "required": false,
+                  "defaultMatch": false,
+                  "display": true,
+                  "type": "string",
+                  "readOnly": false,
+                  "removed": false
+                },
+                {
+                  "id": "status",
+                  "displayName": "status",
+                  "required": false,
+                  "defaultMatch": false,
+                  "display": true,
+                  "type": "string",
+                  "readOnly": false,
+                  "removed": false
+                },
+                {
+                  "id": "subscribed",
+                  "displayName": "subscribed",
+                  "required": false,
+                  "defaultMatch": false,
+                  "display": true,
+                  "type": "boolean",
+                  "readOnly": false,
+                  "removed": false
+                },
+                {
+                  "id": "levelName",
+                  "displayName": "levelName",
+                  "required": false,
+                  "defaultMatch": false,
+                  "display": true,
+                  "type": "string",
+                  "readOnly": false,
+                  "removed": false
+                },
+                {
+                  "id": "price",
+                  "displayName": "price",
+                  "required": false,
+                  "defaultMatch": false,
+                  "display": true,
+                  "type": "number",
+                  "readOnly": false,
+                  "removed": false
+                },
+                {
+                  "id": "payments",
+                  "displayName": "payments",
+                  "required": false,
+                  "defaultMatch": false,
+                  "display": true,
+                  "type": "number",
+                  "readOnly": false,
+                  "removed": false
+                },
+                {
+                  "id": "onTime",
+                  "displayName": "onTime",
+                  "required": false,
+                  "defaultMatch": false,
+                  "display": true,
+                  "type": "dateTime",
+                  "readOnly": false,
+                  "removed": false
+                }
+              ],
+              "attemptToConvertTypes": false,
+              "convertFieldsToString": false
+            },
+            "options": {}
+          },
+          "type": "n8n-nodes-base.dataTable",
+          "typeVersion": 1.1,
+          "position": [
+            864,
+            -96
+          ],
+          "id": "37b9554b-6dfd-4760-9a55-c364d52add58",
+          "name": "Upsert row(s)"
+        },
+        {
+          "parameters": {
+            "workflowId": {
+              "__rl": true,
+              "value": "0GNr1mrgOjgfbGgJ",
+              "mode": "list",
+              "cachedResultUrl": "/workflow/0GNr1mrgOjgfbGgJ",
+              "cachedResultName": "Telegram Notification Service"
+            },
+            "workflowInputs": {
+              "mappingMode": "defineBelow",
+              "value": {
+                "time": "={{ Date.now() }}",
+                "message": "Подписчики Boosty обновлены в Data Table",
+                "title": "Boosty-уведомление"
+              },
+              "matchingColumns": [],
+              "schema": [
+                {
+                  "id": "time",
+                  "displayName": "time",
+                  "required": false,
+                  "defaultMatch": false,
+                  "display": true,
+                  "canBeUsedToMatch": true,
+                  "type": "number",
+                  "removed": false
+                },
+                {
+                  "id": "title",
+                  "displayName": "title",
+                  "required": false,
+                  "defaultMatch": false,
+                  "display": true,
+                  "canBeUsedToMatch": true,
+                  "type": "string",
+                  "removed": false
+                },
+                {
+                  "id": "message",
+                  "displayName": "message",
+                  "required": false,
+                  "defaultMatch": false,
+                  "display": true,
+                  "canBeUsedToMatch": true,
+                  "type": "string",
+                  "removed": false
+                },
+                {
+                  "id": "url",
+                  "displayName": "url",
+                  "required": false,
+                  "defaultMatch": false,
+                  "display": true,
+                  "canBeUsedToMatch": true,
+                  "type": "string",
+                  "removed": true
+                }
+              ],
+              "attemptToConvertTypes": false,
+              "convertFieldsToString": true
+            },
+            "options": {}
+          },
+          "type": "n8n-nodes-base.executeWorkflow",
+          "typeVersion": 1.3,
+          "position": [
+            1296,
+            -96
+          ],
+          "id": "efaeb4b0-922d-432c-b0ae-0f2750065625",
+          "name": "Call 'Telegram Notification Service'"
+        },
+        {
+          "parameters": {
+            "aggregate": "aggregateAllItemData",
+            "options": {}
+          },
+          "type": "n8n-nodes-base.aggregate",
+          "typeVersion": 1,
+          "position": [
+            1072,
+            -96
+          ],
+          "id": "3657b5a9-c76b-4fed-849e-967e478a3e6d",
+          "name": "Aggregate",
+          "alwaysOutputData": false
         }
       ],
       "connections": {
@@ -480,29 +636,7 @@
           "main": [
             [
               {
-                "node": "Append or update row in sheet",
-                "type": "main",
-                "index": 0
-              }
-            ]
-          ]
-        },
-        "Append or update row in sheet": {
-          "main": [
-            [
-              {
-                "node": "Limit",
-                "type": "main",
-                "index": 0
-              }
-            ]
-          ]
-        },
-        "Limit": {
-          "main": [
-            [
-              {
-                "node": "Send a text message",
+                "node": "Upsert row(s)",
                 "type": "main",
                 "index": 0
               }
@@ -514,6 +648,28 @@
             [
               {
                 "node": "HTTP Request",
+                "type": "main",
+                "index": 0
+              }
+            ]
+          ]
+        },
+        "Upsert row(s)": {
+          "main": [
+            [
+              {
+                "node": "Aggregate",
+                "type": "main",
+                "index": 0
+              }
+            ]
+          ]
+        },
+        "Aggregate": {
+          "main": [
+            [
+              {
+                "node": "Call 'Telegram Notification Service'",
                 "type": "main",
                 "index": 0
               }
@@ -534,9 +690,9 @@
         "templateCredsSetupCompleted": true
       },
       "pinData": {},
-      "versionId": "9cbfb71c-db21-471f-98cb-9698fa057e5a",
-      "activeVersionId": "9cbfb71c-db21-471f-98cb-9698fa057e5a",
-      "versionCounter": 4,
+      "versionId": "961068c8-9685-4e6f-9cb2-360dd852a2ba",
+      "activeVersionId": "961068c8-9685-4e6f-9cb2-360dd852a2ba",
+      "versionCounter": 15,
       "triggerCount": 1,
       "shared": [
         {
@@ -585,9 +741,9 @@
       ],
       "tags": [],
       "activeVersion": {
-        "updatedAt": "2026-02-20T06:43:19.318Z",
-        "createdAt": "2026-02-20T06:41:56.602Z",
-        "versionId": "9cbfb71c-db21-471f-98cb-9698fa057e5a",
+        "updatedAt": "2026-02-20T10:29:20.284Z",
+        "createdAt": "2026-02-20T10:29:17.095Z",
+        "versionId": "961068c8-9685-4e6f-9cb2-360dd852a2ba",
         "workflowId": "B2QRqtVwapqY1zsf",
         "nodes": [
           {
@@ -617,7 +773,7 @@
             "type": "n8n-nodes-base.httpRequest",
             "typeVersion": 4.3,
             "position": [
-              400,
+              416,
               -96
             ],
             "id": "86aee0c5-08b1-4c96-bf25-4e8acb76e53b",
@@ -637,185 +793,11 @@
             "type": "n8n-nodes-base.splitOut",
             "typeVersion": 1,
             "position": [
-              608,
+              640,
               -96
             ],
             "id": "205f56b7-926c-49ec-a9d0-64df6d6a8410",
             "name": "Split Out"
-          },
-          {
-            "parameters": {
-              "operation": "appendOrUpdate",
-              "documentId": {
-                "__rl": true,
-                "value": "1Gc5uUKoYkTBOITi7gojfiCqomyWpHb9GHX4fr1BZzgI",
-                "mode": "list",
-                "cachedResultName": "Ведение Бизнеса",
-                "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1Gc5uUKoYkTBOITi7gojfiCqomyWpHb9GHX4fr1BZzgI/edit?usp=drivesdk"
-              },
-              "sheetName": {
-                "__rl": true,
-                "value": 422581622,
-                "mode": "list",
-                "cachedResultName": "Платные подписчики в Boosty",
-                "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1Gc5uUKoYkTBOITi7gojfiCqomyWpHb9GHX4fr1BZzgI/edit#gid=422581622"
-              },
-              "columns": {
-                "mappingMode": "defineBelow",
-                "value": {
-                  "id": "={{ $json.id }}",
-                  "name": "={{ $json.name }}",
-                  "email": "={{ $json.email }}",
-                  "status": "={{ $json.status }}",
-                  "subscribed": "={{ $json.subscribed }}",
-                  "level_name": "={{ $json.level.name }}",
-                  "price": "={{ $json.level.price }}",
-                  "payments": "={{ $json.payments }}",
-                  "onTime": "={{ DateTime.fromSeconds($json.onTime).format('dd-MM-yyyy HH:mm:ss') }}"
-                },
-                "matchingColumns": [
-                  "id"
-                ],
-                "schema": [
-                  {
-                    "id": "id",
-                    "displayName": "id",
-                    "required": false,
-                    "defaultMatch": true,
-                    "display": true,
-                    "type": "string",
-                    "canBeUsedToMatch": true,
-                    "removed": false
-                  },
-                  {
-                    "id": "name",
-                    "displayName": "name",
-                    "required": false,
-                    "defaultMatch": false,
-                    "display": true,
-                    "type": "string",
-                    "canBeUsedToMatch": true
-                  },
-                  {
-                    "id": "email",
-                    "displayName": "email",
-                    "required": false,
-                    "defaultMatch": false,
-                    "display": true,
-                    "type": "string",
-                    "canBeUsedToMatch": true
-                  },
-                  {
-                    "id": "status",
-                    "displayName": "status",
-                    "required": false,
-                    "defaultMatch": false,
-                    "display": true,
-                    "type": "string",
-                    "canBeUsedToMatch": true
-                  },
-                  {
-                    "id": "subscribed",
-                    "displayName": "subscribed",
-                    "required": false,
-                    "defaultMatch": false,
-                    "display": true,
-                    "type": "string",
-                    "canBeUsedToMatch": true
-                  },
-                  {
-                    "id": "level_name",
-                    "displayName": "level_name",
-                    "required": false,
-                    "defaultMatch": false,
-                    "display": true,
-                    "type": "string",
-                    "canBeUsedToMatch": true
-                  },
-                  {
-                    "id": "price",
-                    "displayName": "price",
-                    "required": false,
-                    "defaultMatch": false,
-                    "display": true,
-                    "type": "string",
-                    "canBeUsedToMatch": true
-                  },
-                  {
-                    "id": "payments",
-                    "displayName": "payments",
-                    "required": false,
-                    "defaultMatch": false,
-                    "display": true,
-                    "type": "string",
-                    "canBeUsedToMatch": true
-                  },
-                  {
-                    "id": "onTime",
-                    "displayName": "onTime",
-                    "required": false,
-                    "defaultMatch": false,
-                    "display": true,
-                    "type": "string",
-                    "canBeUsedToMatch": true
-                  }
-                ],
-                "attemptToConvertTypes": false,
-                "convertFieldsToString": false
-              },
-              "options": {}
-            },
-            "type": "n8n-nodes-base.googleSheets",
-            "typeVersion": 4.7,
-            "position": [
-              816,
-              -96
-            ],
-            "id": "af061e7b-fc2e-43a5-826c-ee41bd61a182",
-            "name": "Append or update row in sheet",
-            "credentials": {
-              "googleSheetsOAuth2Api": {
-                "id": "8vrwGyi32Hp1irKM",
-                "name": "Google Sheets account"
-              }
-            }
-          },
-          {
-            "parameters": {
-              "chatId": "8593464393",
-              "text": "=✅ Подписчики Boosty обновлены  📊 Google Sheets: данные синхронизированы 🕒 {{ DateTime.now().setLocale('ru').toLocaleString({ month: 'long', day: 'numeric', hour: 'numeric', minute: '2-digit' }) }}",
-              "additionalFields": {
-                "appendAttribution": false
-              }
-            },
-            "type": "n8n-nodes-base.telegram",
-            "typeVersion": 1.2,
-            "position": [
-              1232,
-              -96
-            ],
-            "id": "5cce43ae-ed02-4053-a86f-28e41554aadb",
-            "name": "Send a text message",
-            "webhookId": "41150648-a0e6-4a38-ad7a-effba0839589",
-            "credentials": {
-              "telegramApi": {
-                "id": "31G0PoTb4LqbBRW5",
-                "name": "Telegram account | Notification Bot"
-              }
-            }
-          },
-          {
-            "parameters": {
-              "keep": "lastItems"
-            },
-            "type": "n8n-nodes-base.limit",
-            "typeVersion": 1,
-            "position": [
-              1024,
-              -96
-            ],
-            "id": "6118b0af-f590-4530-b7f5-7114d0cd126d",
-            "name": "Limit"
           },
           {
             "parameters": {
@@ -835,6 +817,232 @@
             ],
             "id": "0c334e6d-0236-4515-8727-59c4ef46f6eb",
             "name": "Schedule Trigger"
+          },
+          {
+            "parameters": {
+              "operation": "upsert",
+              "dataTableId": {
+                "__rl": true,
+                "value": "25QXaM48qGmKjxHa",
+                "mode": "list",
+                "cachedResultName": "Boosty subs",
+                "cachedResultUrl": "/projects/XeBXiP5yJsi5DYCS/datatables/25QXaM48qGmKjxHa"
+              },
+              "filters": {
+                "conditions": [
+                  {
+                    "keyName": "userId",
+                    "keyValue": "={{ $json.id }}"
+                  }
+                ]
+              },
+              "columns": {
+                "mappingMode": "defineBelow",
+                "value": {
+                  "subscribed": "={{ $json.subscribed }}",
+                  "price": "={{ $json.level.price }}",
+                  "payments": "={{ $json.payments }}",
+                  "userId": "={{ $json.id }}",
+                  "name": "={{ $json.name }}",
+                  "email": "={{ $json.email }}",
+                  "status": "={{ $json.status }}",
+                  "levelName": "={{ $json.level.name }}",
+                  "onTime": "={{ DateTime.fromSeconds($json.onTime) }}"
+                },
+                "matchingColumns": [],
+                "schema": [
+                  {
+                    "id": "userId",
+                    "displayName": "userId",
+                    "required": false,
+                    "defaultMatch": false,
+                    "display": true,
+                    "type": "string",
+                    "readOnly": false,
+                    "removed": false
+                  },
+                  {
+                    "id": "name",
+                    "displayName": "name",
+                    "required": false,
+                    "defaultMatch": false,
+                    "display": true,
+                    "type": "string",
+                    "readOnly": false,
+                    "removed": false
+                  },
+                  {
+                    "id": "email",
+                    "displayName": "email",
+                    "required": false,
+                    "defaultMatch": false,
+                    "display": true,
+                    "type": "string",
+                    "readOnly": false,
+                    "removed": false
+                  },
+                  {
+                    "id": "status",
+                    "displayName": "status",
+                    "required": false,
+                    "defaultMatch": false,
+                    "display": true,
+                    "type": "string",
+                    "readOnly": false,
+                    "removed": false
+                  },
+                  {
+                    "id": "subscribed",
+                    "displayName": "subscribed",
+                    "required": false,
+                    "defaultMatch": false,
+                    "display": true,
+                    "type": "boolean",
+                    "readOnly": false,
+                    "removed": false
+                  },
+                  {
+                    "id": "levelName",
+                    "displayName": "levelName",
+                    "required": false,
+                    "defaultMatch": false,
+                    "display": true,
+                    "type": "string",
+                    "readOnly": false,
+                    "removed": false
+                  },
+                  {
+                    "id": "price",
+                    "displayName": "price",
+                    "required": false,
+                    "defaultMatch": false,
+                    "display": true,
+                    "type": "number",
+                    "readOnly": false,
+                    "removed": false
+                  },
+                  {
+                    "id": "payments",
+                    "displayName": "payments",
+                    "required": false,
+                    "defaultMatch": false,
+                    "display": true,
+                    "type": "number",
+                    "readOnly": false,
+                    "removed": false
+                  },
+                  {
+                    "id": "onTime",
+                    "displayName": "onTime",
+                    "required": false,
+                    "defaultMatch": false,
+                    "display": true,
+                    "type": "dateTime",
+                    "readOnly": false,
+                    "removed": false
+                  }
+                ],
+                "attemptToConvertTypes": false,
+                "convertFieldsToString": false
+              },
+              "options": {}
+            },
+            "type": "n8n-nodes-base.dataTable",
+            "typeVersion": 1.1,
+            "position": [
+              864,
+              -96
+            ],
+            "id": "37b9554b-6dfd-4760-9a55-c364d52add58",
+            "name": "Upsert row(s)"
+          },
+          {
+            "parameters": {
+              "workflowId": {
+                "__rl": true,
+                "value": "0GNr1mrgOjgfbGgJ",
+                "mode": "list",
+                "cachedResultUrl": "/workflow/0GNr1mrgOjgfbGgJ",
+                "cachedResultName": "Telegram Notification Service"
+              },
+              "workflowInputs": {
+                "mappingMode": "defineBelow",
+                "value": {
+                  "time": "={{ Date.now() }}",
+                  "message": "Подписчики Boosty обновлены в Data Table",
+                  "title": "Boosty-уведомление"
+                },
+                "matchingColumns": [],
+                "schema": [
+                  {
+                    "id": "time",
+                    "displayName": "time",
+                    "required": false,
+                    "defaultMatch": false,
+                    "display": true,
+                    "canBeUsedToMatch": true,
+                    "type": "number",
+                    "removed": false
+                  },
+                  {
+                    "id": "title",
+                    "displayName": "title",
+                    "required": false,
+                    "defaultMatch": false,
+                    "display": true,
+                    "canBeUsedToMatch": true,
+                    "type": "string",
+                    "removed": false
+                  },
+                  {
+                    "id": "message",
+                    "displayName": "message",
+                    "required": false,
+                    "defaultMatch": false,
+                    "display": true,
+                    "canBeUsedToMatch": true,
+                    "type": "string",
+                    "removed": false
+                  },
+                  {
+                    "id": "url",
+                    "displayName": "url",
+                    "required": false,
+                    "defaultMatch": false,
+                    "display": true,
+                    "canBeUsedToMatch": true,
+                    "type": "string",
+                    "removed": true
+                  }
+                ],
+                "attemptToConvertTypes": false,
+                "convertFieldsToString": true
+              },
+              "options": {}
+            },
+            "type": "n8n-nodes-base.executeWorkflow",
+            "typeVersion": 1.3,
+            "position": [
+              1296,
+              -96
+            ],
+            "id": "efaeb4b0-922d-432c-b0ae-0f2750065625",
+            "name": "Call 'Telegram Notification Service'"
+          },
+          {
+            "parameters": {
+              "aggregate": "aggregateAllItemData",
+              "options": {}
+            },
+            "type": "n8n-nodes-base.aggregate",
+            "typeVersion": 1,
+            "position": [
+              1072,
+              -96
+            ],
+            "id": "3657b5a9-c76b-4fed-849e-967e478a3e6d",
+            "name": "Aggregate",
+            "alwaysOutputData": false
           }
         ],
         "connections": {
@@ -853,29 +1061,7 @@
             "main": [
               [
                 {
-                  "node": "Append or update row in sheet",
-                  "type": "main",
-                  "index": 0
-                }
-              ]
-            ]
-          },
-          "Append or update row in sheet": {
-            "main": [
-              [
-                {
-                  "node": "Limit",
-                  "type": "main",
-                  "index": 0
-                }
-              ]
-            ]
-          },
-          "Limit": {
-            "main": [
-              [
-                {
-                  "node": "Send a text message",
+                  "node": "Upsert row(s)",
                   "type": "main",
                   "index": 0
                 }
@@ -892,18 +1078,40 @@
                 }
               ]
             ]
+          },
+          "Upsert row(s)": {
+            "main": [
+              [
+                {
+                  "node": "Aggregate",
+                  "type": "main",
+                  "index": 0
+                }
+              ]
+            ]
+          },
+          "Aggregate": {
+            "main": [
+              [
+                {
+                  "node": "Call 'Telegram Notification Service'",
+                  "type": "main",
+                  "index": 0
+                }
+              ]
+            ]
           }
         },
         "authors": "Admin Admin",
-        "name": "Version 9cbfb71c",
+        "name": "Version 961068c8",
         "description": "",
         "autosaved": false,
         "workflowPublishHistory": [
           {
-            "createdAt": "2026-02-20T06:43:19.316Z",
-            "id": 2,
+            "createdAt": "2026-02-20T10:29:20.283Z",
+            "id": 7,
             "workflowId": "B2QRqtVwapqY1zsf",
-            "versionId": "9cbfb71c-db21-471f-98cb-9698fa057e5a",
+            "versionId": "961068c8-9685-4e6f-9cb2-360dd852a2ba",
             "event": "activated",
             "userId": "ebcf2b09-cd83-42f3-b5e0-89c4fcaad4a1"
           }
@@ -1086,12 +1294,12 @@
       "activeVersion": null
     },
     {
-      "updatedAt": "2026-02-20T07:29:19.591Z",
+      "updatedAt": "2026-02-20T10:34:25.059Z",
       "createdAt": "2026-02-20T07:05:56.323Z",
       "id": "HMQXTRLUvppIxeMz",
-      "name": "My workflow",
+      "name": "Backup workspaces for n8n",
       "description": null,
-      "active": false,
+      "active": true,
       "isArchived": false,
       "nodes": [
         {
@@ -1154,15 +1362,19 @@
         "executionOrder": "v1",
         "availableInMCP": false
       },
-      "staticData": null,
+      "staticData": {
+        "node:Schedule Trigger": {
+          "recurrenceRules": []
+        }
+      },
       "meta": {
         "templateCredsSetupCompleted": true
       },
       "pinData": {},
       "versionId": "d81bba1c-06d7-4c8a-b55f-fcbe95b1333e",
-      "activeVersionId": null,
-      "versionCounter": 3,
-      "triggerCount": 0,
+      "activeVersionId": "d81bba1c-06d7-4c8a-b55f-fcbe95b1333e",
+      "versionCounter": 10,
+      "triggerCount": 1,
       "shared": [
         {
           "updatedAt": "2026-02-20T07:05:56.323Z",
@@ -1209,22 +1421,312 @@
         }
       ],
       "tags": [],
-      "activeVersion": null
+      "activeVersion": {
+        "updatedAt": "2026-02-20T07:29:48.420Z",
+        "createdAt": "2026-02-20T07:29:19.593Z",
+        "versionId": "d81bba1c-06d7-4c8a-b55f-fcbe95b1333e",
+        "workflowId": "HMQXTRLUvppIxeMz",
+        "nodes": [
+          {
+            "parameters": {
+              "githubRepo": "kkulebaev/n8n"
+            },
+            "type": "n8n-nodes-backup.n8nBackup",
+            "typeVersion": 1,
+            "position": [
+              208,
+              0
+            ],
+            "id": "45db2f29-f2d4-439f-a707-b9a9e69f6f43",
+            "name": "n8n Backup",
+            "credentials": {
+              "n8nApi": {
+                "id": "UDzormeWy1XJYM2Y",
+                "name": "n8n account | konstantinkulebaev"
+              },
+              "githubApi": {
+                "id": "7TATfXVfgddCWOgw",
+                "name": "GitHub account | kkulebaev"
+              }
+            }
+          },
+          {
+            "parameters": {
+              "rule": {
+                "interval": [
+                  {
+                    "triggerAtHour": 10
+                  }
+                ]
+              }
+            },
+            "type": "n8n-nodes-base.scheduleTrigger",
+            "typeVersion": 1.3,
+            "position": [
+              0,
+              0
+            ],
+            "id": "3fa63890-3cb1-4da9-874e-43a14a92355f",
+            "name": "Schedule Trigger"
+          }
+        ],
+        "connections": {
+          "Schedule Trigger": {
+            "main": [
+              [
+                {
+                  "node": "n8n Backup",
+                  "type": "main",
+                  "index": 0
+                }
+              ]
+            ]
+          }
+        },
+        "authors": "Admin Admin",
+        "name": "Version d81bba1c",
+        "description": "",
+        "autosaved": false,
+        "workflowPublishHistory": [
+          {
+            "createdAt": "2026-02-20T07:29:48.418Z",
+            "id": 3,
+            "workflowId": "HMQXTRLUvppIxeMz",
+            "versionId": "d81bba1c-06d7-4c8a-b55f-fcbe95b1333e",
+            "event": "activated",
+            "userId": "ebcf2b09-cd83-42f3-b5e0-89c4fcaad4a1"
+          }
+        ]
+      }
+    },
+    {
+      "updatedAt": "2026-02-20T10:32:58.576Z",
+      "createdAt": "2026-02-20T09:22:53.843Z",
+      "id": "0GNr1mrgOjgfbGgJ",
+      "name": "Telegram Notification Service",
+      "description": null,
+      "active": true,
+      "isArchived": false,
+      "nodes": [
+        {
+          "parameters": {
+            "workflowInputs": {
+              "values": [
+                {
+                  "name": "time",
+                  "type": "number"
+                },
+                {
+                  "name": "title"
+                },
+                {
+                  "name": "message"
+                },
+                {
+                  "name": "url"
+                }
+              ]
+            }
+          },
+          "type": "n8n-nodes-base.executeWorkflowTrigger",
+          "typeVersion": 1.1,
+          "position": [
+            0,
+            0
+          ],
+          "id": "bbe59e2e-bab3-4d89-a046-107438334030",
+          "name": "When Executed by Another Workflow",
+          "alwaysOutputData": false
+        },
+        {
+          "parameters": {
+            "chatId": "8593464393",
+            "text": "=🔔 *{{ $json.title }}*\n_{{ DateTime.fromMillis($json.time).setLocale('ru').toLocaleString({ month: 'long', day: 'numeric', hour: 'numeric', minute: '2-digit' }) }}_\n\n{{ $json.message }}\n\n{{ $json.url }}",
+            "additionalFields": {
+              "appendAttribution": false
+            }
+          },
+          "type": "n8n-nodes-base.telegram",
+          "typeVersion": 1.2,
+          "position": [
+            224,
+            0
+          ],
+          "id": "99ce2ff9-2cd0-4d2e-b854-834a613594d2",
+          "name": "Send a text message",
+          "webhookId": "2272f267-4423-4a50-9a57-885a1197c49d",
+          "credentials": {
+            "telegramApi": {
+              "id": "31G0PoTb4LqbBRW5",
+              "name": "Telegram account | Notification Bot"
+            }
+          }
+        }
+      ],
+      "connections": {
+        "When Executed by Another Workflow": {
+          "main": [
+            [
+              {
+                "node": "Send a text message",
+                "type": "main",
+                "index": 0
+              }
+            ]
+          ]
+        }
+      },
+      "settings": {
+        "executionOrder": "v1",
+        "availableInMCP": false
+      },
+      "staticData": null,
+      "meta": {
+        "templateCredsSetupCompleted": true
+      },
+      "pinData": {},
+      "versionId": "789e3186-9133-483d-84e9-3d9443a3f95d",
+      "activeVersionId": "789e3186-9133-483d-84e9-3d9443a3f95d",
+      "versionCounter": 5,
+      "triggerCount": 0,
+      "shared": [
+        {
+          "updatedAt": "2026-02-20T09:22:53.843Z",
+          "createdAt": "2026-02-20T09:22:53.843Z",
+          "role": "workflow:owner",
+          "workflowId": "0GNr1mrgOjgfbGgJ",
+          "projectId": "XeBXiP5yJsi5DYCS",
+          "project": {
+            "updatedAt": "2026-02-20T06:29:28.274Z",
+            "createdAt": "2026-02-20T06:29:02.050Z",
+            "id": "XeBXiP5yJsi5DYCS",
+            "name": "Admin Admin <konstantinkulebaev@gmail.com>",
+            "type": "personal",
+            "icon": null,
+            "description": null,
+            "creatorId": "ebcf2b09-cd83-42f3-b5e0-89c4fcaad4a1",
+            "projectRelations": [
+              {
+                "updatedAt": "2026-02-20T06:29:02.050Z",
+                "createdAt": "2026-02-20T06:29:02.050Z",
+                "userId": "ebcf2b09-cd83-42f3-b5e0-89c4fcaad4a1",
+                "projectId": "XeBXiP5yJsi5DYCS",
+                "user": {
+                  "updatedAt": "2026-02-20T07:00:31.077Z",
+                  "createdAt": "2026-02-20T06:29:01.427Z",
+                  "id": "ebcf2b09-cd83-42f3-b5e0-89c4fcaad4a1",
+                  "email": "konstantinkulebaev@gmail.com",
+                  "firstName": "Admin",
+                  "lastName": "Admin",
+                  "personalizationAnswers": null,
+                  "settings": {
+                    "userActivated": true,
+                    "firstSuccessfulWorkflowId": "B2QRqtVwapqY1zsf",
+                    "userActivatedAt": 1771570828063
+                  },
+                  "disabled": false,
+                  "mfaEnabled": false,
+                  "lastActiveAt": "2026-02-20",
+                  "isPending": false
+                }
+              }
+            ]
+          }
+        }
+      ],
+      "tags": [],
+      "activeVersion": {
+        "updatedAt": "2026-02-20T10:06:53.233Z",
+        "createdAt": "2026-02-20T10:06:47.882Z",
+        "versionId": "789e3186-9133-483d-84e9-3d9443a3f95d",
+        "workflowId": "0GNr1mrgOjgfbGgJ",
+        "nodes": [
+          {
+            "parameters": {
+              "workflowInputs": {
+                "values": [
+                  {
+                    "name": "time",
+                    "type": "number"
+                  },
+                  {
+                    "name": "title"
+                  },
+                  {
+                    "name": "message"
+                  },
+                  {
+                    "name": "url"
+                  }
+                ]
+              }
+            },
+            "type": "n8n-nodes-base.executeWorkflowTrigger",
+            "typeVersion": 1.1,
+            "position": [
+              0,
+              0
+            ],
+            "id": "bbe59e2e-bab3-4d89-a046-107438334030",
+            "name": "When Executed by Another Workflow",
+            "alwaysOutputData": false
+          },
+          {
+            "parameters": {
+              "chatId": "8593464393",
+              "text": "=🔔 *{{ $json.title }}*\n_{{ DateTime.fromMillis($json.time).setLocale('ru').toLocaleString({ month: 'long', day: 'numeric', hour: 'numeric', minute: '2-digit' }) }}_\n\n{{ $json.message }}\n\n{{ $json.url }}",
+              "additionalFields": {
+                "appendAttribution": false
+              }
+            },
+            "type": "n8n-nodes-base.telegram",
+            "typeVersion": 1.2,
+            "position": [
+              224,
+              0
+            ],
+            "id": "99ce2ff9-2cd0-4d2e-b854-834a613594d2",
+            "name": "Send a text message",
+            "webhookId": "2272f267-4423-4a50-9a57-885a1197c49d",
+            "credentials": {
+              "telegramApi": {
+                "id": "31G0PoTb4LqbBRW5",
+                "name": "Telegram account | Notification Bot"
+              }
+            }
+          }
+        ],
+        "connections": {
+          "When Executed by Another Workflow": {
+            "main": [
+              [
+                {
+                  "node": "Send a text message",
+                  "type": "main",
+                  "index": 0
+                }
+              ]
+            ]
+          }
+        },
+        "authors": "Admin Admin",
+        "name": "Version 789e3186",
+        "description": "",
+        "autosaved": false,
+        "workflowPublishHistory": [
+          {
+            "createdAt": "2026-02-20T10:06:53.230Z",
+            "id": 5,
+            "workflowId": "0GNr1mrgOjgfbGgJ",
+            "versionId": "789e3186-9133-483d-84e9-3d9443a3f95d",
+            "event": "activated",
+            "userId": "ebcf2b09-cd83-42f3-b5e0-89c4fcaad4a1"
+          }
+        ]
+      }
     }
   ],
   "credentials_summary": [
-    {
-      "id": "31G0PoTb4LqbBRW5",
-      "name": "Telegram account | Notification Bot",
-      "type": "telegramApi",
-      "used_in_workflows": [
-        "o5LFZ44iJ8wt9VcX",
-        "B2QRqtVwapqY1zsf"
-      ],
-      "used_in_nodes": [
-        "Send a text message (n8n-nodes-base.telegram)"
-      ]
-    },
     {
       "id": "kAG7U4K6lerXOxcl",
       "name": "Bearer Auth account | Boosty",
@@ -1234,17 +1736,6 @@
       ],
       "used_in_nodes": [
         "HTTP Request (n8n-nodes-base.httpRequest)"
-      ]
-    },
-    {
-      "id": "8vrwGyi32Hp1irKM",
-      "name": "Google Sheets account",
-      "type": "googleSheetsOAuth2Api",
-      "used_in_workflows": [
-        "B2QRqtVwapqY1zsf"
-      ],
-      "used_in_nodes": [
-        "Append or update row in sheet (n8n-nodes-base.googleSheets)"
       ]
     },
     {
@@ -1279,6 +1770,17 @@
       ],
       "used_in_nodes": [
         "n8n Backup (n8n-nodes-backup.n8nBackup)"
+      ]
+    },
+    {
+      "id": "31G0PoTb4LqbBRW5",
+      "name": "Telegram account | Notification Bot",
+      "type": "telegramApi",
+      "used_in_workflows": [
+        "0GNr1mrgOjgfbGgJ"
+      ],
+      "used_in_nodes": [
+        "Send a text message (n8n-nodes-base.telegram)"
       ]
     }
   ]

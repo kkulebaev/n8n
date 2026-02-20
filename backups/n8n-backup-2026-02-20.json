@@ -1,11 +1,391 @@
 {
   "version": "1.0.6",
-  "timestamp": "2026-02-20T13:52:21.833Z",
+  "timestamp": "2026-02-20T14:30:21.967Z",
   "workflowCount": 5,
   "credentialsCount": 5,
   "credentialsError": null,
   "credentialsInfo": "Successfully extracted 5 credentials from workflows",
   "workflows": [
+    {
+      "updatedAt": "2026-02-20T10:34:25.059Z",
+      "createdAt": "2026-02-20T07:05:56.323Z",
+      "id": "HMQXTRLUvppIxeMz",
+      "name": "Backup workspaces for n8n",
+      "description": null,
+      "active": true,
+      "isArchived": false,
+      "nodes": [
+        {
+          "parameters": {
+            "githubRepo": "kkulebaev/n8n"
+          },
+          "type": "n8n-nodes-backup.n8nBackup",
+          "typeVersion": 1,
+          "position": [
+            208,
+            0
+          ],
+          "id": "45db2f29-f2d4-439f-a707-b9a9e69f6f43",
+          "name": "n8n Backup",
+          "credentials": {
+            "n8nApi": {
+              "id": "UDzormeWy1XJYM2Y",
+              "name": "n8n account | konstantinkulebaev"
+            },
+            "githubApi": {
+              "id": "7TATfXVfgddCWOgw",
+              "name": "GitHub account | kkulebaev"
+            }
+          }
+        },
+        {
+          "parameters": {
+            "rule": {
+              "interval": [
+                {
+                  "triggerAtHour": 10
+                }
+              ]
+            }
+          },
+          "type": "n8n-nodes-base.scheduleTrigger",
+          "typeVersion": 1.3,
+          "position": [
+            0,
+            0
+          ],
+          "id": "3fa63890-3cb1-4da9-874e-43a14a92355f",
+          "name": "Schedule Trigger"
+        }
+      ],
+      "connections": {
+        "Schedule Trigger": {
+          "main": [
+            [
+              {
+                "node": "n8n Backup",
+                "type": "main",
+                "index": 0
+              }
+            ]
+          ]
+        }
+      },
+      "settings": {
+        "executionOrder": "v1",
+        "availableInMCP": false
+      },
+      "staticData": {
+        "node:Schedule Trigger": {
+          "recurrenceRules": []
+        }
+      },
+      "meta": {
+        "templateCredsSetupCompleted": true
+      },
+      "pinData": {},
+      "versionId": "d81bba1c-06d7-4c8a-b55f-fcbe95b1333e",
+      "activeVersionId": "d81bba1c-06d7-4c8a-b55f-fcbe95b1333e",
+      "versionCounter": 14,
+      "triggerCount": 1,
+      "shared": [
+        {
+          "updatedAt": "2026-02-20T07:05:56.323Z",
+          "createdAt": "2026-02-20T07:05:56.323Z",
+          "role": "workflow:owner",
+          "workflowId": "HMQXTRLUvppIxeMz",
+          "projectId": "XeBXiP5yJsi5DYCS",
+          "project": {
+            "updatedAt": "2026-02-20T06:29:28.274Z",
+            "createdAt": "2026-02-20T06:29:02.050Z",
+            "id": "XeBXiP5yJsi5DYCS",
+            "name": "Admin Admin <konstantinkulebaev@gmail.com>",
+            "type": "personal",
+            "icon": null,
+            "description": null,
+            "creatorId": "ebcf2b09-cd83-42f3-b5e0-89c4fcaad4a1"
+          }
+        }
+      ],
+      "tags": [],
+      "activeVersion": {
+        "updatedAt": "2026-02-20T07:29:48.420Z",
+        "createdAt": "2026-02-20T07:29:19.593Z",
+        "versionId": "d81bba1c-06d7-4c8a-b55f-fcbe95b1333e",
+        "workflowId": "HMQXTRLUvppIxeMz",
+        "nodes": [
+          {
+            "parameters": {
+              "githubRepo": "kkulebaev/n8n"
+            },
+            "type": "n8n-nodes-backup.n8nBackup",
+            "typeVersion": 1,
+            "position": [
+              208,
+              0
+            ],
+            "id": "45db2f29-f2d4-439f-a707-b9a9e69f6f43",
+            "name": "n8n Backup",
+            "credentials": {
+              "n8nApi": {
+                "id": "UDzormeWy1XJYM2Y",
+                "name": "n8n account | konstantinkulebaev"
+              },
+              "githubApi": {
+                "id": "7TATfXVfgddCWOgw",
+                "name": "GitHub account | kkulebaev"
+              }
+            }
+          },
+          {
+            "parameters": {
+              "rule": {
+                "interval": [
+                  {
+                    "triggerAtHour": 10
+                  }
+                ]
+              }
+            },
+            "type": "n8n-nodes-base.scheduleTrigger",
+            "typeVersion": 1.3,
+            "position": [
+              0,
+              0
+            ],
+            "id": "3fa63890-3cb1-4da9-874e-43a14a92355f",
+            "name": "Schedule Trigger"
+          }
+        ],
+        "connections": {
+          "Schedule Trigger": {
+            "main": [
+              [
+                {
+                  "node": "n8n Backup",
+                  "type": "main",
+                  "index": 0
+                }
+              ]
+            ]
+          }
+        },
+        "authors": "Admin Admin",
+        "name": "Version d81bba1c",
+        "description": "",
+        "autosaved": false,
+        "workflowPublishHistory": [
+          {
+            "createdAt": "2026-02-20T07:29:48.418Z",
+            "id": 3,
+            "workflowId": "HMQXTRLUvppIxeMz",
+            "versionId": "d81bba1c-06d7-4c8a-b55f-fcbe95b1333e",
+            "event": "activated",
+            "userId": "ebcf2b09-cd83-42f3-b5e0-89c4fcaad4a1"
+          }
+        ]
+      }
+    },
+    {
+      "updatedAt": "2026-02-20T10:32:58.576Z",
+      "createdAt": "2026-02-20T09:22:53.843Z",
+      "id": "0GNr1mrgOjgfbGgJ",
+      "name": "Telegram Notification Service",
+      "description": null,
+      "active": true,
+      "isArchived": false,
+      "nodes": [
+        {
+          "parameters": {
+            "workflowInputs": {
+              "values": [
+                {
+                  "name": "time",
+                  "type": "number"
+                },
+                {
+                  "name": "title"
+                },
+                {
+                  "name": "message"
+                },
+                {
+                  "name": "url"
+                }
+              ]
+            }
+          },
+          "type": "n8n-nodes-base.executeWorkflowTrigger",
+          "typeVersion": 1.1,
+          "position": [
+            0,
+            0
+          ],
+          "id": "bbe59e2e-bab3-4d89-a046-107438334030",
+          "name": "When Executed by Another Workflow",
+          "alwaysOutputData": false
+        },
+        {
+          "parameters": {
+            "chatId": "8593464393",
+            "text": "=🔔 *{{ $json.title }}*\n_{{ DateTime.fromMillis($json.time).setLocale('ru').toLocaleString({ month: 'long', day: 'numeric', hour: 'numeric', minute: '2-digit' }) }}_\n\n{{ $json.message }}\n\n{{ $json.url }}",
+            "additionalFields": {
+              "appendAttribution": false
+            }
+          },
+          "type": "n8n-nodes-base.telegram",
+          "typeVersion": 1.2,
+          "position": [
+            224,
+            0
+          ],
+          "id": "99ce2ff9-2cd0-4d2e-b854-834a613594d2",
+          "name": "Send a text message",
+          "webhookId": "2272f267-4423-4a50-9a57-885a1197c49d",
+          "credentials": {
+            "telegramApi": {
+              "id": "31G0PoTb4LqbBRW5",
+              "name": "Telegram account | Notification Bot"
+            }
+          }
+        }
+      ],
+      "connections": {
+        "When Executed by Another Workflow": {
+          "main": [
+            [
+              {
+                "node": "Send a text message",
+                "type": "main",
+                "index": 0
+              }
+            ]
+          ]
+        }
+      },
+      "settings": {
+        "executionOrder": "v1",
+        "availableInMCP": false
+      },
+      "staticData": null,
+      "meta": {
+        "templateCredsSetupCompleted": true
+      },
+      "pinData": {},
+      "versionId": "789e3186-9133-483d-84e9-3d9443a3f95d",
+      "activeVersionId": "789e3186-9133-483d-84e9-3d9443a3f95d",
+      "versionCounter": 9,
+      "triggerCount": 0,
+      "shared": [
+        {
+          "updatedAt": "2026-02-20T09:22:53.843Z",
+          "createdAt": "2026-02-20T09:22:53.843Z",
+          "role": "workflow:owner",
+          "workflowId": "0GNr1mrgOjgfbGgJ",
+          "projectId": "XeBXiP5yJsi5DYCS",
+          "project": {
+            "updatedAt": "2026-02-20T06:29:28.274Z",
+            "createdAt": "2026-02-20T06:29:02.050Z",
+            "id": "XeBXiP5yJsi5DYCS",
+            "name": "Admin Admin <konstantinkulebaev@gmail.com>",
+            "type": "personal",
+            "icon": null,
+            "description": null,
+            "creatorId": "ebcf2b09-cd83-42f3-b5e0-89c4fcaad4a1"
+          }
+        }
+      ],
+      "tags": [],
+      "activeVersion": {
+        "updatedAt": "2026-02-20T10:06:53.233Z",
+        "createdAt": "2026-02-20T10:06:47.882Z",
+        "versionId": "789e3186-9133-483d-84e9-3d9443a3f95d",
+        "workflowId": "0GNr1mrgOjgfbGgJ",
+        "nodes": [
+          {
+            "parameters": {
+              "workflowInputs": {
+                "values": [
+                  {
+                    "name": "time",
+                    "type": "number"
+                  },
+                  {
+                    "name": "title"
+                  },
+                  {
+                    "name": "message"
+                  },
+                  {
+                    "name": "url"
+                  }
+                ]
+              }
+            },
+            "type": "n8n-nodes-base.executeWorkflowTrigger",
+            "typeVersion": 1.1,
+            "position": [
+              0,
+              0
+            ],
+            "id": "bbe59e2e-bab3-4d89-a046-107438334030",
+            "name": "When Executed by Another Workflow",
+            "alwaysOutputData": false
+          },
+          {
+            "parameters": {
+              "chatId": "8593464393",
+              "text": "=🔔 *{{ $json.title }}*\n_{{ DateTime.fromMillis($json.time).setLocale('ru').toLocaleString({ month: 'long', day: 'numeric', hour: 'numeric', minute: '2-digit' }) }}_\n\n{{ $json.message }}\n\n{{ $json.url }}",
+              "additionalFields": {
+                "appendAttribution": false
+              }
+            },
+            "type": "n8n-nodes-base.telegram",
+            "typeVersion": 1.2,
+            "position": [
+              224,
+              0
+            ],
+            "id": "99ce2ff9-2cd0-4d2e-b854-834a613594d2",
+            "name": "Send a text message",
+            "webhookId": "2272f267-4423-4a50-9a57-885a1197c49d",
+            "credentials": {
+              "telegramApi": {
+                "id": "31G0PoTb4LqbBRW5",
+                "name": "Telegram account | Notification Bot"
+              }
+            }
+          }
+        ],
+        "connections": {
+          "When Executed by Another Workflow": {
+            "main": [
+              [
+                {
+                  "node": "Send a text message",
+                  "type": "main",
+                  "index": 0
+                }
+              ]
+            ]
+          }
+        },
+        "authors": "Admin Admin",
+        "name": "Version 789e3186",
+        "description": "",
+        "autosaved": false,
+        "workflowPublishHistory": [
+          {
+            "createdAt": "2026-02-20T10:06:53.230Z",
+            "id": 5,
+            "workflowId": "0GNr1mrgOjgfbGgJ",
+            "versionId": "789e3186-9133-483d-84e9-3d9443a3f95d",
+            "event": "activated",
+            "userId": "ebcf2b09-cd83-42f3-b5e0-89c4fcaad4a1"
+          }
+        ]
+      }
+    },
     {
       "updatedAt": "2026-02-20T10:33:57.156Z",
       "createdAt": "2026-02-20T06:35:11.597Z",
@@ -134,7 +514,7 @@
       "pinData": {},
       "versionId": "593f5420-f149-4f17-bef4-b2e9b4df5c74",
       "activeVersionId": "593f5420-f149-4f17-bef4-b2e9b4df5c74",
-      "versionCounter": 8,
+      "versionCounter": 12,
       "triggerCount": 1,
       "shared": [
         {
@@ -151,33 +531,7 @@
             "type": "personal",
             "icon": null,
             "description": null,
-            "creatorId": "ebcf2b09-cd83-42f3-b5e0-89c4fcaad4a1",
-            "projectRelations": [
-              {
-                "updatedAt": "2026-02-20T06:29:02.050Z",
-                "createdAt": "2026-02-20T06:29:02.050Z",
-                "userId": "ebcf2b09-cd83-42f3-b5e0-89c4fcaad4a1",
-                "projectId": "XeBXiP5yJsi5DYCS",
-                "user": {
-                  "updatedAt": "2026-02-20T07:00:31.077Z",
-                  "createdAt": "2026-02-20T06:29:01.427Z",
-                  "id": "ebcf2b09-cd83-42f3-b5e0-89c4fcaad4a1",
-                  "email": "konstantinkulebaev@gmail.com",
-                  "firstName": "Admin",
-                  "lastName": "Admin",
-                  "personalizationAnswers": null,
-                  "settings": {
-                    "userActivated": true,
-                    "firstSuccessfulWorkflowId": "B2QRqtVwapqY1zsf",
-                    "userActivatedAt": 1771570828063
-                  },
-                  "disabled": false,
-                  "mfaEnabled": false,
-                  "lastActiveAt": "2026-02-20",
-                  "isPending": false
-                }
-              }
-            ]
+            "creatorId": "ebcf2b09-cd83-42f3-b5e0-89c4fcaad4a1"
           }
         }
       ],
@@ -692,7 +1046,7 @@
       "pinData": {},
       "versionId": "961068c8-9685-4e6f-9cb2-360dd852a2ba",
       "activeVersionId": "961068c8-9685-4e6f-9cb2-360dd852a2ba",
-      "versionCounter": 15,
+      "versionCounter": 19,
       "triggerCount": 1,
       "shared": [
         {
@@ -709,33 +1063,7 @@
             "type": "personal",
             "icon": null,
             "description": null,
-            "creatorId": "ebcf2b09-cd83-42f3-b5e0-89c4fcaad4a1",
-            "projectRelations": [
-              {
-                "updatedAt": "2026-02-20T06:29:02.050Z",
-                "createdAt": "2026-02-20T06:29:02.050Z",
-                "userId": "ebcf2b09-cd83-42f3-b5e0-89c4fcaad4a1",
-                "projectId": "XeBXiP5yJsi5DYCS",
-                "user": {
-                  "updatedAt": "2026-02-20T07:00:31.077Z",
-                  "createdAt": "2026-02-20T06:29:01.427Z",
-                  "id": "ebcf2b09-cd83-42f3-b5e0-89c4fcaad4a1",
-                  "email": "konstantinkulebaev@gmail.com",
-                  "firstName": "Admin",
-                  "lastName": "Admin",
-                  "personalizationAnswers": null,
-                  "settings": {
-                    "userActivated": true,
-                    "firstSuccessfulWorkflowId": "B2QRqtVwapqY1zsf",
-                    "userActivatedAt": 1771570828063
-                  },
-                  "disabled": false,
-                  "mfaEnabled": false,
-                  "lastActiveAt": "2026-02-20",
-                  "isPending": false
-                }
-              }
-            ]
+            "creatorId": "ebcf2b09-cd83-42f3-b5e0-89c4fcaad4a1"
           }
         }
       ],
@@ -1260,496 +1588,15 @@
             "type": "personal",
             "icon": null,
             "description": null,
-            "creatorId": "ebcf2b09-cd83-42f3-b5e0-89c4fcaad4a1",
-            "projectRelations": [
-              {
-                "updatedAt": "2026-02-20T06:29:02.050Z",
-                "createdAt": "2026-02-20T06:29:02.050Z",
-                "userId": "ebcf2b09-cd83-42f3-b5e0-89c4fcaad4a1",
-                "projectId": "XeBXiP5yJsi5DYCS",
-                "user": {
-                  "updatedAt": "2026-02-20T07:00:31.077Z",
-                  "createdAt": "2026-02-20T06:29:01.427Z",
-                  "id": "ebcf2b09-cd83-42f3-b5e0-89c4fcaad4a1",
-                  "email": "konstantinkulebaev@gmail.com",
-                  "firstName": "Admin",
-                  "lastName": "Admin",
-                  "personalizationAnswers": null,
-                  "settings": {
-                    "userActivated": true,
-                    "firstSuccessfulWorkflowId": "B2QRqtVwapqY1zsf",
-                    "userActivatedAt": 1771570828063
-                  },
-                  "disabled": false,
-                  "mfaEnabled": false,
-                  "lastActiveAt": "2026-02-20",
-                  "isPending": false
-                }
-              }
-            ]
+            "creatorId": "ebcf2b09-cd83-42f3-b5e0-89c4fcaad4a1"
           }
         }
       ],
       "tags": [],
       "activeVersion": null
-    },
-    {
-      "updatedAt": "2026-02-20T10:34:25.059Z",
-      "createdAt": "2026-02-20T07:05:56.323Z",
-      "id": "HMQXTRLUvppIxeMz",
-      "name": "Backup workspaces for n8n",
-      "description": null,
-      "active": true,
-      "isArchived": false,
-      "nodes": [
-        {
-          "parameters": {
-            "githubRepo": "kkulebaev/n8n"
-          },
-          "type": "n8n-nodes-backup.n8nBackup",
-          "typeVersion": 1,
-          "position": [
-            208,
-            0
-          ],
-          "id": "45db2f29-f2d4-439f-a707-b9a9e69f6f43",
-          "name": "n8n Backup",
-          "credentials": {
-            "n8nApi": {
-              "id": "UDzormeWy1XJYM2Y",
-              "name": "n8n account | konstantinkulebaev"
-            },
-            "githubApi": {
-              "id": "7TATfXVfgddCWOgw",
-              "name": "GitHub account | kkulebaev"
-            }
-          }
-        },
-        {
-          "parameters": {
-            "rule": {
-              "interval": [
-                {
-                  "triggerAtHour": 10
-                }
-              ]
-            }
-          },
-          "type": "n8n-nodes-base.scheduleTrigger",
-          "typeVersion": 1.3,
-          "position": [
-            0,
-            0
-          ],
-          "id": "3fa63890-3cb1-4da9-874e-43a14a92355f",
-          "name": "Schedule Trigger"
-        }
-      ],
-      "connections": {
-        "Schedule Trigger": {
-          "main": [
-            [
-              {
-                "node": "n8n Backup",
-                "type": "main",
-                "index": 0
-              }
-            ]
-          ]
-        }
-      },
-      "settings": {
-        "executionOrder": "v1",
-        "availableInMCP": false
-      },
-      "staticData": {
-        "node:Schedule Trigger": {
-          "recurrenceRules": []
-        }
-      },
-      "meta": {
-        "templateCredsSetupCompleted": true
-      },
-      "pinData": {},
-      "versionId": "d81bba1c-06d7-4c8a-b55f-fcbe95b1333e",
-      "activeVersionId": "d81bba1c-06d7-4c8a-b55f-fcbe95b1333e",
-      "versionCounter": 10,
-      "triggerCount": 1,
-      "shared": [
-        {
-          "updatedAt": "2026-02-20T07:05:56.323Z",
-          "createdAt": "2026-02-20T07:05:56.323Z",
-          "role": "workflow:owner",
-          "workflowId": "HMQXTRLUvppIxeMz",
-          "projectId": "XeBXiP5yJsi5DYCS",
-          "project": {
-            "updatedAt": "2026-02-20T06:29:28.274Z",
-            "createdAt": "2026-02-20T06:29:02.050Z",
-            "id": "XeBXiP5yJsi5DYCS",
-            "name": "Admin Admin <konstantinkulebaev@gmail.com>",
-            "type": "personal",
-            "icon": null,
-            "description": null,
-            "creatorId": "ebcf2b09-cd83-42f3-b5e0-89c4fcaad4a1",
-            "projectRelations": [
-              {
-                "updatedAt": "2026-02-20T06:29:02.050Z",
-                "createdAt": "2026-02-20T06:29:02.050Z",
-                "userId": "ebcf2b09-cd83-42f3-b5e0-89c4fcaad4a1",
-                "projectId": "XeBXiP5yJsi5DYCS",
-                "user": {
-                  "updatedAt": "2026-02-20T07:00:31.077Z",
-                  "createdAt": "2026-02-20T06:29:01.427Z",
-                  "id": "ebcf2b09-cd83-42f3-b5e0-89c4fcaad4a1",
-                  "email": "konstantinkulebaev@gmail.com",
-                  "firstName": "Admin",
-                  "lastName": "Admin",
-                  "personalizationAnswers": null,
-                  "settings": {
-                    "userActivated": true,
-                    "firstSuccessfulWorkflowId": "B2QRqtVwapqY1zsf",
-                    "userActivatedAt": 1771570828063
-                  },
-                  "disabled": false,
-                  "mfaEnabled": false,
-                  "lastActiveAt": "2026-02-20",
-                  "isPending": false
-                }
-              }
-            ]
-          }
-        }
-      ],
-      "tags": [],
-      "activeVersion": {
-        "updatedAt": "2026-02-20T07:29:48.420Z",
-        "createdAt": "2026-02-20T07:29:19.593Z",
-        "versionId": "d81bba1c-06d7-4c8a-b55f-fcbe95b1333e",
-        "workflowId": "HMQXTRLUvppIxeMz",
-        "nodes": [
-          {
-            "parameters": {
-              "githubRepo": "kkulebaev/n8n"
-            },
-            "type": "n8n-nodes-backup.n8nBackup",
-            "typeVersion": 1,
-            "position": [
-              208,
-              0
-            ],
-            "id": "45db2f29-f2d4-439f-a707-b9a9e69f6f43",
-            "name": "n8n Backup",
-            "credentials": {
-              "n8nApi": {
-                "id": "UDzormeWy1XJYM2Y",
-                "name": "n8n account | konstantinkulebaev"
-              },
-              "githubApi": {
-                "id": "7TATfXVfgddCWOgw",
-                "name": "GitHub account | kkulebaev"
-              }
-            }
-          },
-          {
-            "parameters": {
-              "rule": {
-                "interval": [
-                  {
-                    "triggerAtHour": 10
-                  }
-                ]
-              }
-            },
-            "type": "n8n-nodes-base.scheduleTrigger",
-            "typeVersion": 1.3,
-            "position": [
-              0,
-              0
-            ],
-            "id": "3fa63890-3cb1-4da9-874e-43a14a92355f",
-            "name": "Schedule Trigger"
-          }
-        ],
-        "connections": {
-          "Schedule Trigger": {
-            "main": [
-              [
-                {
-                  "node": "n8n Backup",
-                  "type": "main",
-                  "index": 0
-                }
-              ]
-            ]
-          }
-        },
-        "authors": "Admin Admin",
-        "name": "Version d81bba1c",
-        "description": "",
-        "autosaved": false,
-        "workflowPublishHistory": [
-          {
-            "createdAt": "2026-02-20T07:29:48.418Z",
-            "id": 3,
-            "workflowId": "HMQXTRLUvppIxeMz",
-            "versionId": "d81bba1c-06d7-4c8a-b55f-fcbe95b1333e",
-            "event": "activated",
-            "userId": "ebcf2b09-cd83-42f3-b5e0-89c4fcaad4a1"
-          }
-        ]
-      }
-    },
-    {
-      "updatedAt": "2026-02-20T10:32:58.576Z",
-      "createdAt": "2026-02-20T09:22:53.843Z",
-      "id": "0GNr1mrgOjgfbGgJ",
-      "name": "Telegram Notification Service",
-      "description": null,
-      "active": true,
-      "isArchived": false,
-      "nodes": [
-        {
-          "parameters": {
-            "workflowInputs": {
-              "values": [
-                {
-                  "name": "time",
-                  "type": "number"
-                },
-                {
-                  "name": "title"
-                },
-                {
-                  "name": "message"
-                },
-                {
-                  "name": "url"
-                }
-              ]
-            }
-          },
-          "type": "n8n-nodes-base.executeWorkflowTrigger",
-          "typeVersion": 1.1,
-          "position": [
-            0,
-            0
-          ],
-          "id": "bbe59e2e-bab3-4d89-a046-107438334030",
-          "name": "When Executed by Another Workflow",
-          "alwaysOutputData": false
-        },
-        {
-          "parameters": {
-            "chatId": "8593464393",
-            "text": "=🔔 *{{ $json.title }}*\n_{{ DateTime.fromMillis($json.time).setLocale('ru').toLocaleString({ month: 'long', day: 'numeric', hour: 'numeric', minute: '2-digit' }) }}_\n\n{{ $json.message }}\n\n{{ $json.url }}",
-            "additionalFields": {
-              "appendAttribution": false
-            }
-          },
-          "type": "n8n-nodes-base.telegram",
-          "typeVersion": 1.2,
-          "position": [
-            224,
-            0
-          ],
-          "id": "99ce2ff9-2cd0-4d2e-b854-834a613594d2",
-          "name": "Send a text message",
-          "webhookId": "2272f267-4423-4a50-9a57-885a1197c49d",
-          "credentials": {
-            "telegramApi": {
-              "id": "31G0PoTb4LqbBRW5",
-              "name": "Telegram account | Notification Bot"
-            }
-          }
-        }
-      ],
-      "connections": {
-        "When Executed by Another Workflow": {
-          "main": [
-            [
-              {
-                "node": "Send a text message",
-                "type": "main",
-                "index": 0
-              }
-            ]
-          ]
-        }
-      },
-      "settings": {
-        "executionOrder": "v1",
-        "availableInMCP": false
-      },
-      "staticData": null,
-      "meta": {
-        "templateCredsSetupCompleted": true
-      },
-      "pinData": {},
-      "versionId": "789e3186-9133-483d-84e9-3d9443a3f95d",
-      "activeVersionId": "789e3186-9133-483d-84e9-3d9443a3f95d",
-      "versionCounter": 5,
-      "triggerCount": 0,
-      "shared": [
-        {
-          "updatedAt": "2026-02-20T09:22:53.843Z",
-          "createdAt": "2026-02-20T09:22:53.843Z",
-          "role": "workflow:owner",
-          "workflowId": "0GNr1mrgOjgfbGgJ",
-          "projectId": "XeBXiP5yJsi5DYCS",
-          "project": {
-            "updatedAt": "2026-02-20T06:29:28.274Z",
-            "createdAt": "2026-02-20T06:29:02.050Z",
-            "id": "XeBXiP5yJsi5DYCS",
-            "name": "Admin Admin <konstantinkulebaev@gmail.com>",
-            "type": "personal",
-            "icon": null,
-            "description": null,
-            "creatorId": "ebcf2b09-cd83-42f3-b5e0-89c4fcaad4a1",
-            "projectRelations": [
-              {
-                "updatedAt": "2026-02-20T06:29:02.050Z",
-                "createdAt": "2026-02-20T06:29:02.050Z",
-                "userId": "ebcf2b09-cd83-42f3-b5e0-89c4fcaad4a1",
-                "projectId": "XeBXiP5yJsi5DYCS",
-                "user": {
-                  "updatedAt": "2026-02-20T07:00:31.077Z",
-                  "createdAt": "2026-02-20T06:29:01.427Z",
-                  "id": "ebcf2b09-cd83-42f3-b5e0-89c4fcaad4a1",
-                  "email": "konstantinkulebaev@gmail.com",
-                  "firstName": "Admin",
-                  "lastName": "Admin",
-                  "personalizationAnswers": null,
-                  "settings": {
-                    "userActivated": true,
-                    "firstSuccessfulWorkflowId": "B2QRqtVwapqY1zsf",
-                    "userActivatedAt": 1771570828063
-                  },
-                  "disabled": false,
-                  "mfaEnabled": false,
-                  "lastActiveAt": "2026-02-20",
-                  "isPending": false
-                }
-              }
-            ]
-          }
-        }
-      ],
-      "tags": [],
-      "activeVersion": {
-        "updatedAt": "2026-02-20T10:06:53.233Z",
-        "createdAt": "2026-02-20T10:06:47.882Z",
-        "versionId": "789e3186-9133-483d-84e9-3d9443a3f95d",
-        "workflowId": "0GNr1mrgOjgfbGgJ",
-        "nodes": [
-          {
-            "parameters": {
-              "workflowInputs": {
-                "values": [
-                  {
-                    "name": "time",
-                    "type": "number"
-                  },
-                  {
-                    "name": "title"
-                  },
-                  {
-                    "name": "message"
-                  },
-                  {
-                    "name": "url"
-                  }
-                ]
-              }
-            },
-            "type": "n8n-nodes-base.executeWorkflowTrigger",
-            "typeVersion": 1.1,
-            "position": [
-              0,
-              0
-            ],
-            "id": "bbe59e2e-bab3-4d89-a046-107438334030",
-            "name": "When Executed by Another Workflow",
-            "alwaysOutputData": false
-          },
-          {
-            "parameters": {
-              "chatId": "8593464393",
-              "text": "=🔔 *{{ $json.title }}*\n_{{ DateTime.fromMillis($json.time).setLocale('ru').toLocaleString({ month: 'long', day: 'numeric', hour: 'numeric', minute: '2-digit' }) }}_\n\n{{ $json.message }}\n\n{{ $json.url }}",
-              "additionalFields": {
-                "appendAttribution": false
-              }
-            },
-            "type": "n8n-nodes-base.telegram",
-            "typeVersion": 1.2,
-            "position": [
-              224,
-              0
-            ],
-            "id": "99ce2ff9-2cd0-4d2e-b854-834a613594d2",
-            "name": "Send a text message",
-            "webhookId": "2272f267-4423-4a50-9a57-885a1197c49d",
-            "credentials": {
-              "telegramApi": {
-                "id": "31G0PoTb4LqbBRW5",
-                "name": "Telegram account | Notification Bot"
-              }
-            }
-          }
-        ],
-        "connections": {
-          "When Executed by Another Workflow": {
-            "main": [
-              [
-                {
-                  "node": "Send a text message",
-                  "type": "main",
-                  "index": 0
-                }
-              ]
-            ]
-          }
-        },
-        "authors": "Admin Admin",
-        "name": "Version 789e3186",
-        "description": "",
-        "autosaved": false,
-        "workflowPublishHistory": [
-          {
-            "createdAt": "2026-02-20T10:06:53.230Z",
-            "id": 5,
-            "workflowId": "0GNr1mrgOjgfbGgJ",
-            "versionId": "789e3186-9133-483d-84e9-3d9443a3f95d",
-            "event": "activated",
-            "userId": "ebcf2b09-cd83-42f3-b5e0-89c4fcaad4a1"
-          }
-        ]
-      }
     }
   ],
   "credentials_summary": [
-    {
-      "id": "kAG7U4K6lerXOxcl",
-      "name": "Bearer Auth account | Boosty",
-      "type": "httpBearerAuth",
-      "used_in_workflows": [
-        "B2QRqtVwapqY1zsf"
-      ],
-      "used_in_nodes": [
-        "HTTP Request (n8n-nodes-base.httpRequest)"
-      ]
-    },
-    {
-      "id": "XK5NskS0e8AqdwHx",
-      "name": "Telegram account | Todo Bot",
-      "type": "telegramApi",
-      "used_in_workflows": [
-        "GPXze5JSTjQaEneF"
-      ],
-      "used_in_nodes": [
-        "Telegram Trigger (n8n-nodes-base.telegramTrigger)",
-        "Send a text message (n8n-nodes-base.telegram)"
-      ]
-    },
     {
       "id": "UDzormeWy1XJYM2Y",
       "name": "n8n account | konstantinkulebaev",
@@ -1780,6 +1627,29 @@
         "0GNr1mrgOjgfbGgJ"
       ],
       "used_in_nodes": [
+        "Send a text message (n8n-nodes-base.telegram)"
+      ]
+    },
+    {
+      "id": "kAG7U4K6lerXOxcl",
+      "name": "Bearer Auth account | Boosty",
+      "type": "httpBearerAuth",
+      "used_in_workflows": [
+        "B2QRqtVwapqY1zsf"
+      ],
+      "used_in_nodes": [
+        "HTTP Request (n8n-nodes-base.httpRequest)"
+      ]
+    },
+    {
+      "id": "XK5NskS0e8AqdwHx",
+      "name": "Telegram account | Todo Bot",
+      "type": "telegramApi",
+      "used_in_workflows": [
+        "GPXze5JSTjQaEneF"
+      ],
+      "used_in_nodes": [
+        "Telegram Trigger (n8n-nodes-base.telegramTrigger)",
         "Send a text message (n8n-nodes-base.telegram)"
       ]
     }

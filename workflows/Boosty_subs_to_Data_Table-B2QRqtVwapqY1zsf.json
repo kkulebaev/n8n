@@ -1,0 +1,806 @@
+{
+  "updatedAt": "2026-02-20T10:33:53.312Z",
+  "createdAt": "2026-02-20T06:41:56.602Z",
+  "id": "B2QRqtVwapqY1zsf",
+  "name": "Boosty subs to Data Table",
+  "description": null,
+  "active": true,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "url": "https://api.boosty.to/v1/blog/kulebaevadaria/subscribers",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpBearerAuth",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "sort_by",
+              "value": "on_time"
+            },
+            {
+              "name": "limit",
+              "value": "200"
+            },
+            {
+              "name": "order",
+              "value": "lt"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        416,
+        -96
+      ],
+      "id": "86aee0c5-08b1-4c96-bf25-4e8acb76e53b",
+      "name": "HTTP Request",
+      "credentials": {
+        "httpBearerAuth": {
+          "id": "kAG7U4K6lerXOxcl",
+          "name": "Bearer Auth account | Boosty"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "data",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        640,
+        -96
+      ],
+      "id": "205f56b7-926c-49ec-a9d0-64df6d6a8410",
+      "name": "Split Out"
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "triggerAtHour": 10
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        192,
+        -96
+      ],
+      "id": "0c334e6d-0236-4515-8727-59c4ef46f6eb",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "operation": "upsert",
+        "dataTableId": {
+          "__rl": true,
+          "value": "25QXaM48qGmKjxHa",
+          "mode": "list",
+          "cachedResultName": "Boosty subs",
+          "cachedResultUrl": "/projects/XeBXiP5yJsi5DYCS/datatables/25QXaM48qGmKjxHa"
+        },
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "userId",
+              "keyValue": "={{ $json.id }}"
+            }
+          ]
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "subscribed": "={{ $json.subscribed }}",
+            "price": "={{ $json.level.price }}",
+            "payments": "={{ $json.payments }}",
+            "userId": "={{ $json.id }}",
+            "name": "={{ $json.name }}",
+            "email": "={{ $json.email }}",
+            "status": "={{ $json.status }}",
+            "levelName": "={{ $json.level.name }}",
+            "onTime": "={{ DateTime.fromSeconds($json.onTime) }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "userId",
+              "displayName": "userId",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "name",
+              "displayName": "name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "email",
+              "displayName": "email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "status",
+              "displayName": "status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "subscribed",
+              "displayName": "subscribed",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "boolean",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "levelName",
+              "displayName": "levelName",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "price",
+              "displayName": "price",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "payments",
+              "displayName": "payments",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "onTime",
+              "displayName": "onTime",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "readOnly": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        864,
+        -96
+      ],
+      "id": "37b9554b-6dfd-4760-9a55-c364d52add58",
+      "name": "Upsert row(s)"
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "0GNr1mrgOjgfbGgJ",
+          "mode": "list",
+          "cachedResultUrl": "/workflow/0GNr1mrgOjgfbGgJ",
+          "cachedResultName": "Telegram Notification Service"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "time": "={{ Date.now() }}",
+            "message": "Подписчики Boosty обновлены в Data Table",
+            "title": "Boosty-уведомление"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "time",
+              "displayName": "time",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "number",
+              "removed": false
+            },
+            {
+              "id": "title",
+              "displayName": "title",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "message",
+              "displayName": "message",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "url",
+              "displayName": "url",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.3,
+      "position": [
+        1296,
+        -96
+      ],
+      "id": "efaeb4b0-922d-432c-b0ae-0f2750065625",
+      "name": "Call 'Telegram Notification Service'"
+    },
+    {
+      "parameters": {
+        "aggregate": "aggregateAllItemData",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [
+        1072,
+        -96
+      ],
+      "id": "3657b5a9-c76b-4fed-849e-967e478a3e6d",
+      "name": "Aggregate",
+      "alwaysOutputData": false
+    }
+  ],
+  "connections": {
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Split Out",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split Out": {
+      "main": [
+        [
+          {
+            "node": "Upsert row(s)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Upsert row(s)": {
+      "main": [
+        [
+          {
+            "node": "Aggregate",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Aggregate": {
+      "main": [
+        [
+          {
+            "node": "Call 'Telegram Notification Service'",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "availableInMCP": false
+  },
+  "staticData": {
+    "node:Schedule Trigger": {
+      "recurrenceRules": []
+    }
+  },
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {},
+  "versionId": "961068c8-9685-4e6f-9cb2-360dd852a2ba",
+  "activeVersionId": "961068c8-9685-4e6f-9cb2-360dd852a2ba",
+  "versionCounter": 15,
+  "triggerCount": 1,
+  "shared": [
+    {
+      "updatedAt": "2026-02-20T06:41:56.602Z",
+      "createdAt": "2026-02-20T06:41:56.602Z",
+      "role": "workflow:owner",
+      "workflowId": "B2QRqtVwapqY1zsf",
+      "projectId": "XeBXiP5yJsi5DYCS",
+      "project": {
+        "updatedAt": "2026-02-20T06:29:28.274Z",
+        "createdAt": "2026-02-20T06:29:02.050Z",
+        "id": "XeBXiP5yJsi5DYCS",
+        "name": "Admin Admin <konstantinkulebaev@gmail.com>",
+        "type": "personal",
+        "icon": null,
+        "description": null,
+        "creatorId": "ebcf2b09-cd83-42f3-b5e0-89c4fcaad4a1",
+        "projectRelations": [
+          {
+            "updatedAt": "2026-02-20T06:29:02.050Z",
+            "createdAt": "2026-02-20T06:29:02.050Z",
+            "userId": "ebcf2b09-cd83-42f3-b5e0-89c4fcaad4a1",
+            "projectId": "XeBXiP5yJsi5DYCS",
+            "user": {
+              "updatedAt": "2026-02-20T07:00:31.077Z",
+              "createdAt": "2026-02-20T06:29:01.427Z",
+              "id": "ebcf2b09-cd83-42f3-b5e0-89c4fcaad4a1",
+              "email": "konstantinkulebaev@gmail.com",
+              "firstName": "Admin",
+              "lastName": "Admin",
+              "personalizationAnswers": null,
+              "settings": {
+                "userActivated": true,
+                "firstSuccessfulWorkflowId": "B2QRqtVwapqY1zsf",
+                "userActivatedAt": 1771570828063
+              },
+              "disabled": false,
+              "mfaEnabled": false,
+              "lastActiveAt": "2026-02-20",
+              "isPending": false
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "tags": [],
+  "activeVersion": {
+    "updatedAt": "2026-02-20T10:29:20.284Z",
+    "createdAt": "2026-02-20T10:29:17.095Z",
+    "versionId": "961068c8-9685-4e6f-9cb2-360dd852a2ba",
+    "workflowId": "B2QRqtVwapqY1zsf",
+    "nodes": [
+      {
+        "parameters": {
+          "url": "https://api.boosty.to/v1/blog/kulebaevadaria/subscribers",
+          "authentication": "genericCredentialType",
+          "genericAuthType": "httpBearerAuth",
+          "sendQuery": true,
+          "queryParameters": {
+            "parameters": [
+              {
+                "name": "sort_by",
+                "value": "on_time"
+              },
+              {
+                "name": "limit",
+                "value": "200"
+              },
+              {
+                "name": "order",
+                "value": "lt"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.3,
+        "position": [
+          416,
+          -96
+        ],
+        "id": "86aee0c5-08b1-4c96-bf25-4e8acb76e53b",
+        "name": "HTTP Request",
+        "credentials": {
+          "httpBearerAuth": {
+            "id": "kAG7U4K6lerXOxcl",
+            "name": "Bearer Auth account | Boosty"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "fieldToSplitOut": "data",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.splitOut",
+        "typeVersion": 1,
+        "position": [
+          640,
+          -96
+        ],
+        "id": "205f56b7-926c-49ec-a9d0-64df6d6a8410",
+        "name": "Split Out"
+      },
+      {
+        "parameters": {
+          "rule": {
+            "interval": [
+              {
+                "triggerAtHour": 10
+              }
+            ]
+          }
+        },
+        "type": "n8n-nodes-base.scheduleTrigger",
+        "typeVersion": 1.3,
+        "position": [
+          192,
+          -96
+        ],
+        "id": "0c334e6d-0236-4515-8727-59c4ef46f6eb",
+        "name": "Schedule Trigger"
+      },
+      {
+        "parameters": {
+          "operation": "upsert",
+          "dataTableId": {
+            "__rl": true,
+            "value": "25QXaM48qGmKjxHa",
+            "mode": "list",
+            "cachedResultName": "Boosty subs",
+            "cachedResultUrl": "/projects/XeBXiP5yJsi5DYCS/datatables/25QXaM48qGmKjxHa"
+          },
+          "filters": {
+            "conditions": [
+              {
+                "keyName": "userId",
+                "keyValue": "={{ $json.id }}"
+              }
+            ]
+          },
+          "columns": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "subscribed": "={{ $json.subscribed }}",
+              "price": "={{ $json.level.price }}",
+              "payments": "={{ $json.payments }}",
+              "userId": "={{ $json.id }}",
+              "name": "={{ $json.name }}",
+              "email": "={{ $json.email }}",
+              "status": "={{ $json.status }}",
+              "levelName": "={{ $json.level.name }}",
+              "onTime": "={{ DateTime.fromSeconds($json.onTime) }}"
+            },
+            "matchingColumns": [],
+            "schema": [
+              {
+                "id": "userId",
+                "displayName": "userId",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "readOnly": false,
+                "removed": false
+              },
+              {
+                "id": "name",
+                "displayName": "name",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "readOnly": false,
+                "removed": false
+              },
+              {
+                "id": "email",
+                "displayName": "email",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "readOnly": false,
+                "removed": false
+              },
+              {
+                "id": "status",
+                "displayName": "status",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "readOnly": false,
+                "removed": false
+              },
+              {
+                "id": "subscribed",
+                "displayName": "subscribed",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "boolean",
+                "readOnly": false,
+                "removed": false
+              },
+              {
+                "id": "levelName",
+                "displayName": "levelName",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "readOnly": false,
+                "removed": false
+              },
+              {
+                "id": "price",
+                "displayName": "price",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "number",
+                "readOnly": false,
+                "removed": false
+              },
+              {
+                "id": "payments",
+                "displayName": "payments",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "number",
+                "readOnly": false,
+                "removed": false
+              },
+              {
+                "id": "onTime",
+                "displayName": "onTime",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "dateTime",
+                "readOnly": false,
+                "removed": false
+              }
+            ],
+            "attemptToConvertTypes": false,
+            "convertFieldsToString": false
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          864,
+          -96
+        ],
+        "id": "37b9554b-6dfd-4760-9a55-c364d52add58",
+        "name": "Upsert row(s)"
+      },
+      {
+        "parameters": {
+          "workflowId": {
+            "__rl": true,
+            "value": "0GNr1mrgOjgfbGgJ",
+            "mode": "list",
+            "cachedResultUrl": "/workflow/0GNr1mrgOjgfbGgJ",
+            "cachedResultName": "Telegram Notification Service"
+          },
+          "workflowInputs": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "time": "={{ Date.now() }}",
+              "message": "Подписчики Boosty обновлены в Data Table",
+              "title": "Boosty-уведомление"
+            },
+            "matchingColumns": [],
+            "schema": [
+              {
+                "id": "time",
+                "displayName": "time",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "canBeUsedToMatch": true,
+                "type": "number",
+                "removed": false
+              },
+              {
+                "id": "title",
+                "displayName": "title",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "canBeUsedToMatch": true,
+                "type": "string",
+                "removed": false
+              },
+              {
+                "id": "message",
+                "displayName": "message",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "canBeUsedToMatch": true,
+                "type": "string",
+                "removed": false
+              },
+              {
+                "id": "url",
+                "displayName": "url",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "canBeUsedToMatch": true,
+                "type": "string",
+                "removed": true
+              }
+            ],
+            "attemptToConvertTypes": false,
+            "convertFieldsToString": true
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.executeWorkflow",
+        "typeVersion": 1.3,
+        "position": [
+          1296,
+          -96
+        ],
+        "id": "efaeb4b0-922d-432c-b0ae-0f2750065625",
+        "name": "Call 'Telegram Notification Service'"
+      },
+      {
+        "parameters": {
+          "aggregate": "aggregateAllItemData",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.aggregate",
+        "typeVersion": 1,
+        "position": [
+          1072,
+          -96
+        ],
+        "id": "3657b5a9-c76b-4fed-849e-967e478a3e6d",
+        "name": "Aggregate",
+        "alwaysOutputData": false
+      }
+    ],
+    "connections": {
+      "HTTP Request": {
+        "main": [
+          [
+            {
+              "node": "Split Out",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Split Out": {
+        "main": [
+          [
+            {
+              "node": "Upsert row(s)",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Schedule Trigger": {
+        "main": [
+          [
+            {
+              "node": "HTTP Request",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Upsert row(s)": {
+        "main": [
+          [
+            {
+              "node": "Aggregate",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Aggregate": {
+        "main": [
+          [
+            {
+              "node": "Call 'Telegram Notification Service'",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "authors": "Admin Admin",
+    "name": "Version 961068c8",
+    "description": "",
+    "autosaved": false,
+    "workflowPublishHistory": [
+      {
+        "createdAt": "2026-02-20T10:29:20.283Z",
+        "id": 7,
+        "workflowId": "B2QRqtVwapqY1zsf",
+        "versionId": "961068c8-9685-4e6f-9cb2-360dd852a2ba",
+        "event": "activated",
+        "userId": "ebcf2b09-cd83-42f3-b5e0-89c4fcaad4a1"
+      }
+    ]
+  }
+}

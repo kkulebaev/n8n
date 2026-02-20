@@ -86,7 +86,7 @@
   "pinData": {},
   "versionId": "789e3186-9133-483d-84e9-3d9443a3f95d",
   "activeVersionId": "789e3186-9133-483d-84e9-3d9443a3f95d",
-  "versionCounter": 5,
+  "versionCounter": 9,
   "triggerCount": 0,
   "shared": [
     {
@@ -103,33 +103,7 @@
         "type": "personal",
         "icon": null,
         "description": null,
-        "creatorId": "ebcf2b09-cd83-42f3-b5e0-89c4fcaad4a1",
-        "projectRelations": [
-          {
-            "updatedAt": "2026-02-20T06:29:02.050Z",
-            "createdAt": "2026-02-20T06:29:02.050Z",
-            "userId": "ebcf2b09-cd83-42f3-b5e0-89c4fcaad4a1",
-            "projectId": "XeBXiP5yJsi5DYCS",
-            "user": {
-              "updatedAt": "2026-02-20T07:00:31.077Z",
-              "createdAt": "2026-02-20T06:29:01.427Z",
-              "id": "ebcf2b09-cd83-42f3-b5e0-89c4fcaad4a1",
-              "email": "konstantinkulebaev@gmail.com",
-              "firstName": "Admin",
-              "lastName": "Admin",
-              "personalizationAnswers": null,
-              "settings": {
-                "userActivated": true,
-                "firstSuccessfulWorkflowId": "B2QRqtVwapqY1zsf",
-                "userActivatedAt": 1771570828063
-              },
-              "disabled": false,
-              "mfaEnabled": false,
-              "lastActiveAt": "2026-02-20",
-              "isPending": false
-            }
-          }
-        ]
+        "creatorId": "ebcf2b09-cd83-42f3-b5e0-89c4fcaad4a1"
       }
     }
   ],

@@ -1,0 +1,175 @@
+{
+  "updatedAt": "2026-02-20T06:45:52.117Z",
+  "createdAt": "2026-02-20T06:45:52.117Z",
+  "id": "GPXze5JSTjQaEneF",
+  "name": "TODO Bot",
+  "description": null,
+  "active": false,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "updates": [
+          "message"
+        ],
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegramTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -48,
+        -96
+      ],
+      "id": "248f6f85-59d5-448c-8844-5f9e1f66610a",
+      "name": "Telegram Trigger",
+      "webhookId": "fac86bed-033b-496f-90fd-e958b1fe25dc",
+      "credentials": {
+        "telegramApi": {
+          "id": "XK5NskS0e8AqdwHx",
+          "name": "Telegram account | Todo Bot"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "aa2c409a-1f20-47b3-be61-7756da741daa",
+              "leftValue": "={{ $json.message.text }}",
+              "rightValue": "/new",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        160,
+        -96
+      ],
+      "id": "46eb7a2b-bab5-4988-aa97-836177cb7c72",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $json.message.chat.id }}",
+        "text": "📝 Новая задача  Напишите текст задачи, которую нужно добавить",
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        368,
+        -192
+      ],
+      "id": "5985aacb-f6b3-4997-b873-5de73f5abd09",
+      "name": "Send a text message",
+      "webhookId": "af8971e9-1bb6-47e1-b34a-de9cd6c568cd",
+      "credentials": {
+        "telegramApi": {
+          "id": "XK5NskS0e8AqdwHx",
+          "name": "Telegram account | Todo Bot"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Telegram Trigger": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Send a text message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "availableInMCP": false
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {},
+  "versionId": "67487bc7-8463-4a41-af85-884874d4f3f0",
+  "activeVersionId": null,
+  "versionCounter": 1,
+  "triggerCount": 0,
+  "shared": [
+    {
+      "updatedAt": "2026-02-20T06:45:52.117Z",
+      "createdAt": "2026-02-20T06:45:52.117Z",
+      "role": "workflow:owner",
+      "workflowId": "GPXze5JSTjQaEneF",
+      "projectId": "XeBXiP5yJsi5DYCS",
+      "project": {
+        "updatedAt": "2026-02-20T06:29:28.274Z",
+        "createdAt": "2026-02-20T06:29:02.050Z",
+        "id": "XeBXiP5yJsi5DYCS",
+        "name": "Admin Admin <konstantinkulebaev@gmail.com>",
+        "type": "personal",
+        "icon": null,
+        "description": null,
+        "creatorId": "ebcf2b09-cd83-42f3-b5e0-89c4fcaad4a1",
+        "projectRelations": [
+          {
+            "updatedAt": "2026-02-20T06:29:02.050Z",
+            "createdAt": "2026-02-20T06:29:02.050Z",
+            "userId": "ebcf2b09-cd83-42f3-b5e0-89c4fcaad4a1",
+            "projectId": "XeBXiP5yJsi5DYCS",
+            "user": {
+              "updatedAt": "2026-02-20T07:00:31.077Z",
+              "createdAt": "2026-02-20T06:29:01.427Z",
+              "id": "ebcf2b09-cd83-42f3-b5e0-89c4fcaad4a1",
+              "email": "konstantinkulebaev@gmail.com",
+              "firstName": "Admin",
+              "lastName": "Admin",
+              "personalizationAnswers": null,
+              "settings": {
+                "userActivated": true,
+                "firstSuccessfulWorkflowId": "B2QRqtVwapqY1zsf",
+                "userActivatedAt": 1771570828063
+              },
+              "disabled": false,
+              "mfaEnabled": false,
+              "lastActiveAt": "2026-02-20",
+              "isPending": false
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "tags": [],
+  "activeVersion": null
+}

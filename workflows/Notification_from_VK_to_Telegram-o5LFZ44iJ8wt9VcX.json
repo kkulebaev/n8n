@@ -1,0 +1,202 @@
+{
+  "updatedAt": "2026-02-20T06:35:11.597Z",
+  "createdAt": "2026-02-20T06:35:11.597Z",
+  "id": "o5LFZ44iJ8wt9VcX",
+  "name": "Notification from VK to Telegram",
+  "description": null,
+  "active": true,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "1dc93028-aae8-4c72-8b5c-361ad47fa83a",
+        "options": {
+          "responseData": "ok"
+        }
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "d5c09981-33f4-4a36-9f92-5309468bfbcf",
+      "name": "Webhook",
+      "webhookId": "1dc93028-aae8-4c72-8b5c-361ad47fa83a"
+    },
+    {
+      "parameters": {
+        "chatId": "=8593464393",
+        "text": "=📬 *VK Группа · Новое сообщение*\n\n👤 *Отправитель:* `{{ $json.body.object.message.from_id }}`\n🕓 *Время:* {{ DateTime.fromMillis($json.body.object.message.date).setLocale('ru').toLocaleString({ month: 'long', day: 'numeric', hour: 'numeric', minute: '2-digit' }) }}\n\n━━━━━━━━━━━━━━\n{{ $json.body.object.message.text }}\n━━━━━━━━━━━━━━",
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        208,
+        0
+      ],
+      "id": "5f4f93b7-98cb-4c67-9e46-7cab0e3ea14c",
+      "name": "Send a text message",
+      "webhookId": "7eee7f09-b77f-42e8-bdd7-2c3f71fd3ba5",
+      "credentials": {
+        "telegramApi": {
+          "id": "31G0PoTb4LqbBRW5",
+          "name": "Telegram account | Notification Bot"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Send a text message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "availableInMCP": false
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {},
+  "versionId": "91f647ea-95a9-4324-9579-6b7cdf5ec493",
+  "activeVersionId": "91f647ea-95a9-4324-9579-6b7cdf5ec493",
+  "versionCounter": 3,
+  "triggerCount": 1,
+  "shared": [
+    {
+      "updatedAt": "2026-02-20T06:35:11.597Z",
+      "createdAt": "2026-02-20T06:35:11.597Z",
+      "role": "workflow:owner",
+      "workflowId": "o5LFZ44iJ8wt9VcX",
+      "projectId": "XeBXiP5yJsi5DYCS",
+      "project": {
+        "updatedAt": "2026-02-20T06:29:28.274Z",
+        "createdAt": "2026-02-20T06:29:02.050Z",
+        "id": "XeBXiP5yJsi5DYCS",
+        "name": "Admin Admin <konstantinkulebaev@gmail.com>",
+        "type": "personal",
+        "icon": null,
+        "description": null,
+        "creatorId": "ebcf2b09-cd83-42f3-b5e0-89c4fcaad4a1",
+        "projectRelations": [
+          {
+            "updatedAt": "2026-02-20T06:29:02.050Z",
+            "createdAt": "2026-02-20T06:29:02.050Z",
+            "userId": "ebcf2b09-cd83-42f3-b5e0-89c4fcaad4a1",
+            "projectId": "XeBXiP5yJsi5DYCS",
+            "user": {
+              "updatedAt": "2026-02-20T07:00:31.077Z",
+              "createdAt": "2026-02-20T06:29:01.427Z",
+              "id": "ebcf2b09-cd83-42f3-b5e0-89c4fcaad4a1",
+              "email": "konstantinkulebaev@gmail.com",
+              "firstName": "Admin",
+              "lastName": "Admin",
+              "personalizationAnswers": null,
+              "settings": {
+                "userActivated": true,
+                "firstSuccessfulWorkflowId": "B2QRqtVwapqY1zsf",
+                "userActivatedAt": 1771570828063
+              },
+              "disabled": false,
+              "mfaEnabled": false,
+              "lastActiveAt": "2026-02-20",
+              "isPending": false
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "tags": [],
+  "activeVersion": {
+    "updatedAt": "2026-02-20T06:35:18.606Z",
+    "createdAt": "2026-02-20T06:35:11.597Z",
+    "versionId": "91f647ea-95a9-4324-9579-6b7cdf5ec493",
+    "workflowId": "o5LFZ44iJ8wt9VcX",
+    "nodes": [
+      {
+        "parameters": {
+          "httpMethod": "POST",
+          "path": "1dc93028-aae8-4c72-8b5c-361ad47fa83a",
+          "options": {
+            "responseData": "ok"
+          }
+        },
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2.1,
+        "position": [
+          0,
+          0
+        ],
+        "id": "d5c09981-33f4-4a36-9f92-5309468bfbcf",
+        "name": "Webhook",
+        "webhookId": "1dc93028-aae8-4c72-8b5c-361ad47fa83a"
+      },
+      {
+        "parameters": {
+          "chatId": "=8593464393",
+          "text": "=📬 *VK Группа · Новое сообщение*\n\n👤 *Отправитель:* `{{ $json.body.object.message.from_id }}`\n🕓 *Время:* {{ DateTime.fromMillis($json.body.object.message.date).setLocale('ru').toLocaleString({ month: 'long', day: 'numeric', hour: 'numeric', minute: '2-digit' }) }}\n\n━━━━━━━━━━━━━━\n{{ $json.body.object.message.text }}\n━━━━━━━━━━━━━━",
+          "additionalFields": {
+            "appendAttribution": false
+          }
+        },
+        "type": "n8n-nodes-base.telegram",
+        "typeVersion": 1.2,
+        "position": [
+          208,
+          0
+        ],
+        "id": "5f4f93b7-98cb-4c67-9e46-7cab0e3ea14c",
+        "name": "Send a text message",
+        "webhookId": "7eee7f09-b77f-42e8-bdd7-2c3f71fd3ba5",
+        "credentials": {
+          "telegramApi": {
+            "id": "31G0PoTb4LqbBRW5",
+            "name": "Telegram account | Notification Bot"
+          }
+        }
+      }
+    ],
+    "connections": {
+      "Webhook": {
+        "main": [
+          [
+            {
+              "node": "Send a text message",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "authors": "Admin Admin",
+    "name": "Version 91f647ea",
+    "description": "",
+    "autosaved": false,
+    "workflowPublishHistory": [
+      {
+        "createdAt": "2026-02-20T06:35:18.604Z",
+        "id": 1,
+        "workflowId": "o5LFZ44iJ8wt9VcX",
+        "versionId": "91f647ea-95a9-4324-9579-6b7cdf5ec493",
+        "event": "activated",
+        "userId": "ebcf2b09-cd83-42f3-b5e0-89c4fcaad4a1"
+      }
+    ]
+  }
+}

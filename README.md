@@ -5,49 +5,49 @@
 ![n8n](https://img.shields.io/badge/n8n-EA4B71?style=for-the-badge&logo=n8n&logoColor=white)
 ![GitHub](https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=github&logoColor=white)
 
-Автоматические резервные копии workflows с платформы **[kkulebaev-n8n.ru](https://kkulebaev-n8n.ru)**
+Automated backups of workflows from the **[kkulebaev-n8n.ru](https://kkulebaev-n8n.ru)** platform
 
-*Резервное копирование выполняется ежедневно в 10:00 (МСК)*
+*Backups run daily at 10:00 (Moscow Time)*
 
 </div>
 
 ---
 
-## 📁 Структура репозитория
+## 📁 Repository Structure
 
 ```
 n8n/
-├── 📂 workflows/          # JSON-экспорт всех workflows
-├── 📂 credentials/        # Метаданные учётных данных (без секретов)
-└── 📂 backups/            # Полные резервные копии пространства
+├── 📂 workflows/          # JSON export of all workflows
+├── 📂 credentials/        # Credential metadata (no secrets)
+└── 📂 backups/            # Full workspace backups
 ```
 
 ---
 
-## 🔐 Учётные данные
+## 🔐 Credentials
 
-В репозитории хранятся **только метаданные** (имя, тип, привязки к workflows). Секреты и токены не экспортируются и не хранятся в репозитории.
-
----
-
-## 🚀 Как восстановить workflow
-
-1. Откройте [kkulebaev-n8n.ru](https://kkulebaev-n8n.ru)
-2. Перейдите в раздел **Workflows**
-3. Нажмите кнопку **Import** → **From file**
-4. Выберите нужный `.json`-файл из папки `workflows/`
-5. Настройте учётные данные в импортированном workflow
+Only **metadata** is stored in this repository (name, type, workflow bindings). Secrets and tokens are never exported or stored here.
 
 ---
 
-## 🔄 Как работает автобэкап
+## 🚀 How to Restore a Workflow
 
-Workflow **Backup workspaces for n8n** запускается каждый день в **10:00 (МСК)** и:
+1. Open [kkulebaev-n8n.ru](https://kkulebaev-n8n.ru)
+2. Go to the **Workflows** section
+3. Click **Import** → **From file**
+4. Select the desired `.json` file from the `workflows/` folder
+5. Configure credentials in the imported workflow
 
-1. Подключается к n8n API по адресу [kkulebaev-n8n.ru](https://kkulebaev-n8n.ru)
-2. Экспортирует все workflows и credentials
-3. Отправляет файлы в этот репозиторий через GitHub API
-4. Коммит создаётся автоматически с отметкой даты
+---
+
+## 🔄 How Auto-Backup Works
+
+The **Backup workspaces for n8n** workflow runs every day at **10:00 (Moscow Time)** and:
+
+1. Connects to the n8n API at [kkulebaev-n8n.ru](https://kkulebaev-n8n.ru)
+2. Exports all workflows and credentials
+3. Pushes the files to this repository via the GitHub API
+4. A commit is created automatically with a date timestamp
 
 ```
 ⏰ 10:00 → n8n API → Export → GitHub Commit ✅
@@ -55,15 +55,15 @@ Workflow **Backup workspaces for n8n** запускается каждый де�
 
 ---
 
-## 🔗 Ссылки
+## 🔗 Links
 
-- 🌐 **Платформа n8n:** [kkulebaev-n8n.ru](https://kkulebaev-n8n.ru)
-- 📖 **Документация n8n:** [docs.n8n.io](https://docs.n8n.io)
+- 🌐 **n8n Platform:** [kkulebaev-n8n.ru](https://kkulebaev-n8n.ru)
+- 📖 **n8n Documentation:** [docs.n8n.io](https://docs.n8n.io)
 
 ---
 
 <div align="center">
-  <sub>🤖 Бэкапы создаются автоматически через n8n</sub>
+  <sub>🤖 Backups are created automatically via n8n</sub>
 </div>
 
 

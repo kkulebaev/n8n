@@ -1,0 +1,474 @@
+{
+  "updatedAt": "2026-02-21T06:08:25.515Z",
+  "createdAt": "2026-02-21T04:49:46.166Z",
+  "id": "0CMIOWXHMIKBh1x5",
+  "name": "Wedding Contract Bot",
+  "description": null,
+  "active": false,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "updates": [
+          "message"
+        ],
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegramTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        0,
+        -144
+      ],
+      "id": "d303ff4b-0cb0-4d49-b164-f241f5e732a1",
+      "name": "Telegram Trigger",
+      "webhookId": "0cc60863-3baf-47ac-90ee-67651620cc97",
+      "credentials": {
+        "telegramApi": {
+          "id": "gQ5KXwBnGnv57mjE",
+          "name": "Telegram account | Wedding Bot"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "sendAndWait",
+        "chatId": "={{ $json.message.chat.id }}",
+        "message": "Нажмите на кнопку и заполните форму",
+        "responseType": "customForm",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "Пакет услуг",
+              "fieldType": "dropdown",
+              "fieldOptions": {
+                "values": [
+                  {
+                    "option": "standard"
+                  },
+                  {
+                    "option": "comfort"
+                  },
+                  {
+                    "option": "unlimited"
+                  }
+                ]
+              },
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Фамилия",
+              "placeholder": "Иванов",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Имя",
+              "placeholder": "Иван",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Отчество",
+              "placeholder": "Иванович",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Дата свадьбы",
+              "fieldType": "date",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Паспорт (серия и номер, кем выдан, дата выдачи)",
+              "fieldType": "textarea",
+              "requiredField": true
+            }
+          ]
+        },
+        "options": {
+          "messageButtonLabel": "Открыть форму",
+          "responseFormTitle": "Данные клиента свадебного договора",
+          "responseFormDescription": "Заполните форму и нажмите кнопку отправить",
+          "responseFormButtonLabel": "Отправить",
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        448,
+        -240
+      ],
+      "id": "808bf8ae-1167-43ac-ab82-150d97c330c2",
+      "name": "Send message and wait for response",
+      "webhookId": "3bf6d4b8-c9da-4b02-890c-e056d5cb3566",
+      "credentials": {
+        "telegramApi": {
+          "id": "gQ5KXwBnGnv57mjE",
+          "name": "Telegram account | Wedding Bot"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.message.text }}",
+                    "rightValue": "/new",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "da5fdc18-9160-4e2c-ad85-5ec2a48a4adc"
+                  }
+                ],
+                "combinator": "and"
+              }
+            }
+          ]
+        },
+        "options": {
+          "fallbackOutput": "extra",
+          "allMatchingOutputs": true
+        }
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.4,
+      "position": [
+        224,
+        -144
+      ],
+      "id": "1b30d706-530f-4c2c-a53a-f48724958b66",
+      "name": "Switch"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "656ac539-6e91-4ae0-a57c-f526a8fcfd5f",
+              "name": "last_name",
+              "value": "={{ $json.data['Фамилия'] }}",
+              "type": "string"
+            },
+            {
+              "id": "c72ddd83-a516-4366-8e35-6beafbd6abfb",
+              "name": "first_name",
+              "value": "={{ $json.data['Имя'] }}",
+              "type": "string"
+            },
+            {
+              "id": "97a031bd-7708-4374-9c89-cb01322f7999",
+              "name": "middle_name",
+              "value": "={{ $json.data['Отчество'] }}",
+              "type": "string"
+            },
+            {
+              "id": "f40e1904-e0c0-43e5-b69f-457198158d9c",
+              "name": "wedding_date",
+              "value": "={{ DateTime.fromFormat($json.data['Дата свадьбы'], \"yyyy-MM-dd\").format('dd-MM-yyyy') }}",
+              "type": "string"
+            },
+            {
+              "id": "9f45187f-f3d2-43d9-999e-ad911d7545e9",
+              "name": "document",
+              "value": "={{ $json.data['Паспорт (серия и номер, кем выдан, дата выдачи)'] }}",
+              "type": "string"
+            },
+            {
+              "id": "f4e45b6f-f554-4c3b-bd99-66e31792fc4c",
+              "name": "plan",
+              "value": "={{ $json.data['Пакет услуг'] }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        672,
+        -240
+      ],
+      "id": "39a8fb54-a2c4-42b4-992e-0ab452bb3081",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "MZGat0oMrVNlNiwJ",
+          "mode": "list",
+          "cachedResultUrl": "/workflow/MZGat0oMrVNlNiwJ",
+          "cachedResultName": "Wedding contract"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true
+        },
+        "options": {
+          "waitForSubWorkflow": true
+        }
+      },
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.3,
+      "position": [
+        1120,
+        -240
+      ],
+      "id": "c579a7ae-268c-41e3-a569-c565b6430b85",
+      "name": "Call 'Wedding contract'",
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Telegram Trigger').item.json.message.chat.id }}",
+        "text": "Произошла ошибка при создании договора... Обратитесь к администратору @kkulebaev",
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        1344,
+        -144
+      ],
+      "id": "960ccd67-cb76-4834-874c-378016e5f914",
+      "name": "Send a text message",
+      "webhookId": "d8ab3642-be82-4f35-8538-ad05fb4a0d6d",
+      "credentials": {
+        "telegramApi": {
+          "id": "gQ5KXwBnGnv57mjE",
+          "name": "Telegram account | Wedding Bot"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        1344,
+        -336
+      ],
+      "id": "1e0aa568-cf3c-4a62-9706-617ebacc81ee",
+      "name": "No Operation, do nothing"
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Telegram Trigger').item.json.message.chat.id }}",
+        "text": "Создаю договор...",
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        896,
+        -320
+      ],
+      "id": "3b1859cf-4ae2-4c11-8db0-c6f8f483bb9f",
+      "name": "Notification \"Starting...\"",
+      "webhookId": "d8ab3642-be82-4f35-8538-ad05fb4a0d6d",
+      "credentials": {
+        "telegramApi": {
+          "id": "gQ5KXwBnGnv57mjE",
+          "name": "Telegram account | Wedding Bot"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $json.message.chat.id }}",
+        "text": "К сожалению, я не знаю такой команды... Попробуйте /new для создания нового договора",
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        448,
+        -48
+      ],
+      "id": "49f93ed9-5d24-4c66-93fa-90dfa7a5a09c",
+      "name": "Send fallback message",
+      "webhookId": "3bf6d4b8-c9da-4b02-890c-e056d5cb3566",
+      "credentials": {
+        "telegramApi": {
+          "id": "gQ5KXwBnGnv57mjE",
+          "name": "Telegram account | Wedding Bot"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "sendAndWait",
+        "chatId": "={{ $json.message.chat.id }}",
+        "message": "Нажмите на кнопку и заполните форму",
+        "responseType": "customForm",
+        "defineForm": "json",
+        "jsonOutput": "[\n  {\n    \"fieldLabel\": \"Пакет услуг\",\n    \"fieldType\": \"dropdown\",\n    \"fieldOptions\": {\n      \"values\": [\n        {\n          \"option\": \"standard\"\n        },\n        {\n          \"option\": \"comfort\"\n        },\n        {\n          \"option\": \"unlimited\"\n        }\n      ]\n    },\n    \"requiredField\": true\n  },\n  {\n    \"fieldLabel\": \"Фамилия\",\n    \"placeholder\": \"Иванов\",\n    \"requiredField\": true\n  },\n]\n",
+        "options": {
+          "messageButtonLabel": "Открыть форму",
+          "responseFormTitle": "Данные клиента свадебного договора",
+          "responseFormDescription": "Заполните форму и нажмите кнопку отправить",
+          "responseFormButtonLabel": "Отправить",
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        464,
+        -512
+      ],
+      "id": "b0aa9fdb-cd00-48a8-93ce-58c0c64b538a",
+      "name": "Send message and wait for response1",
+      "webhookId": "3bf6d4b8-c9da-4b02-890c-e056d5cb3566",
+      "credentials": {
+        "telegramApi": {
+          "id": "gQ5KXwBnGnv57mjE",
+          "name": "Telegram account | Wedding Bot"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Telegram Trigger": {
+      "main": [
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch": {
+      "main": [
+        [
+          {
+            "node": "Send message and wait for response",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Send fallback message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send message and wait for response": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Notification \"Starting...\"",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Call 'Wedding contract'",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Call 'Wedding contract'": {
+      "main": [
+        [
+          {
+            "node": "No Operation, do nothing",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Send a text message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Notification \"Starting...\"": {
+      "main": [
+        [
+          {
+            "node": "Call 'Wedding contract'",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {},
+  "versionId": "c4e729cb-f11a-483c-a143-f81c5a76dcb8",
+  "activeVersionId": null,
+  "versionCounter": 233,
+  "triggerCount": 0,
+  "shared": [
+    {
+      "updatedAt": "2026-02-21T04:49:46.166Z",
+      "createdAt": "2026-02-21T04:49:46.166Z",
+      "role": "workflow:owner",
+      "workflowId": "0CMIOWXHMIKBh1x5",
+      "projectId": "XeBXiP5yJsi5DYCS",
+      "project": {
+        "updatedAt": "2026-02-20T06:29:28.274Z",
+        "createdAt": "2026-02-20T06:29:02.050Z",
+        "id": "XeBXiP5yJsi5DYCS",
+        "name": "Admin Admin <konstantinkulebaev@gmail.com>",
+        "type": "personal",
+        "icon": null,
+        "description": null,
+        "creatorId": "ebcf2b09-cd83-42f3-b5e0-89c4fcaad4a1"
+      }
+    }
+  ],
+  "tags": [],
+  "activeVersion": null
+}

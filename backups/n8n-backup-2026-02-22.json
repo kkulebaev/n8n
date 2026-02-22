@@ -1,0 +1,4167 @@
+{
+  "version": "1.0.6",
+  "timestamp": "2026-02-22T07:00:35.311Z",
+  "workflowCount": 8,
+  "credentialsCount": 9,
+  "credentialsError": null,
+  "credentialsInfo": "Successfully extracted 9 credentials from workflows",
+  "workflows": [
+    {
+      "updatedAt": "2026-02-21T15:54:08.726Z",
+      "createdAt": "2026-02-21T04:49:46.166Z",
+      "id": "0CMIOWXHMIKBh1x5",
+      "name": "Wedding Contract Bot",
+      "description": null,
+      "active": true,
+      "isArchived": false,
+      "nodes": [
+        {
+          "parameters": {
+            "updates": [
+              "*"
+            ],
+            "additionalFields": {}
+          },
+          "type": "n8n-nodes-base.telegramTrigger",
+          "typeVersion": 1.2,
+          "position": [
+            0,
+            64
+          ],
+          "id": "d303ff4b-0cb0-4d49-b164-f241f5e732a1",
+          "name": "Telegram Trigger",
+          "webhookId": "0cc60863-3baf-47ac-90ee-67651620cc97",
+          "credentials": {
+            "telegramApi": {
+              "id": "gQ5KXwBnGnv57mjE",
+              "name": "Telegram account | Wedding Bot"
+            }
+          }
+        },
+        {
+          "parameters": {
+            "chatId": "={{ $('Telegram Trigger').item.json.message.chat.id }}",
+            "text": "=⏳ Создаю договор… Пожалуйста, подождите",
+            "additionalFields": {
+              "appendAttribution": false
+            }
+          },
+          "type": "n8n-nodes-base.telegram",
+          "typeVersion": 1.2,
+          "position": [
+            896,
+            -128
+          ],
+          "id": "3b1859cf-4ae2-4c11-8db0-c6f8f483bb9f",
+          "name": "Notification \"Starting...\"",
+          "webhookId": "d8ab3642-be82-4f35-8538-ad05fb4a0d6d",
+          "credentials": {
+            "telegramApi": {
+              "id": "gQ5KXwBnGnv57mjE",
+              "name": "Telegram account | Wedding Bot"
+            }
+          }
+        },
+        {
+          "parameters": {
+            "operation": "sendAndWait",
+            "chatId": "={{ $json.message.chat.id }}",
+            "message": "=📝 Чтобы создать новый договор, нажмите кнопку ниже и заполните форму",
+            "responseType": "customForm",
+            "defineForm": "json",
+            "jsonOutput": "[\n  {\n    \"fieldLabel\": \"Пакет услуг\",\n    \"fieldType\": \"dropdown\",\n    \"fieldOptions\": {\n      \"values\": [\n        {\n          \"option\": \"Стандарт (6 часов)\"\n        },\n        {\n          \"option\": \"Комфорт (10 часов)\"\n        },\n        {\n          \"option\": \"Безлимит\"\n        }\n      ]\n    },\n    \"requiredField\": true\n  },\n  {\n    \"fieldName\": \"last_name\",\n    \"fieldLabel\": \"Фамилия\",\n    \"placeholder\": \"Кулебаева\",\n    \"requiredField\": true\n  },\n  {\n    \"fieldName\": \"first_name\",\n    \"fieldLabel\": \"Имя\",\n    \"placeholder\": \"Яна\",\n    \"requiredField\": true\n  },\n  {\n    \"fieldName\": \"middle_name\",\n    \"fieldLabel\": \"Отчество\",\n    \"placeholder\": \"Константиновна\",\n    \"requiredField\": true\n  },\n  {\n    \"fieldName\": \"wedding_date\",\n    \"fieldLabel\": \"Дата свадьбы\",\n    \"fieldType\": \"date\",\n    \"formatDate\": \"dd-mm-yyyy\",\n    \"requiredField\": true\n  },\n  {\n    \"fieldName\": \"document\",\n    \"fieldLabel\": \"Паспорт\",\n    \"fieldType\": \"textarea\",\n    \"placeholder\": \"Серия XXXX, номер XXXXXX выдан УМВД России по Пензенской области 01.01.2020\",\n    \"requiredField\": true\n  }\n]\n",
+            "options": {
+              "messageButtonLabel": "Открыть форму",
+              "responseFormTitle": "Данные клиента свадебного договора",
+              "responseFormDescription": "Заполните форму и нажмите кнопку отправить",
+              "responseFormButtonLabel": "Отправить",
+              "appendAttribution": false
+            }
+          },
+          "type": "n8n-nodes-base.telegram",
+          "typeVersion": 1.2,
+          "position": [
+            448,
+            -32
+          ],
+          "id": "b0aa9fdb-cd00-48a8-93ce-58c0c64b538a",
+          "name": "/new",
+          "webhookId": "3bf6d4b8-c9da-4b02-890c-e056d5cb3566",
+          "credentials": {
+            "telegramApi": {
+              "id": "gQ5KXwBnGnv57mjE",
+              "name": "Telegram account | Wedding Bot"
+            }
+          }
+        },
+        {
+          "parameters": {
+            "chatId": "={{ $json.message.chat.id }}",
+            "text": "=🤔 Я не распознал эту команду.  \nОтправьте /help — там есть список всех доступных команд",
+            "additionalFields": {
+              "appendAttribution": false
+            }
+          },
+          "type": "n8n-nodes-base.telegram",
+          "typeVersion": 1.2,
+          "position": [
+            448,
+            352
+          ],
+          "id": "49f93ed9-5d24-4c66-93fa-90dfa7a5a09c",
+          "name": "Fallback message",
+          "webhookId": "3bf6d4b8-c9da-4b02-890c-e056d5cb3566",
+          "credentials": {
+            "telegramApi": {
+              "id": "gQ5KXwBnGnv57mjE",
+              "name": "Telegram account | Wedding Bot"
+            }
+          }
+        },
+        {
+          "parameters": {
+            "rules": {
+              "values": [
+                {
+                  "conditions": {
+                    "options": {
+                      "caseSensitive": true,
+                      "leftValue": "",
+                      "typeValidation": "strict",
+                      "version": 3
+                    },
+                    "conditions": [
+                      {
+                        "id": "8e8dd75e-5a12-4d44-97ba-8faaeb23b247",
+                        "leftValue": "={{ $json.message.text }}",
+                        "rightValue": "/help",
+                        "operator": {
+                          "type": "string",
+                          "operation": "equals",
+                          "name": "filter.operator.equals"
+                        }
+                      }
+                    ],
+                    "combinator": "and"
+                  }
+                },
+                {
+                  "conditions": {
+                    "options": {
+                      "caseSensitive": true,
+                      "leftValue": "",
+                      "typeValidation": "strict",
+                      "version": 3
+                    },
+                    "conditions": [
+                      {
+                        "leftValue": "={{ $json.message.text }}",
+                        "rightValue": "/new",
+                        "operator": {
+                          "type": "string",
+                          "operation": "equals"
+                        },
+                        "id": "da5fdc18-9160-4e2c-ad85-5ec2a48a4adc"
+                      }
+                    ],
+                    "combinator": "and"
+                  }
+                },
+                {
+                  "conditions": {
+                    "options": {
+                      "caseSensitive": true,
+                      "leftValue": "",
+                      "typeValidation": "strict",
+                      "version": 3
+                    },
+                    "conditions": [
+                      {
+                        "id": "55def5a3-e893-48f2-95ba-41dfc073ad9e",
+                        "leftValue": "={{ $json.message.text }}",
+                        "rightValue": "/start",
+                        "operator": {
+                          "type": "string",
+                          "operation": "equals",
+                          "name": "filter.operator.equals"
+                        }
+                      }
+                    ],
+                    "combinator": "and"
+                  }
+                }
+              ]
+            },
+            "options": {
+              "fallbackOutput": "extra",
+              "allMatchingOutputs": true
+            }
+          },
+          "type": "n8n-nodes-base.switch",
+          "typeVersion": 3.4,
+          "position": [
+            224,
+            32
+          ],
+          "id": "1b30d706-530f-4c2c-a53a-f48724958b66",
+          "name": "Commands"
+        },
+        {
+          "parameters": {
+            "assignments": {
+              "assignments": [
+                {
+                  "id": "656ac539-6e91-4ae0-a57c-f526a8fcfd5f",
+                  "name": "last_name",
+                  "value": "={{ $json.data['Фамилия'] }}",
+                  "type": "string"
+                },
+                {
+                  "id": "c72ddd83-a516-4366-8e35-6beafbd6abfb",
+                  "name": "first_name",
+                  "value": "={{ $json.data['Имя'] }}",
+                  "type": "string"
+                },
+                {
+                  "id": "97a031bd-7708-4374-9c89-cb01322f7999",
+                  "name": "middle_name",
+                  "value": "={{ $json.data['Отчество'] }}",
+                  "type": "string"
+                },
+                {
+                  "id": "f40e1904-e0c0-43e5-b69f-457198158d9c",
+                  "name": "wedding_date",
+                  "value": "={{ $json.data['Дата свадьбы'] }}",
+                  "type": "string"
+                },
+                {
+                  "id": "9f45187f-f3d2-43d9-999e-ad911d7545e9",
+                  "name": "document",
+                  "value": "={{ $json.data['Паспорт'] }}",
+                  "type": "string"
+                },
+                {
+                  "id": "f4e45b6f-f554-4c3b-bd99-66e31792fc4c",
+                  "name": "plan",
+                  "value": "={{ $json.data['Пакет услуг'].includes('Стандарт') ? 'standard' : $json.data['Пакет услуг'].includes('Комфорт') ? 'comfort' : 'unlimited' }}",
+                  "type": "string"
+                }
+              ]
+            },
+            "options": {}
+          },
+          "type": "n8n-nodes-base.set",
+          "typeVersion": 3.4,
+          "position": [
+            672,
+            -32
+          ],
+          "id": "39a8fb54-a2c4-42b4-992e-0ab452bb3081",
+          "name": "Mapping"
+        },
+        {
+          "parameters": {
+            "chatId": "={{ $('Telegram Trigger').item.json.message.chat.id }}",
+            "text": "=⚠️ Не удалось создать договор.  \nПожалуйста, попробуйте позже или обратитесь к администратору: @kkulebaev",
+            "additionalFields": {
+              "appendAttribution": false
+            }
+          },
+          "type": "n8n-nodes-base.telegram",
+          "typeVersion": 1.2,
+          "position": [
+            1120,
+            160
+          ],
+          "id": "960ccd67-cb76-4834-874c-378016e5f914",
+          "name": "Error message",
+          "webhookId": "d8ab3642-be82-4f35-8538-ad05fb4a0d6d",
+          "credentials": {
+            "telegramApi": {
+              "id": "gQ5KXwBnGnv57mjE",
+              "name": "Telegram account | Wedding Bot"
+            }
+          }
+        },
+        {
+          "parameters": {
+            "chatId": "={{ $json.message.chat.id }}",
+            "text": "=📋 *Доступные команды:*\n\n/new — создать новый договор  \n/help — список доступных команд",
+            "additionalFields": {
+              "appendAttribution": false,
+              "parse_mode": "MarkdownV2"
+            }
+          },
+          "type": "n8n-nodes-base.telegram",
+          "typeVersion": 1.2,
+          "position": [
+            448,
+            -224
+          ],
+          "id": "338c0624-8b7d-4ab0-a392-886da3de9232",
+          "name": "/help",
+          "webhookId": "3bf6d4b8-c9da-4b02-890c-e056d5cb3566",
+          "credentials": {
+            "telegramApi": {
+              "id": "gQ5KXwBnGnv57mjE",
+              "name": "Telegram account | Wedding Bot"
+            }
+          }
+        },
+        {
+          "parameters": {
+            "operation": "sendDocument",
+            "chatId": "={{ $('Telegram Trigger').item.json.message.chat.id }}",
+            "binaryData": true,
+            "additionalFields": {}
+          },
+          "type": "n8n-nodes-base.telegram",
+          "typeVersion": 1.2,
+          "position": [
+            1120,
+            -32
+          ],
+          "id": "274340f0-d3e1-4181-a764-547c727fb1b9",
+          "name": "Send a document",
+          "webhookId": "c5ff2e78-6ea8-47f4-9ab6-c9e48ce55351",
+          "credentials": {
+            "telegramApi": {
+              "id": "gQ5KXwBnGnv57mjE",
+              "name": "Telegram account | Wedding Bot"
+            }
+          }
+        },
+        {
+          "parameters": {
+            "workflowId": {
+              "__rl": true,
+              "value": "MZGat0oMrVNlNiwJ",
+              "mode": "list",
+              "cachedResultUrl": "/workflow/MZGat0oMrVNlNiwJ",
+              "cachedResultName": "Create wedding contract on Google Drive"
+            },
+            "workflowInputs": {
+              "mappingMode": "defineBelow",
+              "value": {},
+              "matchingColumns": [],
+              "schema": [
+                {
+                  "id": "first_name",
+                  "displayName": "first_name",
+                  "required": false,
+                  "defaultMatch": false,
+                  "display": true,
+                  "canBeUsedToMatch": true,
+                  "type": "string",
+                  "removed": false
+                },
+                {
+                  "id": "last_name",
+                  "displayName": "last_name",
+                  "required": false,
+                  "defaultMatch": false,
+                  "display": true,
+                  "canBeUsedToMatch": true,
+                  "type": "string",
+                  "removed": false
+                },
+                {
+                  "id": "middle_name",
+                  "displayName": "middle_name",
+                  "required": false,
+                  "defaultMatch": false,
+                  "display": true,
+                  "canBeUsedToMatch": true,
+                  "type": "string",
+                  "removed": false
+                },
+                {
+                  "id": "wedding_date",
+                  "displayName": "wedding_date",
+                  "required": false,
+                  "defaultMatch": false,
+                  "display": true,
+                  "canBeUsedToMatch": true,
+                  "type": "string",
+                  "removed": false
+                },
+                {
+                  "id": "plan",
+                  "displayName": "plan",
+                  "required": false,
+                  "defaultMatch": false,
+                  "display": true,
+                  "canBeUsedToMatch": true,
+                  "type": "string",
+                  "removed": false
+                },
+                {
+                  "id": "document",
+                  "displayName": "document",
+                  "required": false,
+                  "defaultMatch": false,
+                  "display": true,
+                  "canBeUsedToMatch": true,
+                  "type": "string",
+                  "removed": false
+                }
+              ],
+              "attemptToConvertTypes": false,
+              "convertFieldsToString": true
+            },
+            "options": {
+              "waitForSubWorkflow": true
+            }
+          },
+          "type": "n8n-nodes-base.executeWorkflow",
+          "typeVersion": 1.3,
+          "position": [
+            896,
+            64
+          ],
+          "id": "c579a7ae-268c-41e3-a569-c565b6430b85",
+          "name": "Create wedding contract",
+          "onError": "continueErrorOutput"
+        },
+        {
+          "parameters": {
+            "chatId": "={{ $json.message.chat.id }}",
+            "text": "=👋 Добро пожаловать\n\nЯ помогу вам создать договор всего за несколько шагов 📝  \nЧтобы начать, используйте команду /new  \nСписок всех команд — /help",
+            "additionalFields": {
+              "appendAttribution": false,
+              "parse_mode": "MarkdownV2"
+            }
+          },
+          "type": "n8n-nodes-base.telegram",
+          "typeVersion": 1.2,
+          "position": [
+            448,
+            160
+          ],
+          "id": "d7409f0a-6768-4eed-9f72-0d7a135b942f",
+          "name": "/start",
+          "webhookId": "3bf6d4b8-c9da-4b02-890c-e056d5cb3566",
+          "credentials": {
+            "telegramApi": {
+              "id": "gQ5KXwBnGnv57mjE",
+              "name": "Telegram account | Wedding Bot"
+            }
+          }
+        },
+        {
+          "parameters": {
+            "calendar": {
+              "__rl": true,
+              "value": "kulebaevadaria@gmail.com",
+              "mode": "list",
+              "cachedResultName": "Календарь съемок"
+            },
+            "start": "={{ DateTime.fromFormat($('Mapping').item.json.wedding_date, 'dd-MM-yyyy') }}",
+            "end": "={{ DateTime.fromFormat($('Mapping').item.json.wedding_date, 'dd-MM-yyyy').plus({ hour: 1 }) }}",
+            "useDefaultReminders": false,
+            "additionalFields": {
+              "allday": "yes",
+              "attendees": [],
+              "summary": "={{ $('/new').item.json.data['Имя'] }} {{ $('/new').item.json.data['Пакет услуг'] }}"
+            }
+          },
+          "type": "n8n-nodes-base.googleCalendar",
+          "typeVersion": 1.3,
+          "position": [
+            1344,
+            -32
+          ],
+          "id": "7ebacbcd-541e-423b-ac24-1c38fc5e2333",
+          "name": "Create an event",
+          "credentials": {
+            "googleCalendarOAuth2Api": {
+              "id": "gFevy7iMrcNs13xT",
+              "name": "Google Calendar account | kulebaevadaria"
+            }
+          }
+        },
+        {
+          "parameters": {
+            "chatId": "={{ $('Telegram Trigger').item.json.message.chat.id }}",
+            "text": "=✅ Событие успешно создано и добавлено в Google Calendar 📅",
+            "additionalFields": {
+              "appendAttribution": false
+            }
+          },
+          "type": "n8n-nodes-base.telegram",
+          "typeVersion": 1.2,
+          "position": [
+            1568,
+            -32
+          ],
+          "id": "32dfced2-285c-4849-9931-2eb4158ad6ca",
+          "name": "Send a success notification",
+          "webhookId": "c5ff2e78-6ea8-47f4-9ab6-c9e48ce55351",
+          "credentials": {
+            "telegramApi": {
+              "id": "gQ5KXwBnGnv57mjE",
+              "name": "Telegram account | Wedding Bot"
+            }
+          }
+        }
+      ],
+      "connections": {
+        "Telegram Trigger": {
+          "main": [
+            [
+              {
+                "node": "Commands",
+                "type": "main",
+                "index": 0
+              }
+            ]
+          ]
+        },
+        "Notification \"Starting...\"": {
+          "main": [
+            []
+          ]
+        },
+        "/new": {
+          "main": [
+            [
+              {
+                "node": "Mapping",
+                "type": "main",
+                "index": 0
+              }
+            ]
+          ]
+        },
+        "Commands": {
+          "main": [
+            [
+              {
+                "node": "/help",
+                "type": "main",
+                "index": 0
+              }
+            ],
+            [
+              {
+                "node": "/new",
+                "type": "main",
+                "index": 0
+              }
+            ],
+            [
+              {
+                "node": "/start",
+                "type": "main",
+                "index": 0
+              }
+            ],
+            [
+              {
+                "node": "Fallback message",
+                "type": "main",
+                "index": 0
+              }
+            ]
+          ]
+        },
+        "Mapping": {
+          "main": [
+            [
+              {
+                "node": "Notification \"Starting...\"",
+                "type": "main",
+                "index": 0
+              },
+              {
+                "node": "Create wedding contract",
+                "type": "main",
+                "index": 0
+              }
+            ]
+          ]
+        },
+        "Create wedding contract": {
+          "main": [
+            [
+              {
+                "node": "Send a document",
+                "type": "main",
+                "index": 0
+              }
+            ],
+            [
+              {
+                "node": "Error message",
+                "type": "main",
+                "index": 0
+              }
+            ]
+          ]
+        },
+        "Send a document": {
+          "main": [
+            [
+              {
+                "node": "Create an event",
+                "type": "main",
+                "index": 0
+              }
+            ]
+          ]
+        },
+        "Create an event": {
+          "main": [
+            [
+              {
+                "node": "Send a success notification",
+                "type": "main",
+                "index": 0
+              }
+            ]
+          ]
+        }
+      },
+      "settings": {
+        "executionOrder": "v1",
+        "binaryMode": "separate",
+        "availableInMCP": false
+      },
+      "staticData": null,
+      "meta": {
+        "templateCredsSetupCompleted": true
+      },
+      "pinData": {},
+      "versionId": "f2715727-2402-4c7a-803c-5ac08f738020",
+      "activeVersionId": "f2715727-2402-4c7a-803c-5ac08f738020",
+      "versionCounter": 552,
+      "triggerCount": 1,
+      "shared": [
+        {
+          "updatedAt": "2026-02-21T04:49:46.166Z",
+          "createdAt": "2026-02-21T04:49:46.166Z",
+          "role": "workflow:owner",
+          "workflowId": "0CMIOWXHMIKBh1x5",
+          "projectId": "XeBXiP5yJsi5DYCS",
+          "project": {
+            "updatedAt": "2026-02-20T06:29:28.274Z",
+            "createdAt": "2026-02-20T06:29:02.050Z",
+            "id": "XeBXiP5yJsi5DYCS",
+            "name": "Admin Admin <konstantinkulebaev@gmail.com>",
+            "type": "personal",
+            "icon": null,
+            "description": null,
+            "creatorId": "ebcf2b09-cd83-42f3-b5e0-89c4fcaad4a1"
+          }
+        }
+      ],
+      "tags": [],
+      "activeVersion": {
+        "updatedAt": "2026-02-21T15:54:25.926Z",
+        "createdAt": "2026-02-21T15:54:08.727Z",
+        "versionId": "f2715727-2402-4c7a-803c-5ac08f738020",
+        "workflowId": "0CMIOWXHMIKBh1x5",
+        "nodes": [
+          {
+            "parameters": {
+              "updates": [
+                "*"
+              ],
+              "additionalFields": {}
+            },
+            "type": "n8n-nodes-base.telegramTrigger",
+            "typeVersion": 1.2,
+            "position": [
+              0,
+              64
+            ],
+            "id": "d303ff4b-0cb0-4d49-b164-f241f5e732a1",
+            "name": "Telegram Trigger",
+            "webhookId": "0cc60863-3baf-47ac-90ee-67651620cc97",
+            "credentials": {
+              "telegramApi": {
+                "id": "gQ5KXwBnGnv57mjE",
+                "name": "Telegram account | Wedding Bot"
+              }
+            }
+          },
+          {
+            "parameters": {
+              "chatId": "={{ $('Telegram Trigger').item.json.message.chat.id }}",
+              "text": "=⏳ Создаю договор… Пожалуйста, подождите",
+              "additionalFields": {
+                "appendAttribution": false
+              }
+            },
+            "type": "n8n-nodes-base.telegram",
+            "typeVersion": 1.2,
+            "position": [
+              896,
+              -128
+            ],
+            "id": "3b1859cf-4ae2-4c11-8db0-c6f8f483bb9f",
+            "name": "Notification \"Starting...\"",
+            "webhookId": "d8ab3642-be82-4f35-8538-ad05fb4a0d6d",
+            "credentials": {
+              "telegramApi": {
+                "id": "gQ5KXwBnGnv57mjE",
+                "name": "Telegram account | Wedding Bot"
+              }
+            }
+          },
+          {
+            "parameters": {
+              "operation": "sendAndWait",
+              "chatId": "={{ $json.message.chat.id }}",
+              "message": "=📝 Чтобы создать новый договор, нажмите кнопку ниже и заполните форму",
+              "responseType": "customForm",
+              "defineForm": "json",
+              "jsonOutput": "[\n  {\n    \"fieldLabel\": \"Пакет услуг\",\n    \"fieldType\": \"dropdown\",\n    \"fieldOptions\": {\n      \"values\": [\n        {\n          \"option\": \"Стандарт (6 часов)\"\n        },\n        {\n          \"option\": \"Комфорт (10 часов)\"\n        },\n        {\n          \"option\": \"Безлимит\"\n        }\n      ]\n    },\n    \"requiredField\": true\n  },\n  {\n    \"fieldName\": \"last_name\",\n    \"fieldLabel\": \"Фамилия\",\n    \"placeholder\": \"Кулебаева\",\n    \"requiredField\": true\n  },\n  {\n    \"fieldName\": \"first_name\",\n    \"fieldLabel\": \"Имя\",\n    \"placeholder\": \"Яна\",\n    \"requiredField\": true\n  },\n  {\n    \"fieldName\": \"middle_name\",\n    \"fieldLabel\": \"Отчество\",\n    \"placeholder\": \"Константиновна\",\n    \"requiredField\": true\n  },\n  {\n    \"fieldName\": \"wedding_date\",\n    \"fieldLabel\": \"Дата свадьбы\",\n    \"fieldType\": \"date\",\n    \"formatDate\": \"dd-mm-yyyy\",\n    \"requiredField\": true\n  },\n  {\n    \"fieldName\": \"document\",\n    \"fieldLabel\": \"Паспорт\",\n    \"fieldType\": \"textarea\",\n    \"placeholder\": \"Серия XXXX, номер XXXXXX выдан УМВД России по Пензенской области 01.01.2020\",\n    \"requiredField\": true\n  }\n]\n",
+              "options": {
+                "messageButtonLabel": "Открыть форму",
+                "responseFormTitle": "Данные клиента свадебного договора",
+                "responseFormDescription": "Заполните форму и нажмите кнопку отправить",
+                "responseFormButtonLabel": "Отправить",
+                "appendAttribution": false
+              }
+            },
+            "type": "n8n-nodes-base.telegram",
+            "typeVersion": 1.2,
+            "position": [
+              448,
+              -32
+            ],
+            "id": "b0aa9fdb-cd00-48a8-93ce-58c0c64b538a",
+            "name": "/new",
+            "webhookId": "3bf6d4b8-c9da-4b02-890c-e056d5cb3566",
+            "credentials": {
+              "telegramApi": {
+                "id": "gQ5KXwBnGnv57mjE",
+                "name": "Telegram account | Wedding Bot"
+              }
+            }
+          },
+          {
+            "parameters": {
+              "chatId": "={{ $json.message.chat.id }}",
+              "text": "=🤔 Я не распознал эту команду.  \nОтправьте /help — там есть список всех доступных команд",
+              "additionalFields": {
+                "appendAttribution": false
+              }
+            },
+            "type": "n8n-nodes-base.telegram",
+            "typeVersion": 1.2,
+            "position": [
+              448,
+              352
+            ],
+            "id": "49f93ed9-5d24-4c66-93fa-90dfa7a5a09c",
+            "name": "Fallback message",
+            "webhookId": "3bf6d4b8-c9da-4b02-890c-e056d5cb3566",
+            "credentials": {
+              "telegramApi": {
+                "id": "gQ5KXwBnGnv57mjE",
+                "name": "Telegram account | Wedding Bot"
+              }
+            }
+          },
+          {
+            "parameters": {
+              "rules": {
+                "values": [
+                  {
+                    "conditions": {
+                      "options": {
+                        "caseSensitive": true,
+                        "leftValue": "",
+                        "typeValidation": "strict",
+                        "version": 3
+                      },
+                      "conditions": [
+                        {
+                          "id": "8e8dd75e-5a12-4d44-97ba-8faaeb23b247",
+                          "leftValue": "={{ $json.message.text }}",
+                          "rightValue": "/help",
+                          "operator": {
+                            "type": "string",
+                            "operation": "equals",
+                            "name": "filter.operator.equals"
+                          }
+                        }
+                      ],
+                      "combinator": "and"
+                    }
+                  },
+                  {
+                    "conditions": {
+                      "options": {
+                        "caseSensitive": true,
+                        "leftValue": "",
+                        "typeValidation": "strict",
+                        "version": 3
+                      },
+                      "conditions": [
+                        {
+                          "leftValue": "={{ $json.message.text }}",
+                          "rightValue": "/new",
+                          "operator": {
+                            "type": "string",
+                            "operation": "equals"
+                          },
+                          "id": "da5fdc18-9160-4e2c-ad85-5ec2a48a4adc"
+                        }
+                      ],
+                      "combinator": "and"
+                    }
+                  },
+                  {
+                    "conditions": {
+                      "options": {
+                        "caseSensitive": true,
+                        "leftValue": "",
+                        "typeValidation": "strict",
+                        "version": 3
+                      },
+                      "conditions": [
+                        {
+                          "id": "55def5a3-e893-48f2-95ba-41dfc073ad9e",
+                          "leftValue": "={{ $json.message.text }}",
+                          "rightValue": "/start",
+                          "operator": {
+                            "type": "string",
+                            "operation": "equals",
+                            "name": "filter.operator.equals"
+                          }
+                        }
+                      ],
+                      "combinator": "and"
+                    }
+                  }
+                ]
+              },
+              "options": {
+                "fallbackOutput": "extra",
+                "allMatchingOutputs": true
+              }
+            },
+            "type": "n8n-nodes-base.switch",
+            "typeVersion": 3.4,
+            "position": [
+              224,
+              32
+            ],
+            "id": "1b30d706-530f-4c2c-a53a-f48724958b66",
+            "name": "Commands"
+          },
+          {
+            "parameters": {
+              "assignments": {
+                "assignments": [
+                  {
+                    "id": "656ac539-6e91-4ae0-a57c-f526a8fcfd5f",
+                    "name": "last_name",
+                    "value": "={{ $json.data['Фамилия'] }}",
+                    "type": "string"
+                  },
+                  {
+                    "id": "c72ddd83-a516-4366-8e35-6beafbd6abfb",
+                    "name": "first_name",
+                    "value": "={{ $json.data['Имя'] }}",
+                    "type": "string"
+                  },
+                  {
+                    "id": "97a031bd-7708-4374-9c89-cb01322f7999",
+                    "name": "middle_name",
+                    "value": "={{ $json.data['Отчество'] }}",
+                    "type": "string"
+                  },
+                  {
+                    "id": "f40e1904-e0c0-43e5-b69f-457198158d9c",
+                    "name": "wedding_date",
+                    "value": "={{ $json.data['Дата свадьбы'] }}",
+                    "type": "string"
+                  },
+                  {
+                    "id": "9f45187f-f3d2-43d9-999e-ad911d7545e9",
+                    "name": "document",
+                    "value": "={{ $json.data['Паспорт'] }}",
+                    "type": "string"
+                  },
+                  {
+                    "id": "f4e45b6f-f554-4c3b-bd99-66e31792fc4c",
+                    "name": "plan",
+                    "value": "={{ $json.data['Пакет услуг'].includes('Стандарт') ? 'standard' : $json.data['Пакет услуг'].includes('Комфорт') ? 'comfort' : 'unlimited' }}",
+                    "type": "string"
+                  }
+                ]
+              },
+              "options": {}
+            },
+            "type": "n8n-nodes-base.set",
+            "typeVersion": 3.4,
+            "position": [
+              672,
+              -32
+            ],
+            "id": "39a8fb54-a2c4-42b4-992e-0ab452bb3081",
+            "name": "Mapping"
+          },
+          {
+            "parameters": {
+              "chatId": "={{ $('Telegram Trigger').item.json.message.chat.id }}",
+              "text": "=⚠️ Не удалось создать договор.  \nПожалуйста, попробуйте позже или обратитесь к администратору: @kkulebaev",
+              "additionalFields": {
+                "appendAttribution": false
+              }
+            },
+            "type": "n8n-nodes-base.telegram",
+            "typeVersion": 1.2,
+            "position": [
+              1120,
+              160
+            ],
+            "id": "960ccd67-cb76-4834-874c-378016e5f914",
+            "name": "Error message",
+            "webhookId": "d8ab3642-be82-4f35-8538-ad05fb4a0d6d",
+            "credentials": {
+              "telegramApi": {
+                "id": "gQ5KXwBnGnv57mjE",
+                "name": "Telegram account | Wedding Bot"
+              }
+            }
+          },
+          {
+            "parameters": {
+              "chatId": "={{ $json.message.chat.id }}",
+              "text": "=📋 *Доступные команды:*\n\n/new — создать новый договор  \n/help — список доступных команд",
+              "additionalFields": {
+                "appendAttribution": false,
+                "parse_mode": "MarkdownV2"
+              }
+            },
+            "type": "n8n-nodes-base.telegram",
+            "typeVersion": 1.2,
+            "position": [
+              448,
+              -224
+            ],
+            "id": "338c0624-8b7d-4ab0-a392-886da3de9232",
+            "name": "/help",
+            "webhookId": "3bf6d4b8-c9da-4b02-890c-e056d5cb3566",
+            "credentials": {
+              "telegramApi": {
+                "id": "gQ5KXwBnGnv57mjE",
+                "name": "Telegram account | Wedding Bot"
+              }
+            }
+          },
+          {
+            "parameters": {
+              "operation": "sendDocument",
+              "chatId": "={{ $('Telegram Trigger').item.json.message.chat.id }}",
+              "binaryData": true,
+              "additionalFields": {}
+            },
+            "type": "n8n-nodes-base.telegram",
+            "typeVersion": 1.2,
+            "position": [
+              1120,
+              -32
+            ],
+            "id": "274340f0-d3e1-4181-a764-547c727fb1b9",
+            "name": "Send a document",
+            "webhookId": "c5ff2e78-6ea8-47f4-9ab6-c9e48ce55351",
+            "credentials": {
+              "telegramApi": {
+                "id": "gQ5KXwBnGnv57mjE",
+                "name": "Telegram account | Wedding Bot"
+              }
+            }
+          },
+          {
+            "parameters": {
+              "workflowId": {
+                "__rl": true,
+                "value": "MZGat0oMrVNlNiwJ",
+                "mode": "list",
+                "cachedResultUrl": "/workflow/MZGat0oMrVNlNiwJ",
+                "cachedResultName": "Create wedding contract on Google Drive"
+              },
+              "workflowInputs": {
+                "mappingMode": "defineBelow",
+                "value": {},
+                "matchingColumns": [],
+                "schema": [
+                  {
+                    "id": "first_name",
+                    "displayName": "first_name",
+                    "required": false,
+                    "defaultMatch": false,
+                    "display": true,
+                    "canBeUsedToMatch": true,
+                    "type": "string",
+                    "removed": false
+                  },
+                  {
+                    "id": "last_name",
+                    "displayName": "last_name",
+                    "required": false,
+                    "defaultMatch": false,
+                    "display": true,
+                    "canBeUsedToMatch": true,
+                    "type": "string",
+                    "removed": false
+                  },
+                  {
+                    "id": "middle_name",
+                    "displayName": "middle_name",
+                    "required": false,
+                    "defaultMatch": false,
+                    "display": true,
+                    "canBeUsedToMatch": true,
+                    "type": "string",
+                    "removed": false
+                  },
+                  {
+                    "id": "wedding_date",
+                    "displayName": "wedding_date",
+                    "required": false,
+                    "defaultMatch": false,
+                    "display": true,
+                    "canBeUsedToMatch": true,
+                    "type": "string",
+                    "removed": false
+                  },
+                  {
+                    "id": "plan",
+                    "displayName": "plan",
+                    "required": false,
+                    "defaultMatch": false,
+                    "display": true,
+                    "canBeUsedToMatch": true,
+                    "type": "string",
+                    "removed": false
+                  },
+                  {
+                    "id": "document",
+                    "displayName": "document",
+                    "required": false,
+                    "defaultMatch": false,
+                    "display": true,
+                    "canBeUsedToMatch": true,
+                    "type": "string",
+                    "removed": false
+                  }
+                ],
+                "attemptToConvertTypes": false,
+                "convertFieldsToString": true
+              },
+              "options": {
+                "waitForSubWorkflow": true
+              }
+            },
+            "type": "n8n-nodes-base.executeWorkflow",
+            "typeVersion": 1.3,
+            "position": [
+              896,
+              64
+            ],
+            "id": "c579a7ae-268c-41e3-a569-c565b6430b85",
+            "name": "Create wedding contract",
+            "onError": "continueErrorOutput"
+          },
+          {
+            "parameters": {
+              "chatId": "={{ $json.message.chat.id }}",
+              "text": "=👋 Добро пожаловать\n\nЯ помогу вам создать договор всего за несколько шагов 📝  \nЧтобы начать, используйте команду /new  \nСписок всех команд — /help",
+              "additionalFields": {
+                "appendAttribution": false,
+                "parse_mode": "MarkdownV2"
+              }
+            },
+            "type": "n8n-nodes-base.telegram",
+            "typeVersion": 1.2,
+            "position": [
+              448,
+              160
+            ],
+            "id": "d7409f0a-6768-4eed-9f72-0d7a135b942f",
+            "name": "/start",
+            "webhookId": "3bf6d4b8-c9da-4b02-890c-e056d5cb3566",
+            "credentials": {
+              "telegramApi": {
+                "id": "gQ5KXwBnGnv57mjE",
+                "name": "Telegram account | Wedding Bot"
+              }
+            }
+          },
+          {
+            "parameters": {
+              "calendar": {
+                "__rl": true,
+                "value": "kulebaevadaria@gmail.com",
+                "mode": "list",
+                "cachedResultName": "Календарь съемок"
+              },
+              "start": "={{ DateTime.fromFormat($('Mapping').item.json.wedding_date, 'dd-MM-yyyy') }}",
+              "end": "={{ DateTime.fromFormat($('Mapping').item.json.wedding_date, 'dd-MM-yyyy').plus({ hour: 1 }) }}",
+              "useDefaultReminders": false,
+              "additionalFields": {
+                "allday": "yes",
+                "attendees": [],
+                "summary": "={{ $('/new').item.json.data['Имя'] }} {{ $('/new').item.json.data['Пакет услуг'] }}"
+              }
+            },
+            "type": "n8n-nodes-base.googleCalendar",
+            "typeVersion": 1.3,
+            "position": [
+              1344,
+              -32
+            ],
+            "id": "7ebacbcd-541e-423b-ac24-1c38fc5e2333",
+            "name": "Create an event",
+            "credentials": {
+              "googleCalendarOAuth2Api": {
+                "id": "gFevy7iMrcNs13xT",
+                "name": "Google Calendar account | kulebaevadaria"
+              }
+            }
+          },
+          {
+            "parameters": {
+              "chatId": "={{ $('Telegram Trigger').item.json.message.chat.id }}",
+              "text": "=✅ Событие успешно создано и добавлено в Google Calendar 📅",
+              "additionalFields": {
+                "appendAttribution": false
+              }
+            },
+            "type": "n8n-nodes-base.telegram",
+            "typeVersion": 1.2,
+            "position": [
+              1568,
+              -32
+            ],
+            "id": "32dfced2-285c-4849-9931-2eb4158ad6ca",
+            "name": "Send a success notification",
+            "webhookId": "c5ff2e78-6ea8-47f4-9ab6-c9e48ce55351",
+            "credentials": {
+              "telegramApi": {
+                "id": "gQ5KXwBnGnv57mjE",
+                "name": "Telegram account | Wedding Bot"
+              }
+            }
+          }
+        ],
+        "connections": {
+          "Telegram Trigger": {
+            "main": [
+              [
+                {
+                  "node": "Commands",
+                  "type": "main",
+                  "index": 0
+                }
+              ]
+            ]
+          },
+          "Notification \"Starting...\"": {
+            "main": [
+              []
+            ]
+          },
+          "/new": {
+            "main": [
+              [
+                {
+                  "node": "Mapping",
+                  "type": "main",
+                  "index": 0
+                }
+              ]
+            ]
+          },
+          "Commands": {
+            "main": [
+              [
+                {
+                  "node": "/help",
+                  "type": "main",
+                  "index": 0
+                }
+              ],
+              [
+                {
+                  "node": "/new",
+                  "type": "main",
+                  "index": 0
+                }
+              ],
+              [
+                {
+                  "node": "/start",
+                  "type": "main",
+                  "index": 0
+                }
+              ],
+              [
+                {
+                  "node": "Fallback message",
+                  "type": "main",
+                  "index": 0
+                }
+              ]
+            ]
+          },
+          "Mapping": {
+            "main": [
+              [
+                {
+                  "node": "Notification \"Starting...\"",
+                  "type": "main",
+                  "index": 0
+                },
+                {
+                  "node": "Create wedding contract",
+                  "type": "main",
+                  "index": 0
+                }
+              ]
+            ]
+          },
+          "Create wedding contract": {
+            "main": [
+              [
+                {
+                  "node": "Send a document",
+                  "type": "main",
+                  "index": 0
+                }
+              ],
+              [
+                {
+                  "node": "Error message",
+                  "type": "main",
+                  "index": 0
+                }
+              ]
+            ]
+          },
+          "Send a document": {
+            "main": [
+              [
+                {
+                  "node": "Create an event",
+                  "type": "main",
+                  "index": 0
+                }
+              ]
+            ]
+          },
+          "Create an event": {
+            "main": [
+              [
+                {
+                  "node": "Send a success notification",
+                  "type": "main",
+                  "index": 0
+                }
+              ]
+            ]
+          }
+        },
+        "authors": "Admin Admin",
+        "name": "Version f2715727",
+        "description": "",
+        "autosaved": true,
+        "workflowPublishHistory": [
+          {
+            "createdAt": "2026-02-21T15:54:25.924Z",
+            "id": 59,
+            "workflowId": "0CMIOWXHMIKBh1x5",
+            "versionId": "f2715727-2402-4c7a-803c-5ac08f738020",
+            "event": "activated",
+            "userId": "ebcf2b09-cd83-42f3-b5e0-89c4fcaad4a1"
+          }
+        ]
+      }
+    },
+    {
+      "updatedAt": "2026-02-21T16:45:36.198Z",
+      "createdAt": "2026-02-21T15:10:06.504Z",
+      "id": "TqgonO2GYHIRWb6X",
+      "name": "Create Google Calendar Event",
+      "description": null,
+      "active": false,
+      "isArchived": true,
+      "nodes": [
+        {
+          "parameters": {
+            "workflowInputs": {
+              "values": [
+                {
+                  "name": "description"
+                },
+                {
+                  "name": "date"
+                }
+              ]
+            }
+          },
+          "type": "n8n-nodes-base.executeWorkflowTrigger",
+          "typeVersion": 1.1,
+          "position": [
+            0,
+            0
+          ],
+          "id": "e1faf63f-9983-4a4b-89dc-717cd392cd0c",
+          "name": "Input"
+        }
+      ],
+      "connections": {
+        "Input": {
+          "main": [
+            []
+          ]
+        }
+      },
+      "settings": {
+        "executionOrder": "v1",
+        "binaryMode": "separate",
+        "availableInMCP": false
+      },
+      "staticData": null,
+      "meta": {
+        "templateCredsSetupCompleted": true
+      },
+      "pinData": {
+        "Input": [
+          {
+            "json": {
+              "description": "Test",
+              "date": "21-02-2026"
+            }
+          }
+        ]
+      },
+      "versionId": "583b924e-fcaa-43db-afd6-a14b8a6e82f5",
+      "activeVersionId": null,
+      "versionCounter": 52,
+      "triggerCount": 0,
+      "shared": [
+        {
+          "updatedAt": "2026-02-21T15:10:06.504Z",
+          "createdAt": "2026-02-21T15:10:06.504Z",
+          "role": "workflow:owner",
+          "workflowId": "TqgonO2GYHIRWb6X",
+          "projectId": "XeBXiP5yJsi5DYCS",
+          "project": {
+            "updatedAt": "2026-02-20T06:29:28.274Z",
+            "createdAt": "2026-02-20T06:29:02.050Z",
+            "id": "XeBXiP5yJsi5DYCS",
+            "name": "Admin Admin <konstantinkulebaev@gmail.com>",
+            "type": "personal",
+            "icon": null,
+            "description": null,
+            "creatorId": "ebcf2b09-cd83-42f3-b5e0-89c4fcaad4a1"
+          }
+        }
+      ],
+      "tags": [],
+      "activeVersion": null
+    },
+    {
+      "updatedAt": "2026-02-20T10:32:58.576Z",
+      "createdAt": "2026-02-20T09:22:53.843Z",
+      "id": "0GNr1mrgOjgfbGgJ",
+      "name": "Telegram Notification Service",
+      "description": null,
+      "active": true,
+      "isArchived": false,
+      "nodes": [
+        {
+          "parameters": {
+            "workflowInputs": {
+              "values": [
+                {
+                  "name": "time",
+                  "type": "number"
+                },
+                {
+                  "name": "title"
+                },
+                {
+                  "name": "message"
+                },
+                {
+                  "name": "url"
+                }
+              ]
+            }
+          },
+          "type": "n8n-nodes-base.executeWorkflowTrigger",
+          "typeVersion": 1.1,
+          "position": [
+            0,
+            0
+          ],
+          "id": "bbe59e2e-bab3-4d89-a046-107438334030",
+          "name": "When Executed by Another Workflow",
+          "alwaysOutputData": false
+        },
+        {
+          "parameters": {
+            "chatId": "8593464393",
+            "text": "=🔔 *{{ $json.title }}*\n_{{ DateTime.fromMillis($json.time).setLocale('ru').toLocaleString({ month: 'long', day: 'numeric', hour: 'numeric', minute: '2-digit' }) }}_\n\n{{ $json.message }}\n\n{{ $json.url }}",
+            "additionalFields": {
+              "appendAttribution": false
+            }
+          },
+          "type": "n8n-nodes-base.telegram",
+          "typeVersion": 1.2,
+          "position": [
+            224,
+            0
+          ],
+          "id": "99ce2ff9-2cd0-4d2e-b854-834a613594d2",
+          "name": "Send a text message",
+          "webhookId": "2272f267-4423-4a50-9a57-885a1197c49d",
+          "credentials": {
+            "telegramApi": {
+              "id": "31G0PoTb4LqbBRW5",
+              "name": "Telegram account | Notification Bot"
+            }
+          }
+        }
+      ],
+      "connections": {
+        "When Executed by Another Workflow": {
+          "main": [
+            [
+              {
+                "node": "Send a text message",
+                "type": "main",
+                "index": 0
+              }
+            ]
+          ]
+        }
+      },
+      "settings": {
+        "executionOrder": "v1",
+        "availableInMCP": false
+      },
+      "staticData": null,
+      "meta": {
+        "templateCredsSetupCompleted": true
+      },
+      "pinData": {},
+      "versionId": "789e3186-9133-483d-84e9-3d9443a3f95d",
+      "activeVersionId": "789e3186-9133-483d-84e9-3d9443a3f95d",
+      "versionCounter": 12,
+      "triggerCount": 0,
+      "shared": [
+        {
+          "updatedAt": "2026-02-20T09:22:53.843Z",
+          "createdAt": "2026-02-20T09:22:53.843Z",
+          "role": "workflow:owner",
+          "workflowId": "0GNr1mrgOjgfbGgJ",
+          "projectId": "XeBXiP5yJsi5DYCS",
+          "project": {
+            "updatedAt": "2026-02-20T06:29:28.274Z",
+            "createdAt": "2026-02-20T06:29:02.050Z",
+            "id": "XeBXiP5yJsi5DYCS",
+            "name": "Admin Admin <konstantinkulebaev@gmail.com>",
+            "type": "personal",
+            "icon": null,
+            "description": null,
+            "creatorId": "ebcf2b09-cd83-42f3-b5e0-89c4fcaad4a1"
+          }
+        }
+      ],
+      "tags": [],
+      "activeVersion": {
+        "updatedAt": "2026-02-20T10:06:53.233Z",
+        "createdAt": "2026-02-20T10:06:47.882Z",
+        "versionId": "789e3186-9133-483d-84e9-3d9443a3f95d",
+        "workflowId": "0GNr1mrgOjgfbGgJ",
+        "nodes": [
+          {
+            "parameters": {
+              "workflowInputs": {
+                "values": [
+                  {
+                    "name": "time",
+                    "type": "number"
+                  },
+                  {
+                    "name": "title"
+                  },
+                  {
+                    "name": "message"
+                  },
+                  {
+                    "name": "url"
+                  }
+                ]
+              }
+            },
+            "type": "n8n-nodes-base.executeWorkflowTrigger",
+            "typeVersion": 1.1,
+            "position": [
+              0,
+              0
+            ],
+            "id": "bbe59e2e-bab3-4d89-a046-107438334030",
+            "name": "When Executed by Another Workflow",
+            "alwaysOutputData": false
+          },
+          {
+            "parameters": {
+              "chatId": "8593464393",
+              "text": "=🔔 *{{ $json.title }}*\n_{{ DateTime.fromMillis($json.time).setLocale('ru').toLocaleString({ month: 'long', day: 'numeric', hour: 'numeric', minute: '2-digit' }) }}_\n\n{{ $json.message }}\n\n{{ $json.url }}",
+              "additionalFields": {
+                "appendAttribution": false
+              }
+            },
+            "type": "n8n-nodes-base.telegram",
+            "typeVersion": 1.2,
+            "position": [
+              224,
+              0
+            ],
+            "id": "99ce2ff9-2cd0-4d2e-b854-834a613594d2",
+            "name": "Send a text message",
+            "webhookId": "2272f267-4423-4a50-9a57-885a1197c49d",
+            "credentials": {
+              "telegramApi": {
+                "id": "31G0PoTb4LqbBRW5",
+                "name": "Telegram account | Notification Bot"
+              }
+            }
+          }
+        ],
+        "connections": {
+          "When Executed by Another Workflow": {
+            "main": [
+              [
+                {
+                  "node": "Send a text message",
+                  "type": "main",
+                  "index": 0
+                }
+              ]
+            ]
+          }
+        },
+        "authors": "Admin Admin",
+        "name": "Version 789e3186",
+        "description": "",
+        "autosaved": false,
+        "workflowPublishHistory": [
+          {
+            "createdAt": "2026-02-20T10:06:53.230Z",
+            "id": 5,
+            "workflowId": "0GNr1mrgOjgfbGgJ",
+            "versionId": "789e3186-9133-483d-84e9-3d9443a3f95d",
+            "event": "activated",
+            "userId": "ebcf2b09-cd83-42f3-b5e0-89c4fcaad4a1"
+          }
+        ]
+      }
+    },
+    {
+      "updatedAt": "2026-02-20T06:45:52.117Z",
+      "createdAt": "2026-02-20T06:45:52.117Z",
+      "id": "GPXze5JSTjQaEneF",
+      "name": "TODO Bot",
+      "description": null,
+      "active": false,
+      "isArchived": false,
+      "nodes": [
+        {
+          "parameters": {
+            "updates": [
+              "message"
+            ],
+            "additionalFields": {}
+          },
+          "type": "n8n-nodes-base.telegramTrigger",
+          "typeVersion": 1.2,
+          "position": [
+            -48,
+            -96
+          ],
+          "id": "248f6f85-59d5-448c-8844-5f9e1f66610a",
+          "name": "Telegram Trigger",
+          "webhookId": "fac86bed-033b-496f-90fd-e958b1fe25dc",
+          "credentials": {
+            "telegramApi": {
+              "id": "XK5NskS0e8AqdwHx",
+              "name": "Telegram account | Todo Bot"
+            }
+          }
+        },
+        {
+          "parameters": {
+            "conditions": {
+              "options": {
+                "caseSensitive": true,
+                "leftValue": "",
+                "typeValidation": "strict",
+                "version": 3
+              },
+              "conditions": [
+                {
+                  "id": "aa2c409a-1f20-47b3-be61-7756da741daa",
+                  "leftValue": "={{ $json.message.text }}",
+                  "rightValue": "/new",
+                  "operator": {
+                    "type": "string",
+                    "operation": "equals"
+                  }
+                }
+              ],
+              "combinator": "and"
+            },
+            "options": {}
+          },
+          "type": "n8n-nodes-base.if",
+          "typeVersion": 2.3,
+          "position": [
+            160,
+            -96
+          ],
+          "id": "46eb7a2b-bab5-4988-aa97-836177cb7c72",
+          "name": "If"
+        },
+        {
+          "parameters": {
+            "chatId": "={{ $json.message.chat.id }}",
+            "text": "📝 Новая задача  Напишите текст задачи, которую нужно добавить",
+            "additionalFields": {
+              "appendAttribution": false
+            }
+          },
+          "type": "n8n-nodes-base.telegram",
+          "typeVersion": 1.2,
+          "position": [
+            368,
+            -192
+          ],
+          "id": "5985aacb-f6b3-4997-b873-5de73f5abd09",
+          "name": "Send a text message",
+          "webhookId": "af8971e9-1bb6-47e1-b34a-de9cd6c568cd",
+          "credentials": {
+            "telegramApi": {
+              "id": "XK5NskS0e8AqdwHx",
+              "name": "Telegram account | Todo Bot"
+            }
+          }
+        }
+      ],
+      "connections": {
+        "Telegram Trigger": {
+          "main": [
+            [
+              {
+                "node": "If",
+                "type": "main",
+                "index": 0
+              }
+            ]
+          ]
+        },
+        "If": {
+          "main": [
+            [
+              {
+                "node": "Send a text message",
+                "type": "main",
+                "index": 0
+              }
+            ]
+          ]
+        }
+      },
+      "settings": {
+        "executionOrder": "v1",
+        "availableInMCP": false
+      },
+      "staticData": null,
+      "meta": {
+        "templateCredsSetupCompleted": true
+      },
+      "pinData": {},
+      "versionId": "67487bc7-8463-4a41-af85-884874d4f3f0",
+      "activeVersionId": null,
+      "versionCounter": 1,
+      "triggerCount": 0,
+      "shared": [
+        {
+          "updatedAt": "2026-02-20T06:45:52.117Z",
+          "createdAt": "2026-02-20T06:45:52.117Z",
+          "role": "workflow:owner",
+          "workflowId": "GPXze5JSTjQaEneF",
+          "projectId": "XeBXiP5yJsi5DYCS",
+          "project": {
+            "updatedAt": "2026-02-20T06:29:28.274Z",
+            "createdAt": "2026-02-20T06:29:02.050Z",
+            "id": "XeBXiP5yJsi5DYCS",
+            "name": "Admin Admin <konstantinkulebaev@gmail.com>",
+            "type": "personal",
+            "icon": null,
+            "description": null,
+            "creatorId": "ebcf2b09-cd83-42f3-b5e0-89c4fcaad4a1"
+          }
+        }
+      ],
+      "tags": [],
+      "activeVersion": null
+    },
+    {
+      "updatedAt": "2026-02-20T10:33:53.312Z",
+      "createdAt": "2026-02-20T06:41:56.602Z",
+      "id": "B2QRqtVwapqY1zsf",
+      "name": "Boosty subs to Data Table",
+      "description": null,
+      "active": true,
+      "isArchived": false,
+      "nodes": [
+        {
+          "parameters": {
+            "url": "https://api.boosty.to/v1/blog/kulebaevadaria/subscribers",
+            "authentication": "genericCredentialType",
+            "genericAuthType": "httpBearerAuth",
+            "sendQuery": true,
+            "queryParameters": {
+              "parameters": [
+                {
+                  "name": "sort_by",
+                  "value": "on_time"
+                },
+                {
+                  "name": "limit",
+                  "value": "200"
+                },
+                {
+                  "name": "order",
+                  "value": "lt"
+                }
+              ]
+            },
+            "options": {}
+          },
+          "type": "n8n-nodes-base.httpRequest",
+          "typeVersion": 4.3,
+          "position": [
+            416,
+            -96
+          ],
+          "id": "86aee0c5-08b1-4c96-bf25-4e8acb76e53b",
+          "name": "HTTP Request",
+          "credentials": {
+            "httpBearerAuth": {
+              "id": "kAG7U4K6lerXOxcl",
+              "name": "Bearer Auth account | Boosty"
+            }
+          }
+        },
+        {
+          "parameters": {
+            "fieldToSplitOut": "data",
+            "options": {}
+          },
+          "type": "n8n-nodes-base.splitOut",
+          "typeVersion": 1,
+          "position": [
+            640,
+            -96
+          ],
+          "id": "205f56b7-926c-49ec-a9d0-64df6d6a8410",
+          "name": "Split Out"
+        },
+        {
+          "parameters": {
+            "rule": {
+              "interval": [
+                {
+                  "triggerAtHour": 10
+                }
+              ]
+            }
+          },
+          "type": "n8n-nodes-base.scheduleTrigger",
+          "typeVersion": 1.3,
+          "position": [
+            192,
+            -96
+          ],
+          "id": "0c334e6d-0236-4515-8727-59c4ef46f6eb",
+          "name": "Schedule Trigger"
+        },
+        {
+          "parameters": {
+            "operation": "upsert",
+            "dataTableId": {
+              "__rl": true,
+              "value": "25QXaM48qGmKjxHa",
+              "mode": "list",
+              "cachedResultName": "Boosty subs",
+              "cachedResultUrl": "/projects/XeBXiP5yJsi5DYCS/datatables/25QXaM48qGmKjxHa"
+            },
+            "filters": {
+              "conditions": [
+                {
+                  "keyName": "userId",
+                  "keyValue": "={{ $json.id }}"
+                }
+              ]
+            },
+            "columns": {
+              "mappingMode": "defineBelow",
+              "value": {
+                "subscribed": "={{ $json.subscribed }}",
+                "price": "={{ $json.level.price }}",
+                "payments": "={{ $json.payments }}",
+                "userId": "={{ $json.id }}",
+                "name": "={{ $json.name }}",
+                "email": "={{ $json.email }}",
+                "status": "={{ $json.status }}",
+                "levelName": "={{ $json.level.name }}",
+                "onTime": "={{ DateTime.fromSeconds($json.onTime) }}"
+              },
+              "matchingColumns": [],
+              "schema": [
+                {
+                  "id": "userId",
+                  "displayName": "userId",
+                  "required": false,
+                  "defaultMatch": false,
+                  "display": true,
+                  "type": "string",
+                  "readOnly": false,
+                  "removed": false
+                },
+                {
+                  "id": "name",
+                  "displayName": "name",
+                  "required": false,
+                  "defaultMatch": false,
+                  "display": true,
+                  "type": "string",
+                  "readOnly": false,
+                  "removed": false
+                },
+                {
+                  "id": "email",
+                  "displayName": "email",
+                  "required": false,
+                  "defaultMatch": false,
+                  "display": true,
+                  "type": "string",
+                  "readOnly": false,
+                  "removed": false
+                },
+                {
+                  "id": "status",
+                  "displayName": "status",
+                  "required": false,
+                  "defaultMatch": false,
+                  "display": true,
+                  "type": "string",
+                  "readOnly": false,
+                  "removed": false
+                },
+                {
+                  "id": "subscribed",
+                  "displayName": "subscribed",
+                  "required": false,
+                  "defaultMatch": false,
+                  "display": true,
+                  "type": "boolean",
+                  "readOnly": false,
+                  "removed": false
+                },
+                {
+                  "id": "levelName",
+                  "displayName": "levelName",
+                  "required": false,
+                  "defaultMatch": false,
+                  "display": true,
+                  "type": "string",
+                  "readOnly": false,
+                  "removed": false
+                },
+                {
+                  "id": "price",
+                  "displayName": "price",
+                  "required": false,
+                  "defaultMatch": false,
+                  "display": true,
+                  "type": "number",
+                  "readOnly": false,
+                  "removed": false
+                },
+                {
+                  "id": "payments",
+                  "displayName": "payments",
+                  "required": false,
+                  "defaultMatch": false,
+                  "display": true,
+                  "type": "number",
+                  "readOnly": false,
+                  "removed": false
+                },
+                {
+                  "id": "onTime",
+                  "displayName": "onTime",
+                  "required": false,
+                  "defaultMatch": false,
+                  "display": true,
+                  "type": "dateTime",
+                  "readOnly": false,
+                  "removed": false
+                }
+              ],
+              "attemptToConvertTypes": false,
+              "convertFieldsToString": false
+            },
+            "options": {}
+          },
+          "type": "n8n-nodes-base.dataTable",
+          "typeVersion": 1.1,
+          "position": [
+            864,
+            -96
+          ],
+          "id": "37b9554b-6dfd-4760-9a55-c364d52add58",
+          "name": "Upsert row(s)"
+        },
+        {
+          "parameters": {
+            "workflowId": {
+              "__rl": true,
+              "value": "0GNr1mrgOjgfbGgJ",
+              "mode": "list",
+              "cachedResultUrl": "/workflow/0GNr1mrgOjgfbGgJ",
+              "cachedResultName": "Telegram Notification Service"
+            },
+            "workflowInputs": {
+              "mappingMode": "defineBelow",
+              "value": {
+                "time": "={{ Date.now() }}",
+                "message": "Подписчики Boosty обновлены в Data Table",
+                "title": "Boosty-уведомление"
+              },
+              "matchingColumns": [],
+              "schema": [
+                {
+                  "id": "time",
+                  "displayName": "time",
+                  "required": false,
+                  "defaultMatch": false,
+                  "display": true,
+                  "canBeUsedToMatch": true,
+                  "type": "number",
+                  "removed": false
+                },
+                {
+                  "id": "title",
+                  "displayName": "title",
+                  "required": false,
+                  "defaultMatch": false,
+                  "display": true,
+                  "canBeUsedToMatch": true,
+                  "type": "string",
+                  "removed": false
+                },
+                {
+                  "id": "message",
+                  "displayName": "message",
+                  "required": false,
+                  "defaultMatch": false,
+                  "display": true,
+                  "canBeUsedToMatch": true,
+                  "type": "string",
+                  "removed": false
+                },
+                {
+                  "id": "url",
+                  "displayName": "url",
+                  "required": false,
+                  "defaultMatch": false,
+                  "display": true,
+                  "canBeUsedToMatch": true,
+                  "type": "string",
+                  "removed": true
+                }
+              ],
+              "attemptToConvertTypes": false,
+              "convertFieldsToString": true
+            },
+            "options": {}
+          },
+          "type": "n8n-nodes-base.executeWorkflow",
+          "typeVersion": 1.3,
+          "position": [
+            1296,
+            -96
+          ],
+          "id": "efaeb4b0-922d-432c-b0ae-0f2750065625",
+          "name": "Call 'Telegram Notification Service'"
+        },
+        {
+          "parameters": {
+            "aggregate": "aggregateAllItemData",
+            "options": {}
+          },
+          "type": "n8n-nodes-base.aggregate",
+          "typeVersion": 1,
+          "position": [
+            1072,
+            -96
+          ],
+          "id": "3657b5a9-c76b-4fed-849e-967e478a3e6d",
+          "name": "Aggregate",
+          "alwaysOutputData": false
+        }
+      ],
+      "connections": {
+        "HTTP Request": {
+          "main": [
+            [
+              {
+                "node": "Split Out",
+                "type": "main",
+                "index": 0
+              }
+            ]
+          ]
+        },
+        "Split Out": {
+          "main": [
+            [
+              {
+                "node": "Upsert row(s)",
+                "type": "main",
+                "index": 0
+              }
+            ]
+          ]
+        },
+        "Schedule Trigger": {
+          "main": [
+            [
+              {
+                "node": "HTTP Request",
+                "type": "main",
+                "index": 0
+              }
+            ]
+          ]
+        },
+        "Upsert row(s)": {
+          "main": [
+            [
+              {
+                "node": "Aggregate",
+                "type": "main",
+                "index": 0
+              }
+            ]
+          ]
+        },
+        "Aggregate": {
+          "main": [
+            [
+              {
+                "node": "Call 'Telegram Notification Service'",
+                "type": "main",
+                "index": 0
+              }
+            ]
+          ]
+        }
+      },
+      "settings": {
+        "executionOrder": "v1",
+        "availableInMCP": false
+      },
+      "staticData": {
+        "node:Schedule Trigger": {
+          "recurrenceRules": []
+        }
+      },
+      "meta": {
+        "templateCredsSetupCompleted": true
+      },
+      "pinData": {},
+      "versionId": "961068c8-9685-4e6f-9cb2-360dd852a2ba",
+      "activeVersionId": "961068c8-9685-4e6f-9cb2-360dd852a2ba",
+      "versionCounter": 22,
+      "triggerCount": 1,
+      "shared": [
+        {
+          "updatedAt": "2026-02-20T06:41:56.602Z",
+          "createdAt": "2026-02-20T06:41:56.602Z",
+          "role": "workflow:owner",
+          "workflowId": "B2QRqtVwapqY1zsf",
+          "projectId": "XeBXiP5yJsi5DYCS",
+          "project": {
+            "updatedAt": "2026-02-20T06:29:28.274Z",
+            "createdAt": "2026-02-20T06:29:02.050Z",
+            "id": "XeBXiP5yJsi5DYCS",
+            "name": "Admin Admin <konstantinkulebaev@gmail.com>",
+            "type": "personal",
+            "icon": null,
+            "description": null,
+            "creatorId": "ebcf2b09-cd83-42f3-b5e0-89c4fcaad4a1"
+          }
+        }
+      ],
+      "tags": [],
+      "activeVersion": {
+        "updatedAt": "2026-02-20T10:29:20.284Z",
+        "createdAt": "2026-02-20T10:29:17.095Z",
+        "versionId": "961068c8-9685-4e6f-9cb2-360dd852a2ba",
+        "workflowId": "B2QRqtVwapqY1zsf",
+        "nodes": [
+          {
+            "parameters": {
+              "url": "https://api.boosty.to/v1/blog/kulebaevadaria/subscribers",
+              "authentication": "genericCredentialType",
+              "genericAuthType": "httpBearerAuth",
+              "sendQuery": true,
+              "queryParameters": {
+                "parameters": [
+                  {
+                    "name": "sort_by",
+                    "value": "on_time"
+                  },
+                  {
+                    "name": "limit",
+                    "value": "200"
+                  },
+                  {
+                    "name": "order",
+                    "value": "lt"
+                  }
+                ]
+              },
+              "options": {}
+            },
+            "type": "n8n-nodes-base.httpRequest",
+            "typeVersion": 4.3,
+            "position": [
+              416,
+              -96
+            ],
+            "id": "86aee0c5-08b1-4c96-bf25-4e8acb76e53b",
+            "name": "HTTP Request",
+            "credentials": {
+              "httpBearerAuth": {
+                "id": "kAG7U4K6lerXOxcl",
+                "name": "Bearer Auth account | Boosty"
+              }
+            }
+          },
+          {
+            "parameters": {
+              "fieldToSplitOut": "data",
+              "options": {}
+            },
+            "type": "n8n-nodes-base.splitOut",
+            "typeVersion": 1,
+            "position": [
+              640,
+              -96
+            ],
+            "id": "205f56b7-926c-49ec-a9d0-64df6d6a8410",
+            "name": "Split Out"
+          },
+          {
+            "parameters": {
+              "rule": {
+                "interval": [
+                  {
+                    "triggerAtHour": 10
+                  }
+                ]
+              }
+            },
+            "type": "n8n-nodes-base.scheduleTrigger",
+            "typeVersion": 1.3,
+            "position": [
+              192,
+              -96
+            ],
+            "id": "0c334e6d-0236-4515-8727-59c4ef46f6eb",
+            "name": "Schedule Trigger"
+          },
+          {
+            "parameters": {
+              "operation": "upsert",
+              "dataTableId": {
+                "__rl": true,
+                "value": "25QXaM48qGmKjxHa",
+                "mode": "list",
+                "cachedResultName": "Boosty subs",
+                "cachedResultUrl": "/projects/XeBXiP5yJsi5DYCS/datatables/25QXaM48qGmKjxHa"
+              },
+              "filters": {
+                "conditions": [
+                  {
+                    "keyName": "userId",
+                    "keyValue": "={{ $json.id }}"
+                  }
+                ]
+              },
+              "columns": {
+                "mappingMode": "defineBelow",
+                "value": {
+                  "subscribed": "={{ $json.subscribed }}",
+                  "price": "={{ $json.level.price }}",
+                  "payments": "={{ $json.payments }}",
+                  "userId": "={{ $json.id }}",
+                  "name": "={{ $json.name }}",
+                  "email": "={{ $json.email }}",
+                  "status": "={{ $json.status }}",
+                  "levelName": "={{ $json.level.name }}",
+                  "onTime": "={{ DateTime.fromSeconds($json.onTime) }}"
+                },
+                "matchingColumns": [],
+                "schema": [
+                  {
+                    "id": "userId",
+                    "displayName": "userId",
+                    "required": false,
+                    "defaultMatch": false,
+                    "display": true,
+                    "type": "string",
+                    "readOnly": false,
+                    "removed": false
+                  },
+                  {
+                    "id": "name",
+                    "displayName": "name",
+                    "required": false,
+                    "defaultMatch": false,
+                    "display": true,
+                    "type": "string",
+                    "readOnly": false,
+                    "removed": false
+                  },
+                  {
+                    "id": "email",
+                    "displayName": "email",
+                    "required": false,
+                    "defaultMatch": false,
+                    "display": true,
+                    "type": "string",
+                    "readOnly": false,
+                    "removed": false
+                  },
+                  {
+                    "id": "status",
+                    "displayName": "status",
+                    "required": false,
+                    "defaultMatch": false,
+                    "display": true,
+                    "type": "string",
+                    "readOnly": false,
+                    "removed": false
+                  },
+                  {
+                    "id": "subscribed",
+                    "displayName": "subscribed",
+                    "required": false,
+                    "defaultMatch": false,
+                    "display": true,
+                    "type": "boolean",
+                    "readOnly": false,
+                    "removed": false
+                  },
+                  {
+                    "id": "levelName",
+                    "displayName": "levelName",
+                    "required": false,
+                    "defaultMatch": false,
+                    "display": true,
+                    "type": "string",
+                    "readOnly": false,
+                    "removed": false
+                  },
+                  {
+                    "id": "price",
+                    "displayName": "price",
+                    "required": false,
+                    "defaultMatch": false,
+                    "display": true,
+                    "type": "number",
+                    "readOnly": false,
+                    "removed": false
+                  },
+                  {
+                    "id": "payments",
+                    "displayName": "payments",
+                    "required": false,
+                    "defaultMatch": false,
+                    "display": true,
+                    "type": "number",
+                    "readOnly": false,
+                    "removed": false
+                  },
+                  {
+                    "id": "onTime",
+                    "displayName": "onTime",
+                    "required": false,
+                    "defaultMatch": false,
+                    "display": true,
+                    "type": "dateTime",
+                    "readOnly": false,
+                    "removed": false
+                  }
+                ],
+                "attemptToConvertTypes": false,
+                "convertFieldsToString": false
+              },
+              "options": {}
+            },
+            "type": "n8n-nodes-base.dataTable",
+            "typeVersion": 1.1,
+            "position": [
+              864,
+              -96
+            ],
+            "id": "37b9554b-6dfd-4760-9a55-c364d52add58",
+            "name": "Upsert row(s)"
+          },
+          {
+            "parameters": {
+              "workflowId": {
+                "__rl": true,
+                "value": "0GNr1mrgOjgfbGgJ",
+                "mode": "list",
+                "cachedResultUrl": "/workflow/0GNr1mrgOjgfbGgJ",
+                "cachedResultName": "Telegram Notification Service"
+              },
+              "workflowInputs": {
+                "mappingMode": "defineBelow",
+                "value": {
+                  "time": "={{ Date.now() }}",
+                  "message": "Подписчики Boosty обновлены в Data Table",
+                  "title": "Boosty-уведомление"
+                },
+                "matchingColumns": [],
+                "schema": [
+                  {
+                    "id": "time",
+                    "displayName": "time",
+                    "required": false,
+                    "defaultMatch": false,
+                    "display": true,
+                    "canBeUsedToMatch": true,
+                    "type": "number",
+                    "removed": false
+                  },
+                  {
+                    "id": "title",
+                    "displayName": "title",
+                    "required": false,
+                    "defaultMatch": false,
+                    "display": true,
+                    "canBeUsedToMatch": true,
+                    "type": "string",
+                    "removed": false
+                  },
+                  {
+                    "id": "message",
+                    "displayName": "message",
+                    "required": false,
+                    "defaultMatch": false,
+                    "display": true,
+                    "canBeUsedToMatch": true,
+                    "type": "string",
+                    "removed": false
+                  },
+                  {
+                    "id": "url",
+                    "displayName": "url",
+                    "required": false,
+                    "defaultMatch": false,
+                    "display": true,
+                    "canBeUsedToMatch": true,
+                    "type": "string",
+                    "removed": true
+                  }
+                ],
+                "attemptToConvertTypes": false,
+                "convertFieldsToString": true
+              },
+              "options": {}
+            },
+            "type": "n8n-nodes-base.executeWorkflow",
+            "typeVersion": 1.3,
+            "position": [
+              1296,
+              -96
+            ],
+            "id": "efaeb4b0-922d-432c-b0ae-0f2750065625",
+            "name": "Call 'Telegram Notification Service'"
+          },
+          {
+            "parameters": {
+              "aggregate": "aggregateAllItemData",
+              "options": {}
+            },
+            "type": "n8n-nodes-base.aggregate",
+            "typeVersion": 1,
+            "position": [
+              1072,
+              -96
+            ],
+            "id": "3657b5a9-c76b-4fed-849e-967e478a3e6d",
+            "name": "Aggregate",
+            "alwaysOutputData": false
+          }
+        ],
+        "connections": {
+          "HTTP Request": {
+            "main": [
+              [
+                {
+                  "node": "Split Out",
+                  "type": "main",
+                  "index": 0
+                }
+              ]
+            ]
+          },
+          "Split Out": {
+            "main": [
+              [
+                {
+                  "node": "Upsert row(s)",
+                  "type": "main",
+                  "index": 0
+                }
+              ]
+            ]
+          },
+          "Schedule Trigger": {
+            "main": [
+              [
+                {
+                  "node": "HTTP Request",
+                  "type": "main",
+                  "index": 0
+                }
+              ]
+            ]
+          },
+          "Upsert row(s)": {
+            "main": [
+              [
+                {
+                  "node": "Aggregate",
+                  "type": "main",
+                  "index": 0
+                }
+              ]
+            ]
+          },
+          "Aggregate": {
+            "main": [
+              [
+                {
+                  "node": "Call 'Telegram Notification Service'",
+                  "type": "main",
+                  "index": 0
+                }
+              ]
+            ]
+          }
+        },
+        "authors": "Admin Admin",
+        "name": "Version 961068c8",
+        "description": "",
+        "autosaved": false,
+        "workflowPublishHistory": [
+          {
+            "createdAt": "2026-02-20T10:29:20.283Z",
+            "id": 7,
+            "workflowId": "B2QRqtVwapqY1zsf",
+            "versionId": "961068c8-9685-4e6f-9cb2-360dd852a2ba",
+            "event": "activated",
+            "userId": "ebcf2b09-cd83-42f3-b5e0-89c4fcaad4a1"
+          }
+        ]
+      }
+    },
+    {
+      "updatedAt": "2026-02-20T10:33:57.156Z",
+      "createdAt": "2026-02-20T06:35:11.597Z",
+      "id": "o5LFZ44iJ8wt9VcX",
+      "name": "Notification from VK group",
+      "description": null,
+      "active": true,
+      "isArchived": false,
+      "nodes": [
+        {
+          "parameters": {
+            "httpMethod": "POST",
+            "path": "1dc93028-aae8-4c72-8b5c-361ad47fa83a",
+            "options": {
+              "responseData": "ok"
+            }
+          },
+          "type": "n8n-nodes-base.webhook",
+          "typeVersion": 2.1,
+          "position": [
+            0,
+            0
+          ],
+          "id": "d5c09981-33f4-4a36-9f92-5309468bfbcf",
+          "name": "Webhook",
+          "webhookId": "1dc93028-aae8-4c72-8b5c-361ad47fa83a"
+        },
+        {
+          "parameters": {
+            "workflowId": {
+              "__rl": true,
+              "value": "0GNr1mrgOjgfbGgJ",
+              "mode": "list",
+              "cachedResultUrl": "/workflow/0GNr1mrgOjgfbGgJ",
+              "cachedResultName": "Telegram Notification Service"
+            },
+            "workflowInputs": {
+              "mappingMode": "defineBelow",
+              "value": {
+                "message": "={{ $json.body.object.message.text }}",
+                "time": "={{ $json.body.object.message.date }}",
+                "title": "VK Группа · Новое сообщение",
+                "url": "https://vk.com/gim229013867"
+              },
+              "matchingColumns": [],
+              "schema": [
+                {
+                  "id": "time",
+                  "displayName": "time",
+                  "required": false,
+                  "defaultMatch": false,
+                  "display": true,
+                  "canBeUsedToMatch": true,
+                  "type": "number",
+                  "removed": false
+                },
+                {
+                  "id": "title",
+                  "displayName": "title",
+                  "required": false,
+                  "defaultMatch": false,
+                  "display": true,
+                  "canBeUsedToMatch": true,
+                  "type": "string",
+                  "removed": false
+                },
+                {
+                  "id": "message",
+                  "displayName": "message",
+                  "required": false,
+                  "defaultMatch": false,
+                  "display": true,
+                  "canBeUsedToMatch": true,
+                  "type": "string",
+                  "removed": false
+                },
+                {
+                  "id": "url",
+                  "displayName": "url",
+                  "required": false,
+                  "defaultMatch": false,
+                  "display": true,
+                  "canBeUsedToMatch": true,
+                  "type": "string",
+                  "removed": false
+                }
+              ],
+              "attemptToConvertTypes": false,
+              "convertFieldsToString": true
+            },
+            "options": {
+              "waitForSubWorkflow": false
+            }
+          },
+          "type": "n8n-nodes-base.executeWorkflow",
+          "typeVersion": 1.3,
+          "position": [
+            224,
+            0
+          ],
+          "id": "3ed317c9-b346-49a3-86a7-fad4bed8f407",
+          "name": "Call 'Telegram Notification Service'"
+        }
+      ],
+      "connections": {
+        "Webhook": {
+          "main": [
+            [
+              {
+                "node": "Call 'Telegram Notification Service'",
+                "type": "main",
+                "index": 0
+              }
+            ]
+          ]
+        }
+      },
+      "settings": {
+        "executionOrder": "v1",
+        "availableInMCP": false
+      },
+      "staticData": null,
+      "meta": {
+        "templateCredsSetupCompleted": true
+      },
+      "pinData": {},
+      "versionId": "593f5420-f149-4f17-bef4-b2e9b4df5c74",
+      "activeVersionId": "593f5420-f149-4f17-bef4-b2e9b4df5c74",
+      "versionCounter": 15,
+      "triggerCount": 1,
+      "shared": [
+        {
+          "updatedAt": "2026-02-20T06:35:11.597Z",
+          "createdAt": "2026-02-20T06:35:11.597Z",
+          "role": "workflow:owner",
+          "workflowId": "o5LFZ44iJ8wt9VcX",
+          "projectId": "XeBXiP5yJsi5DYCS",
+          "project": {
+            "updatedAt": "2026-02-20T06:29:28.274Z",
+            "createdAt": "2026-02-20T06:29:02.050Z",
+            "id": "XeBXiP5yJsi5DYCS",
+            "name": "Admin Admin <konstantinkulebaev@gmail.com>",
+            "type": "personal",
+            "icon": null,
+            "description": null,
+            "creatorId": "ebcf2b09-cd83-42f3-b5e0-89c4fcaad4a1"
+          }
+        }
+      ],
+      "tags": [],
+      "activeVersion": {
+        "updatedAt": "2026-02-20T10:15:50.739Z",
+        "createdAt": "2026-02-20T10:15:40.901Z",
+        "versionId": "593f5420-f149-4f17-bef4-b2e9b4df5c74",
+        "workflowId": "o5LFZ44iJ8wt9VcX",
+        "nodes": [
+          {
+            "parameters": {
+              "httpMethod": "POST",
+              "path": "1dc93028-aae8-4c72-8b5c-361ad47fa83a",
+              "options": {
+                "responseData": "ok"
+              }
+            },
+            "type": "n8n-nodes-base.webhook",
+            "typeVersion": 2.1,
+            "position": [
+              0,
+              0
+            ],
+            "id": "d5c09981-33f4-4a36-9f92-5309468bfbcf",
+            "name": "Webhook",
+            "webhookId": "1dc93028-aae8-4c72-8b5c-361ad47fa83a"
+          },
+          {
+            "parameters": {
+              "workflowId": {
+                "__rl": true,
+                "value": "0GNr1mrgOjgfbGgJ",
+                "mode": "list",
+                "cachedResultUrl": "/workflow/0GNr1mrgOjgfbGgJ",
+                "cachedResultName": "Telegram Notification Service"
+              },
+              "workflowInputs": {
+                "mappingMode": "defineBelow",
+                "value": {
+                  "message": "={{ $json.body.object.message.text }}",
+                  "time": "={{ $json.body.object.message.date }}",
+                  "title": "VK Группа · Новое сообщение",
+                  "url": "https://vk.com/gim229013867"
+                },
+                "matchingColumns": [],
+                "schema": [
+                  {
+                    "id": "time",
+                    "displayName": "time",
+                    "required": false,
+                    "defaultMatch": false,
+                    "display": true,
+                    "canBeUsedToMatch": true,
+                    "type": "number",
+                    "removed": false
+                  },
+                  {
+                    "id": "title",
+                    "displayName": "title",
+                    "required": false,
+                    "defaultMatch": false,
+                    "display": true,
+                    "canBeUsedToMatch": true,
+                    "type": "string",
+                    "removed": false
+                  },
+                  {
+                    "id": "message",
+                    "displayName": "message",
+                    "required": false,
+                    "defaultMatch": false,
+                    "display": true,
+                    "canBeUsedToMatch": true,
+                    "type": "string",
+                    "removed": false
+                  },
+                  {
+                    "id": "url",
+                    "displayName": "url",
+                    "required": false,
+                    "defaultMatch": false,
+                    "display": true,
+                    "canBeUsedToMatch": true,
+                    "type": "string",
+                    "removed": false
+                  }
+                ],
+                "attemptToConvertTypes": false,
+                "convertFieldsToString": true
+              },
+              "options": {
+                "waitForSubWorkflow": false
+              }
+            },
+            "type": "n8n-nodes-base.executeWorkflow",
+            "typeVersion": 1.3,
+            "position": [
+              224,
+              0
+            ],
+            "id": "3ed317c9-b346-49a3-86a7-fad4bed8f407",
+            "name": "Call 'Telegram Notification Service'"
+          }
+        ],
+        "connections": {
+          "Webhook": {
+            "main": [
+              [
+                {
+                  "node": "Call 'Telegram Notification Service'",
+                  "type": "main",
+                  "index": 0
+                }
+              ]
+            ]
+          }
+        },
+        "authors": "Admin Admin",
+        "name": "Version 593f5420",
+        "description": "",
+        "autosaved": false,
+        "workflowPublishHistory": [
+          {
+            "createdAt": "2026-02-20T10:15:50.728Z",
+            "id": 6,
+            "workflowId": "o5LFZ44iJ8wt9VcX",
+            "versionId": "593f5420-f149-4f17-bef4-b2e9b4df5c74",
+            "event": "activated",
+            "userId": "ebcf2b09-cd83-42f3-b5e0-89c4fcaad4a1"
+          }
+        ]
+      }
+    },
+    {
+      "updatedAt": "2026-02-20T10:34:25.059Z",
+      "createdAt": "2026-02-20T07:05:56.323Z",
+      "id": "HMQXTRLUvppIxeMz",
+      "name": "Backup workspaces for n8n",
+      "description": null,
+      "active": true,
+      "isArchived": false,
+      "nodes": [
+        {
+          "parameters": {
+            "githubRepo": "kkulebaev/n8n"
+          },
+          "type": "n8n-nodes-backup.n8nBackup",
+          "typeVersion": 1,
+          "position": [
+            208,
+            0
+          ],
+          "id": "45db2f29-f2d4-439f-a707-b9a9e69f6f43",
+          "name": "n8n Backup",
+          "credentials": {
+            "n8nApi": {
+              "id": "UDzormeWy1XJYM2Y",
+              "name": "n8n account | konstantinkulebaev"
+            },
+            "githubApi": {
+              "id": "7TATfXVfgddCWOgw",
+              "name": "GitHub account | kkulebaev"
+            }
+          }
+        },
+        {
+          "parameters": {
+            "rule": {
+              "interval": [
+                {
+                  "triggerAtHour": 10
+                }
+              ]
+            }
+          },
+          "type": "n8n-nodes-base.scheduleTrigger",
+          "typeVersion": 1.3,
+          "position": [
+            0,
+            0
+          ],
+          "id": "3fa63890-3cb1-4da9-874e-43a14a92355f",
+          "name": "Schedule Trigger"
+        }
+      ],
+      "connections": {
+        "Schedule Trigger": {
+          "main": [
+            [
+              {
+                "node": "n8n Backup",
+                "type": "main",
+                "index": 0
+              }
+            ]
+          ]
+        }
+      },
+      "settings": {
+        "executionOrder": "v1",
+        "availableInMCP": false
+      },
+      "staticData": {
+        "node:Schedule Trigger": {
+          "recurrenceRules": []
+        }
+      },
+      "meta": {
+        "templateCredsSetupCompleted": true
+      },
+      "pinData": {},
+      "versionId": "d81bba1c-06d7-4c8a-b55f-fcbe95b1333e",
+      "activeVersionId": "d81bba1c-06d7-4c8a-b55f-fcbe95b1333e",
+      "versionCounter": 17,
+      "triggerCount": 1,
+      "shared": [
+        {
+          "updatedAt": "2026-02-20T07:05:56.323Z",
+          "createdAt": "2026-02-20T07:05:56.323Z",
+          "role": "workflow:owner",
+          "workflowId": "HMQXTRLUvppIxeMz",
+          "projectId": "XeBXiP5yJsi5DYCS",
+          "project": {
+            "updatedAt": "2026-02-20T06:29:28.274Z",
+            "createdAt": "2026-02-20T06:29:02.050Z",
+            "id": "XeBXiP5yJsi5DYCS",
+            "name": "Admin Admin <konstantinkulebaev@gmail.com>",
+            "type": "personal",
+            "icon": null,
+            "description": null,
+            "creatorId": "ebcf2b09-cd83-42f3-b5e0-89c4fcaad4a1"
+          }
+        }
+      ],
+      "tags": [],
+      "activeVersion": {
+        "updatedAt": "2026-02-20T07:29:48.420Z",
+        "createdAt": "2026-02-20T07:29:19.593Z",
+        "versionId": "d81bba1c-06d7-4c8a-b55f-fcbe95b1333e",
+        "workflowId": "HMQXTRLUvppIxeMz",
+        "nodes": [
+          {
+            "parameters": {
+              "githubRepo": "kkulebaev/n8n"
+            },
+            "type": "n8n-nodes-backup.n8nBackup",
+            "typeVersion": 1,
+            "position": [
+              208,
+              0
+            ],
+            "id": "45db2f29-f2d4-439f-a707-b9a9e69f6f43",
+            "name": "n8n Backup",
+            "credentials": {
+              "n8nApi": {
+                "id": "UDzormeWy1XJYM2Y",
+                "name": "n8n account | konstantinkulebaev"
+              },
+              "githubApi": {
+                "id": "7TATfXVfgddCWOgw",
+                "name": "GitHub account | kkulebaev"
+              }
+            }
+          },
+          {
+            "parameters": {
+              "rule": {
+                "interval": [
+                  {
+                    "triggerAtHour": 10
+                  }
+                ]
+              }
+            },
+            "type": "n8n-nodes-base.scheduleTrigger",
+            "typeVersion": 1.3,
+            "position": [
+              0,
+              0
+            ],
+            "id": "3fa63890-3cb1-4da9-874e-43a14a92355f",
+            "name": "Schedule Trigger"
+          }
+        ],
+        "connections": {
+          "Schedule Trigger": {
+            "main": [
+              [
+                {
+                  "node": "n8n Backup",
+                  "type": "main",
+                  "index": 0
+                }
+              ]
+            ]
+          }
+        },
+        "authors": "Admin Admin",
+        "name": "Version d81bba1c",
+        "description": "",
+        "autosaved": false,
+        "workflowPublishHistory": [
+          {
+            "createdAt": "2026-02-20T07:29:48.418Z",
+            "id": 3,
+            "workflowId": "HMQXTRLUvppIxeMz",
+            "versionId": "d81bba1c-06d7-4c8a-b55f-fcbe95b1333e",
+            "event": "activated",
+            "userId": "ebcf2b09-cd83-42f3-b5e0-89c4fcaad4a1"
+          }
+        ]
+      }
+    },
+    {
+      "updatedAt": "2026-02-21T14:23:01.770Z",
+      "createdAt": "2026-02-20T16:12:51.953Z",
+      "id": "MZGat0oMrVNlNiwJ",
+      "name": "Create wedding contract on Google Drive",
+      "description": null,
+      "active": true,
+      "isArchived": false,
+      "nodes": [
+        {
+          "parameters": {
+            "operation": "get",
+            "documentURL": "={{ $json.id }}"
+          },
+          "type": "n8n-nodes-base.googleDocs",
+          "typeVersion": 2,
+          "position": [
+            896,
+            272
+          ],
+          "id": "665abe1e-06e5-467e-ab6c-81eb03d14f06",
+          "name": "Get a document",
+          "credentials": {
+            "googleDocsOAuth2Api": {
+              "id": "2MgG9ctj3cSNx0Mj",
+              "name": "Google Docs account"
+            }
+          }
+        },
+        {
+          "parameters": {
+            "operation": "update",
+            "documentURL": "={{ $json.documentId }}",
+            "actionsUi": {
+              "actionFields": [
+                {
+                  "action": "replaceAll",
+                  "text": "<Дата договора>",
+                  "replaceText": "={{ DateTime.now().setLocale('ru').format(\"dd MMMM yyyy\") }}"
+                },
+                {
+                  "action": "replaceAll",
+                  "text": "<ФИО>",
+                  "replaceText": "={{ $('Input').item.json.last_name }} {{ $('Input').item.json.first_name }} {{ $('Input').item.json.middle_name }}"
+                },
+                {
+                  "action": "replaceAll",
+                  "text": "<Дата свадьбы>",
+                  "replaceText": "={{ DateTime.fromFormat($('Input').item.json.wedding_date, \"dd-MM-yyyy\").setLocale('ru').format(\"dd MMMM yyyy\") }}"
+                },
+                {
+                  "action": "replaceAll",
+                  "text": "<Паспорт>",
+                  "replaceText": "={{ $('Input').item.json.document }}"
+                },
+                {
+                  "action": "replaceAll",
+                  "text": "<Инициалы>",
+                  "replaceText": "={{ $('Input').item.json.last_name }} {{ $('Input').item.json.first_name[0] }}.{{ $('Input').item.json.middle_name[0] }}."
+                }
+              ]
+            }
+          },
+          "type": "n8n-nodes-base.googleDocs",
+          "typeVersion": 2,
+          "position": [
+            1120,
+            272
+          ],
+          "id": "db60a9b2-b39c-4954-ab13-ace94af0778d",
+          "name": "Update a document",
+          "credentials": {
+            "googleDocsOAuth2Api": {
+              "id": "2MgG9ctj3cSNx0Mj",
+              "name": "Google Docs account"
+            }
+          }
+        },
+        {
+          "parameters": {
+            "resource": "folder",
+            "name": "={{ DateTime.fromFormat($json.wedding_date, 'dd-MM-yyyy').format('yyyy-MM-dd') }}",
+            "driveId": {
+              "__rl": true,
+              "mode": "list",
+              "value": "My Drive"
+            },
+            "folderId": {
+              "__rl": true,
+              "value": "1N6SKwyouAdfHeL9Mq0UaIxTJ6qNcGQia",
+              "mode": "id"
+            },
+            "options": {}
+          },
+          "type": "n8n-nodes-base.googleDrive",
+          "typeVersion": 3,
+          "position": [
+            224,
+            272
+          ],
+          "id": "a19407f8-3d3c-484c-ba9c-1922945f314f",
+          "name": "Create folder",
+          "credentials": {
+            "googleDriveOAuth2Api": {
+              "id": "kc5mWUOvzixEHRv8",
+              "name": "Google Drive account"
+            }
+          }
+        },
+        {
+          "parameters": {
+            "operation": "download",
+            "fileId": {
+              "__rl": true,
+              "value": "={{ $json.documentId }}",
+              "mode": "id"
+            },
+            "options": {
+              "binaryPropertyName": "data",
+              "googleFileConversion": {
+                "conversion": {
+                  "docsToFormat": "application/pdf",
+                  "drawingsToFormat": "application/pdf",
+                  "slidesToFormat": "application/pdf",
+                  "sheetsToFormat": "application/pdf"
+                }
+              },
+              "fileName": "=Договор {{ $('Input').item.json.wedding_date }}.pdf"
+            }
+          },
+          "type": "n8n-nodes-base.googleDrive",
+          "typeVersion": 3,
+          "position": [
+            1344,
+            272
+          ],
+          "id": "c3cc1050-fd26-4c4c-b22e-4e5186e16d6b",
+          "name": "Download file",
+          "credentials": {
+            "googleDriveOAuth2Api": {
+              "id": "kc5mWUOvzixEHRv8",
+              "name": "Google Drive account"
+            }
+          }
+        },
+        {
+          "parameters": {
+            "name": "=Договор {{ $('Input').item.json.wedding_date }}.pdf",
+            "driveId": {
+              "__rl": true,
+              "mode": "list",
+              "value": "My Drive"
+            },
+            "folderId": {
+              "__rl": true,
+              "value": "={{ $('Create folder').item.json.id }}",
+              "mode": "id"
+            },
+            "options": {}
+          },
+          "type": "n8n-nodes-base.googleDrive",
+          "typeVersion": 3,
+          "position": [
+            0,
+            -144
+          ],
+          "id": "acb116e8-dcc9-4057-bda1-1ff9096b08eb",
+          "name": "Upload file",
+          "credentials": {
+            "googleDriveOAuth2Api": {
+              "id": "kc5mWUOvzixEHRv8",
+              "name": "Google Drive account"
+            }
+          }
+        },
+        {
+          "parameters": {
+            "rules": {
+              "values": [
+                {
+                  "conditions": {
+                    "options": {
+                      "caseSensitive": true,
+                      "leftValue": "",
+                      "typeValidation": "strict",
+                      "version": 3
+                    },
+                    "conditions": [
+                      {
+                        "leftValue": "={{ $('Input').item.json.plan }}",
+                        "rightValue": "standard",
+                        "operator": {
+                          "type": "string",
+                          "operation": "equals"
+                        },
+                        "id": "8ad65ad8-befa-4188-8151-23d67552fdc1"
+                      }
+                    ],
+                    "combinator": "and"
+                  }
+                },
+                {
+                  "conditions": {
+                    "options": {
+                      "caseSensitive": true,
+                      "leftValue": "",
+                      "typeValidation": "strict",
+                      "version": 3
+                    },
+                    "conditions": [
+                      {
+                        "id": "07ddfb07-909e-4598-8c81-4cd6d19dfdfb",
+                        "leftValue": "={{ $('Input').item.json.plan }}",
+                        "rightValue": "comfort",
+                        "operator": {
+                          "type": "string",
+                          "operation": "equals"
+                        }
+                      }
+                    ],
+                    "combinator": "and"
+                  }
+                },
+                {
+                  "conditions": {
+                    "options": {
+                      "caseSensitive": true,
+                      "leftValue": "",
+                      "typeValidation": "strict",
+                      "version": 3
+                    },
+                    "conditions": [
+                      {
+                        "id": "a5acee46-b956-4295-af90-39f419c3e876",
+                        "leftValue": "={{ $('Input').item.json.plan }}",
+                        "rightValue": "unlimited",
+                        "operator": {
+                          "type": "string",
+                          "operation": "equals"
+                        }
+                      }
+                    ],
+                    "combinator": "and"
+                  }
+                }
+              ]
+            },
+            "options": {
+              "allMatchingOutputs": false
+            }
+          },
+          "type": "n8n-nodes-base.switch",
+          "typeVersion": 3.4,
+          "position": [
+            448,
+            256
+          ],
+          "id": "a731800a-62ff-4af5-9682-4519e7b039b3",
+          "name": "Switch"
+        },
+        {
+          "parameters": {
+            "operation": "copy",
+            "fileId": {
+              "__rl": true,
+              "value": "1Y1pbsngz4qcE_sc3c0jL1O4rOjoXAZD8xaT3yBvrh6U",
+              "mode": "id"
+            },
+            "name": "=Договор {{ $('Input').item.json.wedding_date }}",
+            "sameFolder": false,
+            "driveId": {
+              "__rl": true,
+              "value": "My Drive",
+              "mode": "list",
+              "cachedResultName": "My Drive",
+              "cachedResultUrl": "https://drive.google.com/drive/my-drive"
+            },
+            "folderId": {
+              "__rl": true,
+              "value": "={{ $json.id }}",
+              "mode": "id"
+            },
+            "options": {}
+          },
+          "type": "n8n-nodes-base.googleDrive",
+          "typeVersion": 3,
+          "position": [
+            672,
+            80
+          ],
+          "id": "88d1159f-ea98-4b4c-96b6-6883712ac69b",
+          "name": "Copy Standard Contract",
+          "credentials": {
+            "googleDriveOAuth2Api": {
+              "id": "kc5mWUOvzixEHRv8",
+              "name": "Google Drive account"
+            }
+          }
+        },
+        {
+          "parameters": {
+            "operation": "copy",
+            "fileId": {
+              "__rl": true,
+              "value": "14ncolBjy2bSB6ki8vls_yYR-Zw1-O7Fh5Aitj3hxvIA",
+              "mode": "id"
+            },
+            "name": "=Договор {{ $('Input').item.json.wedding_date }}",
+            "sameFolder": false,
+            "driveId": {
+              "__rl": true,
+              "value": "My Drive",
+              "mode": "list",
+              "cachedResultName": "My Drive",
+              "cachedResultUrl": "https://drive.google.com/drive/my-drive"
+            },
+            "folderId": {
+              "__rl": true,
+              "value": "={{ $json.id }}",
+              "mode": "id"
+            },
+            "options": {}
+          },
+          "type": "n8n-nodes-base.googleDrive",
+          "typeVersion": 3,
+          "position": [
+            672,
+            464
+          ],
+          "id": "084fa638-7129-4646-92e6-91bc1a966de1",
+          "name": "Copy Unlimited Contract",
+          "credentials": {
+            "googleDriveOAuth2Api": {
+              "id": "kc5mWUOvzixEHRv8",
+              "name": "Google Drive account"
+            }
+          }
+        },
+        {
+          "parameters": {
+            "operation": "copy",
+            "fileId": {
+              "__rl": true,
+              "value": "1ApuacRF8BLoFCkLLD8v1NNP2tZPtwo3QG2ggaDzOj5s",
+              "mode": "id"
+            },
+            "name": "=Договор {{ $('Input').item.json.wedding_date }}",
+            "sameFolder": false,
+            "driveId": {
+              "__rl": true,
+              "value": "My Drive",
+              "mode": "list",
+              "cachedResultName": "My Drive",
+              "cachedResultUrl": "https://drive.google.com/drive/my-drive"
+            },
+            "folderId": {
+              "__rl": true,
+              "value": "={{ $json.id }}",
+              "mode": "id"
+            },
+            "options": {}
+          },
+          "type": "n8n-nodes-base.googleDrive",
+          "typeVersion": 3,
+          "position": [
+            672,
+            272
+          ],
+          "id": "1397ae79-6f5a-4774-978a-dec66898f870",
+          "name": "Copy Comfort Contract",
+          "credentials": {
+            "googleDriveOAuth2Api": {
+              "id": "kc5mWUOvzixEHRv8",
+              "name": "Google Drive account"
+            }
+          }
+        },
+        {
+          "parameters": {
+            "workflowInputs": {
+              "values": [
+                {
+                  "name": "first_name"
+                },
+                {
+                  "name": "last_name"
+                },
+                {
+                  "name": "middle_name"
+                },
+                {
+                  "name": "wedding_date"
+                },
+                {
+                  "name": "plan"
+                },
+                {
+                  "name": "document"
+                }
+              ]
+            }
+          },
+          "type": "n8n-nodes-base.executeWorkflowTrigger",
+          "typeVersion": 1.1,
+          "position": [
+            0,
+            272
+          ],
+          "id": "e5339453-d43e-4668-9485-90107f023838",
+          "name": "Input"
+        }
+      ],
+      "connections": {
+        "Get a document": {
+          "main": [
+            [
+              {
+                "node": "Update a document",
+                "type": "main",
+                "index": 0
+              }
+            ]
+          ]
+        },
+        "Create folder": {
+          "main": [
+            [
+              {
+                "node": "Switch",
+                "type": "main",
+                "index": 0
+              }
+            ]
+          ]
+        },
+        "Update a document": {
+          "main": [
+            [
+              {
+                "node": "Download file",
+                "type": "main",
+                "index": 0
+              }
+            ]
+          ]
+        },
+        "Download file": {
+          "main": [
+            []
+          ]
+        },
+        "Switch": {
+          "main": [
+            [
+              {
+                "node": "Copy Standard Contract",
+                "type": "main",
+                "index": 0
+              }
+            ],
+            [
+              {
+                "node": "Copy Comfort Contract",
+                "type": "main",
+                "index": 0
+              }
+            ],
+            [
+              {
+                "node": "Copy Unlimited Contract",
+                "type": "main",
+                "index": 0
+              }
+            ]
+          ]
+        },
+        "Copy Standard Contract": {
+          "main": [
+            [
+              {
+                "node": "Get a document",
+                "type": "main",
+                "index": 0
+              }
+            ]
+          ]
+        },
+        "Copy Unlimited Contract": {
+          "main": [
+            [
+              {
+                "node": "Get a document",
+                "type": "main",
+                "index": 0
+              }
+            ]
+          ]
+        },
+        "Copy Comfort Contract": {
+          "main": [
+            [
+              {
+                "node": "Get a document",
+                "type": "main",
+                "index": 0
+              }
+            ]
+          ]
+        },
+        "Input": {
+          "main": [
+            [
+              {
+                "node": "Create folder",
+                "type": "main",
+                "index": 0
+              }
+            ]
+          ]
+        }
+      },
+      "settings": {
+        "executionOrder": "v1",
+        "binaryMode": "separate",
+        "availableInMCP": false
+      },
+      "staticData": null,
+      "meta": {
+        "templateCredsSetupCompleted": true
+      },
+      "pinData": {},
+      "versionId": "237f0a9f-203e-4f39-a901-95e5b660f727",
+      "activeVersionId": "237f0a9f-203e-4f39-a901-95e5b660f727",
+      "versionCounter": 372,
+      "triggerCount": 0,
+      "shared": [
+        {
+          "updatedAt": "2026-02-20T16:12:51.953Z",
+          "createdAt": "2026-02-20T16:12:51.953Z",
+          "role": "workflow:owner",
+          "workflowId": "MZGat0oMrVNlNiwJ",
+          "projectId": "XeBXiP5yJsi5DYCS",
+          "project": {
+            "updatedAt": "2026-02-20T06:29:28.274Z",
+            "createdAt": "2026-02-20T06:29:02.050Z",
+            "id": "XeBXiP5yJsi5DYCS",
+            "name": "Admin Admin <konstantinkulebaev@gmail.com>",
+            "type": "personal",
+            "icon": null,
+            "description": null,
+            "creatorId": "ebcf2b09-cd83-42f3-b5e0-89c4fcaad4a1"
+          }
+        }
+      ],
+      "tags": [],
+      "activeVersion": {
+        "updatedAt": "2026-02-21T14:23:06.128Z",
+        "createdAt": "2026-02-21T14:22:27.470Z",
+        "versionId": "237f0a9f-203e-4f39-a901-95e5b660f727",
+        "workflowId": "MZGat0oMrVNlNiwJ",
+        "nodes": [
+          {
+            "parameters": {
+              "operation": "get",
+              "documentURL": "={{ $json.id }}"
+            },
+            "type": "n8n-nodes-base.googleDocs",
+            "typeVersion": 2,
+            "position": [
+              896,
+              272
+            ],
+            "id": "665abe1e-06e5-467e-ab6c-81eb03d14f06",
+            "name": "Get a document",
+            "credentials": {
+              "googleDocsOAuth2Api": {
+                "id": "2MgG9ctj3cSNx0Mj",
+                "name": "Google Docs account"
+              }
+            }
+          },
+          {
+            "parameters": {
+              "operation": "update",
+              "documentURL": "={{ $json.documentId }}",
+              "actionsUi": {
+                "actionFields": [
+                  {
+                    "action": "replaceAll",
+                    "text": "<Дата договора>",
+                    "replaceText": "={{ DateTime.now().setLocale('ru').format(\"dd MMMM yyyy\") }}"
+                  },
+                  {
+                    "action": "replaceAll",
+                    "text": "<ФИО>",
+                    "replaceText": "={{ $('Input').item.json.last_name }} {{ $('Input').item.json.first_name }} {{ $('Input').item.json.middle_name }}"
+                  },
+                  {
+                    "action": "replaceAll",
+                    "text": "<Дата свадьбы>",
+                    "replaceText": "={{ DateTime.fromFormat($('Input').item.json.wedding_date, \"dd-MM-yyyy\").setLocale('ru').format(\"dd MMMM yyyy\") }}"
+                  },
+                  {
+                    "action": "replaceAll",
+                    "text": "<Паспорт>",
+                    "replaceText": "={{ $('Input').item.json.document }}"
+                  },
+                  {
+                    "action": "replaceAll",
+                    "text": "<Инициалы>",
+                    "replaceText": "={{ $('Input').item.json.last_name }} {{ $('Input').item.json.first_name[0] }}.{{ $('Input').item.json.middle_name[0] }}."
+                  }
+                ]
+              }
+            },
+            "type": "n8n-nodes-base.googleDocs",
+            "typeVersion": 2,
+            "position": [
+              1120,
+              272
+            ],
+            "id": "db60a9b2-b39c-4954-ab13-ace94af0778d",
+            "name": "Update a document",
+            "credentials": {
+              "googleDocsOAuth2Api": {
+                "id": "2MgG9ctj3cSNx0Mj",
+                "name": "Google Docs account"
+              }
+            }
+          },
+          {
+            "parameters": {
+              "resource": "folder",
+              "name": "={{ DateTime.fromFormat($json.wedding_date, 'dd-MM-yyyy').format('yyyy-MM-dd') }}",
+              "driveId": {
+                "__rl": true,
+                "mode": "list",
+                "value": "My Drive"
+              },
+              "folderId": {
+                "__rl": true,
+                "value": "1N6SKwyouAdfHeL9Mq0UaIxTJ6qNcGQia",
+                "mode": "id"
+              },
+              "options": {}
+            },
+            "type": "n8n-nodes-base.googleDrive",
+            "typeVersion": 3,
+            "position": [
+              224,
+              272
+            ],
+            "id": "a19407f8-3d3c-484c-ba9c-1922945f314f",
+            "name": "Create folder",
+            "credentials": {
+              "googleDriveOAuth2Api": {
+                "id": "kc5mWUOvzixEHRv8",
+                "name": "Google Drive account"
+              }
+            }
+          },
+          {
+            "parameters": {
+              "operation": "download",
+              "fileId": {
+                "__rl": true,
+                "value": "={{ $json.documentId }}",
+                "mode": "id"
+              },
+              "options": {
+                "binaryPropertyName": "data",
+                "googleFileConversion": {
+                  "conversion": {
+                    "docsToFormat": "application/pdf",
+                    "drawingsToFormat": "application/pdf",
+                    "slidesToFormat": "application/pdf",
+                    "sheetsToFormat": "application/pdf"
+                  }
+                },
+                "fileName": "=Договор {{ $('Input').item.json.wedding_date }}.pdf"
+              }
+            },
+            "type": "n8n-nodes-base.googleDrive",
+            "typeVersion": 3,
+            "position": [
+              1344,
+              272
+            ],
+            "id": "c3cc1050-fd26-4c4c-b22e-4e5186e16d6b",
+            "name": "Download file",
+            "credentials": {
+              "googleDriveOAuth2Api": {
+                "id": "kc5mWUOvzixEHRv8",
+                "name": "Google Drive account"
+              }
+            }
+          },
+          {
+            "parameters": {
+              "name": "=Договор {{ $('Input').item.json.wedding_date }}.pdf",
+              "driveId": {
+                "__rl": true,
+                "mode": "list",
+                "value": "My Drive"
+              },
+              "folderId": {
+                "__rl": true,
+                "value": "={{ $('Create folder').item.json.id }}",
+                "mode": "id"
+              },
+              "options": {}
+            },
+            "type": "n8n-nodes-base.googleDrive",
+            "typeVersion": 3,
+            "position": [
+              0,
+              -144
+            ],
+            "id": "acb116e8-dcc9-4057-bda1-1ff9096b08eb",
+            "name": "Upload file",
+            "credentials": {
+              "googleDriveOAuth2Api": {
+                "id": "kc5mWUOvzixEHRv8",
+                "name": "Google Drive account"
+              }
+            }
+          },
+          {
+            "parameters": {
+              "rules": {
+                "values": [
+                  {
+                    "conditions": {
+                      "options": {
+                        "caseSensitive": true,
+                        "leftValue": "",
+                        "typeValidation": "strict",
+                        "version": 3
+                      },
+                      "conditions": [
+                        {
+                          "leftValue": "={{ $('Input').item.json.plan }}",
+                          "rightValue": "standard",
+                          "operator": {
+                            "type": "string",
+                            "operation": "equals"
+                          },
+                          "id": "8ad65ad8-befa-4188-8151-23d67552fdc1"
+                        }
+                      ],
+                      "combinator": "and"
+                    }
+                  },
+                  {
+                    "conditions": {
+                      "options": {
+                        "caseSensitive": true,
+                        "leftValue": "",
+                        "typeValidation": "strict",
+                        "version": 3
+                      },
+                      "conditions": [
+                        {
+                          "id": "07ddfb07-909e-4598-8c81-4cd6d19dfdfb",
+                          "leftValue": "={{ $('Input').item.json.plan }}",
+                          "rightValue": "comfort",
+                          "operator": {
+                            "type": "string",
+                            "operation": "equals"
+                          }
+                        }
+                      ],
+                      "combinator": "and"
+                    }
+                  },
+                  {
+                    "conditions": {
+                      "options": {
+                        "caseSensitive": true,
+                        "leftValue": "",
+                        "typeValidation": "strict",
+                        "version": 3
+                      },
+                      "conditions": [
+                        {
+                          "id": "a5acee46-b956-4295-af90-39f419c3e876",
+                          "leftValue": "={{ $('Input').item.json.plan }}",
+                          "rightValue": "unlimited",
+                          "operator": {
+                            "type": "string",
+                            "operation": "equals"
+                          }
+                        }
+                      ],
+                      "combinator": "and"
+                    }
+                  }
+                ]
+              },
+              "options": {
+                "allMatchingOutputs": false
+              }
+            },
+            "type": "n8n-nodes-base.switch",
+            "typeVersion": 3.4,
+            "position": [
+              448,
+              256
+            ],
+            "id": "a731800a-62ff-4af5-9682-4519e7b039b3",
+            "name": "Switch"
+          },
+          {
+            "parameters": {
+              "operation": "copy",
+              "fileId": {
+                "__rl": true,
+                "value": "1Y1pbsngz4qcE_sc3c0jL1O4rOjoXAZD8xaT3yBvrh6U",
+                "mode": "id"
+              },
+              "name": "=Договор {{ $('Input').item.json.wedding_date }}",
+              "sameFolder": false,
+              "driveId": {
+                "__rl": true,
+                "value": "My Drive",
+                "mode": "list",
+                "cachedResultName": "My Drive",
+                "cachedResultUrl": "https://drive.google.com/drive/my-drive"
+              },
+              "folderId": {
+                "__rl": true,
+                "value": "={{ $json.id }}",
+                "mode": "id"
+              },
+              "options": {}
+            },
+            "type": "n8n-nodes-base.googleDrive",
+            "typeVersion": 3,
+            "position": [
+              672,
+              80
+            ],
+            "id": "88d1159f-ea98-4b4c-96b6-6883712ac69b",
+            "name": "Copy Standard Contract",
+            "credentials": {
+              "googleDriveOAuth2Api": {
+                "id": "kc5mWUOvzixEHRv8",
+                "name": "Google Drive account"
+              }
+            }
+          },
+          {
+            "parameters": {
+              "operation": "copy",
+              "fileId": {
+                "__rl": true,
+                "value": "14ncolBjy2bSB6ki8vls_yYR-Zw1-O7Fh5Aitj3hxvIA",
+                "mode": "id"
+              },
+              "name": "=Договор {{ $('Input').item.json.wedding_date }}",
+              "sameFolder": false,
+              "driveId": {
+                "__rl": true,
+                "value": "My Drive",
+                "mode": "list",
+                "cachedResultName": "My Drive",
+                "cachedResultUrl": "https://drive.google.com/drive/my-drive"
+              },
+              "folderId": {
+                "__rl": true,
+                "value": "={{ $json.id }}",
+                "mode": "id"
+              },
+              "options": {}
+            },
+            "type": "n8n-nodes-base.googleDrive",
+            "typeVersion": 3,
+            "position": [
+              672,
+              464
+            ],
+            "id": "084fa638-7129-4646-92e6-91bc1a966de1",
+            "name": "Copy Unlimited Contract",
+            "credentials": {
+              "googleDriveOAuth2Api": {
+                "id": "kc5mWUOvzixEHRv8",
+                "name": "Google Drive account"
+              }
+            }
+          },
+          {
+            "parameters": {
+              "operation": "copy",
+              "fileId": {
+                "__rl": true,
+                "value": "1ApuacRF8BLoFCkLLD8v1NNP2tZPtwo3QG2ggaDzOj5s",
+                "mode": "id"
+              },
+              "name": "=Договор {{ $('Input').item.json.wedding_date }}",
+              "sameFolder": false,
+              "driveId": {
+                "__rl": true,
+                "value": "My Drive",
+                "mode": "list",
+                "cachedResultName": "My Drive",
+                "cachedResultUrl": "https://drive.google.com/drive/my-drive"
+              },
+              "folderId": {
+                "__rl": true,
+                "value": "={{ $json.id }}",
+                "mode": "id"
+              },
+              "options": {}
+            },
+            "type": "n8n-nodes-base.googleDrive",
+            "typeVersion": 3,
+            "position": [
+              672,
+              272
+            ],
+            "id": "1397ae79-6f5a-4774-978a-dec66898f870",
+            "name": "Copy Comfort Contract",
+            "credentials": {
+              "googleDriveOAuth2Api": {
+                "id": "kc5mWUOvzixEHRv8",
+                "name": "Google Drive account"
+              }
+            }
+          },
+          {
+            "parameters": {
+              "workflowInputs": {
+                "values": [
+                  {
+                    "name": "first_name"
+                  },
+                  {
+                    "name": "last_name"
+                  },
+                  {
+                    "name": "middle_name"
+                  },
+                  {
+                    "name": "wedding_date"
+                  },
+                  {
+                    "name": "plan"
+                  },
+                  {
+                    "name": "document"
+                  }
+                ]
+              }
+            },
+            "type": "n8n-nodes-base.executeWorkflowTrigger",
+            "typeVersion": 1.1,
+            "position": [
+              0,
+              272
+            ],
+            "id": "e5339453-d43e-4668-9485-90107f023838",
+            "name": "Input"
+          }
+        ],
+        "connections": {
+          "Get a document": {
+            "main": [
+              [
+                {
+                  "node": "Update a document",
+                  "type": "main",
+                  "index": 0
+                }
+              ]
+            ]
+          },
+          "Create folder": {
+            "main": [
+              [
+                {
+                  "node": "Switch",
+                  "type": "main",
+                  "index": 0
+                }
+              ]
+            ]
+          },
+          "Update a document": {
+            "main": [
+              [
+                {
+                  "node": "Download file",
+                  "type": "main",
+                  "index": 0
+                }
+              ]
+            ]
+          },
+          "Download file": {
+            "main": [
+              []
+            ]
+          },
+          "Switch": {
+            "main": [
+              [
+                {
+                  "node": "Copy Standard Contract",
+                  "type": "main",
+                  "index": 0
+                }
+              ],
+              [
+                {
+                  "node": "Copy Comfort Contract",
+                  "type": "main",
+                  "index": 0
+                }
+              ],
+              [
+                {
+                  "node": "Copy Unlimited Contract",
+                  "type": "main",
+                  "index": 0
+                }
+              ]
+            ]
+          },
+          "Copy Standard Contract": {
+            "main": [
+              [
+                {
+                  "node": "Get a document",
+                  "type": "main",
+                  "index": 0
+                }
+              ]
+            ]
+          },
+          "Copy Unlimited Contract": {
+            "main": [
+              [
+                {
+                  "node": "Get a document",
+                  "type": "main",
+                  "index": 0
+                }
+              ]
+            ]
+          },
+          "Copy Comfort Contract": {
+            "main": [
+              [
+                {
+                  "node": "Get a document",
+                  "type": "main",
+                  "index": 0
+                }
+              ]
+            ]
+          },
+          "Input": {
+            "main": [
+              [
+                {
+                  "node": "Create folder",
+                  "type": "main",
+                  "index": 0
+                }
+              ]
+            ]
+          }
+        },
+        "authors": "Admin Admin",
+        "name": "Version 237f0a9f",
+        "description": "",
+        "autosaved": true,
+        "workflowPublishHistory": [
+          {
+            "createdAt": "2026-02-21T14:23:06.118Z",
+            "id": 35,
+            "workflowId": "MZGat0oMrVNlNiwJ",
+            "versionId": "237f0a9f-203e-4f39-a901-95e5b660f727",
+            "event": "activated",
+            "userId": "ebcf2b09-cd83-42f3-b5e0-89c4fcaad4a1"
+          }
+        ]
+      }
+    }
+  ],
+  "credentials_summary": [
+    {
+      "id": "gQ5KXwBnGnv57mjE",
+      "name": "Telegram account | Wedding Bot",
+      "type": "telegramApi",
+      "used_in_workflows": [
+        "0CMIOWXHMIKBh1x5"
+      ],
+      "used_in_nodes": [
+        "Telegram Trigger (n8n-nodes-base.telegramTrigger)",
+        "Notification \"Starting...\" (n8n-nodes-base.telegram)",
+        "/new (n8n-nodes-base.telegram)",
+        "Fallback message (n8n-nodes-base.telegram)",
+        "Error message (n8n-nodes-base.telegram)",
+        "/help (n8n-nodes-base.telegram)",
+        "Send a document (n8n-nodes-base.telegram)",
+        "/start (n8n-nodes-base.telegram)",
+        "Send a success notification (n8n-nodes-base.telegram)"
+      ]
+    },
+    {
+      "id": "gFevy7iMrcNs13xT",
+      "name": "Google Calendar account | kulebaevadaria",
+      "type": "googleCalendarOAuth2Api",
+      "used_in_workflows": [
+        "0CMIOWXHMIKBh1x5"
+      ],
+      "used_in_nodes": [
+        "Create an event (n8n-nodes-base.googleCalendar)"
+      ]
+    },
+    {
+      "id": "31G0PoTb4LqbBRW5",
+      "name": "Telegram account | Notification Bot",
+      "type": "telegramApi",
+      "used_in_workflows": [
+        "0GNr1mrgOjgfbGgJ"
+      ],
+      "used_in_nodes": [
+        "Send a text message (n8n-nodes-base.telegram)"
+      ]
+    },
+    {
+      "id": "XK5NskS0e8AqdwHx",
+      "name": "Telegram account | Todo Bot",
+      "type": "telegramApi",
+      "used_in_workflows": [
+        "GPXze5JSTjQaEneF"
+      ],
+      "used_in_nodes": [
+        "Telegram Trigger (n8n-nodes-base.telegramTrigger)",
+        "Send a text message (n8n-nodes-base.telegram)"
+      ]
+    },
+    {
+      "id": "kAG7U4K6lerXOxcl",
+      "name": "Bearer Auth account | Boosty",
+      "type": "httpBearerAuth",
+      "used_in_workflows": [
+        "B2QRqtVwapqY1zsf"
+      ],
+      "used_in_nodes": [
+        "HTTP Request (n8n-nodes-base.httpRequest)"
+      ]
+    },
+    {
+      "id": "UDzormeWy1XJYM2Y",
+      "name": "n8n account | konstantinkulebaev",
+      "type": "n8nApi",
+      "used_in_workflows": [
+        "HMQXTRLUvppIxeMz"
+      ],
+      "used_in_nodes": [
+        "n8n Backup (n8n-nodes-backup.n8nBackup)"
+      ]
+    },
+    {
+      "id": "7TATfXVfgddCWOgw",
+      "name": "GitHub account | kkulebaev",
+      "type": "githubApi",
+      "used_in_workflows": [
+        "HMQXTRLUvppIxeMz"
+      ],
+      "used_in_nodes": [
+        "n8n Backup (n8n-nodes-backup.n8nBackup)"
+      ]
+    },
+    {
+      "id": "2MgG9ctj3cSNx0Mj",
+      "name": "Google Docs account",
+      "type": "googleDocsOAuth2Api",
+      "used_in_workflows": [
+        "MZGat0oMrVNlNiwJ"
+      ],
+      "used_in_nodes": [
+        "Get a document (n8n-nodes-base.googleDocs)",
+        "Update a document (n8n-nodes-base.googleDocs)"
+      ]
+    },
+    {
+      "id": "kc5mWUOvzixEHRv8",
+      "name": "Google Drive account",
+      "type": "googleDriveOAuth2Api",
+      "used_in_workflows": [
+        "MZGat0oMrVNlNiwJ"
+      ],
+      "used_in_nodes": [
+        "Create folder (n8n-nodes-base.googleDrive)",
+        "Download file (n8n-nodes-base.googleDrive)",
+        "Upload file (n8n-nodes-base.googleDrive)",
+        "Copy Standard Contract (n8n-nodes-base.googleDrive)",
+        "Copy Unlimited Contract (n8n-nodes-base.googleDrive)",
+        "Copy Comfort Contract (n8n-nodes-base.googleDrive)"
+      ]
+    }
+  ]
+}

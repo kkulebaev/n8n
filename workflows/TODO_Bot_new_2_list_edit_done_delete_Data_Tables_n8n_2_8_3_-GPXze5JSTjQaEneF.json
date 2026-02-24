@@ -1,0 +1,802 @@
+{
+  "updatedAt": "2026-02-24T06:56:52.150Z",
+  "createdAt": "2026-02-20T06:45:52.117Z",
+  "id": "GPXze5JSTjQaEneF",
+  "name": "TODO Bot — /new (2 шага), /list (edit), кнопки ✅/🗑, /done, /delete — Data Tables (n8n 2.8.3)",
+  "description": null,
+  "active": false,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "updates": [
+          "message",
+          "callback_query"
+        ],
+        "additionalFields": {}
+      },
+      "id": "499ef53b-4b9f-4e68-acf1-4eb189ceeeba",
+      "name": "Telegram Trigger",
+      "type": "n8n-nodes-base.telegramTrigger",
+      "typeVersion": 1,
+      "position": [
+        -224,
+        432
+      ],
+      "webhookId": "31a66a2f-8e5e-4d8e-a4f0-8893c1ea8c29"
+    },
+    {
+      "parameters": {
+        "keepOnlySet": true,
+        "values": {
+          "string": [
+            {
+              "name": "тип",
+              "value": "={{ $json.callback_query ? 'callback_query' : 'message' }}"
+            },
+            {
+              "name": "текст",
+              "value": "={{ $json.message?.text ?? '' }}"
+            },
+            {
+              "name": "текст_trim",
+              "value": "={{ ($json.message?.text ?? '').trim() }}"
+            },
+            {
+              "name": "callback_data",
+              "value": "={{ $json.callback_query?.data ?? '' }}"
+            }
+          ],
+          "number": [
+            {
+              "name": "chat_id",
+              "value": "={{ $json.message?.chat?.id ?? $json.callback_query?.message?.chat?.id ?? 0 }}"
+            },
+            {
+              "name": "message_id",
+              "value": "={{ $json.message?.message_id ?? $json.callback_query?.message?.message_id ?? 0 }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "4da65b2d-e03d-452a-8cfe-27d1bcb6cd97",
+      "name": "Нормализовать апдейт",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 2,
+      "position": [
+        16,
+        432
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "string": [
+            {
+              "value1": "={{ $json.тип }}",
+              "operation": "equals",
+              "value2": "callback_query"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "4f4183a8-e421-4957-b61f-876af99c225d",
+      "name": "Маршрутизация: callback или сообщение",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [
+        224,
+        432
+      ]
+    },
+    {
+      "parameters": {},
+      "id": "f35bc44a-85c8-447f-a83a-dbb86ed01d2d",
+      "name": "Разобрать нажатие кнопки",
+      "type": "n8n-nodes-base.function",
+      "typeVersion": 2,
+      "position": [
+        448,
+        208
+      ]
+    },
+    {
+      "parameters": {
+        "fallbackOutput": 2
+      },
+      "id": "b3f05eab-fac0-40ab-a1a3-6c4bcc883fbf",
+      "name": "Выбор: действие кнопки",
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 2,
+      "position": [
+        688,
+        208
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "__TASKS_TABLE_ID__"
+        },
+        "filters": {
+          "conditions": [
+            {},
+            {}
+          ]
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "status": "done"
+          }
+        },
+        "options": {}
+      },
+      "id": "75acbc79-6bfb-4a51-8aa2-bb54e610ebfa",
+      "name": "Задачи: done (кнопка)",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1,
+      "position": [
+        944,
+        160
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "delete",
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "__TASKS_TABLE_ID__"
+        }
+      },
+      "id": "f2853354-737d-40c2-bb3c-f4ad079be89a",
+      "name": "Задачи: delete (кнопка)",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1,
+      "position": [
+        944,
+        240
+      ]
+    },
+    {
+      "parameters": {
+        "resource": "callback",
+        "operation": "answerCallbackQuery"
+      },
+      "id": "a5b6a80f-45d9-4fd3-8272-87868f8b516c",
+      "name": "Telegram: ответить на кнопку",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1,
+      "position": [
+        1184,
+        208
+      ],
+      "webhookId": "f03d3dcf-8335-4af1-8fb2-85d1f528f6a6"
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "__TASKS_TABLE_ID__"
+        }
+      },
+      "id": "d1bf4e7e-0897-40e5-a0bf-ac2c6bd1e9db",
+      "name": "Задачи: получить открытые (для edit)",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1,
+      "position": [
+        1424,
+        208
+      ]
+    },
+    {
+      "parameters": {},
+      "id": "004a15e1-dad4-4a7b-b3e8-a7874f21ca34",
+      "name": "Собрать текст + клавиатуру (edit)",
+      "type": "n8n-nodes-base.function",
+      "typeVersion": 2,
+      "position": [
+        1664,
+        208
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "editMessageText",
+        "chatId": "={{ $json.chat_id }}",
+        "messageId": "={{ $json.message_id }}",
+        "text": "={{ $json.text }}",
+        "additionalFields": {
+          "parse_mode": "Markdown"
+        }
+      },
+      "id": "4c1a9f10-a788-4048-b927-54efed0dec0e",
+      "name": "Telegram: обновить сообщение со списком",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1,
+      "position": [
+        1904,
+        208
+      ],
+      "webhookId": "f1b41540-4217-4576-9c63-b4160b3a99d0"
+    },
+    {
+      "parameters": {},
+      "id": "338863de-dc9e-4ac9-b293-55605fa12b7d",
+      "name": "Разобрать команду",
+      "type": "n8n-nodes-base.function",
+      "typeVersion": 2,
+      "position": [
+        448,
+        592
+      ]
+    },
+    {
+      "parameters": {
+        "fallbackOutput": 5
+      },
+      "id": "3b0872de-dab9-4e80-8225-5c315c64e171",
+      "name": "Выбор: команда",
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 2,
+      "position": [
+        688,
+        592
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "upsert",
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "__STATE_TABLE_ID__"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "chat_id": "={{ $json.chat_id }}",
+            "mode": "awaiting_task_text"
+          }
+        },
+        "options": {}
+      },
+      "id": "27f3b860-73e7-41b1-b3c6-6e4007646034",
+      "name": "Состояние: upsert awaiting_task_text",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1,
+      "position": [
+        944,
+        448
+      ]
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $json.chat_id }}",
+        "text": "📝 **Новая задача**\n\nОтправьте следующим сообщением текст задачи.\n\nЧтобы отменить — /cancel",
+        "additionalFields": {
+          "parse_mode": "Markdown"
+        }
+      },
+      "id": "1868dc15-a606-4ae8-897c-27ea71029c5a",
+      "name": "Telegram: попросить текст задачи",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1,
+      "position": [
+        1184,
+        448
+      ],
+      "webhookId": "4a29e5f7-8b19-4f80-b93f-d7e1d465c30f"
+    },
+    {
+      "parameters": {
+        "operation": "ifRowExists",
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "__STATE_TABLE_ID__"
+        }
+      },
+      "id": "706c4b79-f480-4c93-83a7-30f61aa2e285",
+      "name": "Состояние: if awaiting_task_text",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1,
+      "position": [
+        944,
+        944
+      ]
+    },
+    {
+      "parameters": {
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "__TASKS_TABLE_ID__"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "chat_id": "={{ $json.chat_id }}",
+            "text": "={{ $json.текст_trim }}",
+            "status": "open"
+          }
+        },
+        "options": {}
+      },
+      "id": "80623889-7718-4776-b1b0-57f5defddaf7",
+      "name": "Задачи: insert (текст из следующего сообщения)",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1,
+      "position": [
+        1184,
+        944
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "delete",
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "__STATE_TABLE_ID__"
+        }
+      },
+      "id": "7bba3bd6-d550-46f4-85e9-5a13ce0c6bbe",
+      "name": "Состояние: delete (после сохранения)",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1,
+      "position": [
+        1424,
+        944
+      ]
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $json.chat_id }}",
+        "text": "✅ Задача создана\n\n**{{ $json.текст_trim }}**\n\nСписок: /list",
+        "additionalFields": {
+          "parse_mode": "Markdown"
+        }
+      },
+      "id": "313f78c0-f215-4d97-b908-b7618f77aac5",
+      "name": "Telegram: задача создана",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1,
+      "position": [
+        1664,
+        944
+      ],
+      "webhookId": "bf24ec74-876c-4164-80ce-9df4bf499574"
+    },
+    {
+      "parameters": {
+        "operation": "delete",
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "__STATE_TABLE_ID__"
+        }
+      },
+      "id": "8b1f746a-6d31-402c-b3ad-0108035f39c2",
+      "name": "Состояние: delete (cancel)",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1,
+      "position": [
+        944,
+        768
+      ]
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $json.chat_id }}",
+        "text": "Ок ✅ Отменено.\n\nЕсли захотите добавить задачу — /new",
+        "additionalFields": {}
+      },
+      "id": "e50dc1c9-d46c-4760-b410-6383352b864e",
+      "name": "Telegram: отменено",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1,
+      "position": [
+        1184,
+        768
+      ],
+      "webhookId": "fedb2f24-ed01-4a6a-b93c-c1660072a304"
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "__TASKS_TABLE_ID__"
+        }
+      },
+      "id": "2898477c-9acc-43df-bb54-ea14ae443885",
+      "name": "Задачи: getAll open (/list)",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1,
+      "position": [
+        944,
+        592
+      ]
+    },
+    {
+      "parameters": {},
+      "id": "28c61b91-76b5-411a-be11-907edf022f26",
+      "name": "Собрать текст + клавиатуру (/list)",
+      "type": "n8n-nodes-base.function",
+      "typeVersion": 2,
+      "position": [
+        1184,
+        592
+      ]
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $json.chat_id }}",
+        "text": "={{ $json.text }}",
+        "additionalFields": {
+          "parse_mode": "Markdown"
+        }
+      },
+      "id": "912b8cb7-5907-4644-836b-ccbfeb4fa3c9",
+      "name": "Telegram: отправить список (/list)",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1,
+      "position": [
+        1424,
+        592
+      ],
+      "webhookId": "debe4408-41f0-4ccc-a08f-177dd1d43f4a"
+    },
+    {
+      "parameters": {},
+      "id": "41a162a9-55c8-48b1-9b2a-b8f370477082",
+      "name": "Разобрать id из /done или /delete",
+      "type": "n8n-nodes-base.function",
+      "typeVersion": 2,
+      "position": [
+        944,
+        672
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "string": [
+            {
+              "value1": "={{ $json.row_id_arg }}",
+              "operation": "notEmpty"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "0510064d-3946-48d5-8b32-97eb6e587510",
+      "name": "Есть id?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [
+        1184,
+        672
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "string": [
+            {
+              "value1": "={{ $json.команда }}",
+              "operation": "equals",
+              "value2": "done"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "573b003e-db4b-4ebc-a281-5f61a84ea519",
+      "name": "done или delete?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [
+        1424,
+        672
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "__TASKS_TABLE_ID__"
+        },
+        "filters": {
+          "conditions": [
+            {},
+            {}
+          ]
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "status": "done"
+          }
+        },
+        "options": {}
+      },
+      "id": "0eb920c8-507b-4e39-b3d5-178cd684028e",
+      "name": "Задачи: done (команда)",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1,
+      "position": [
+        1664,
+        624
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "delete",
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "__TASKS_TABLE_ID__"
+        }
+      },
+      "id": "b0f48f76-6c3f-4546-b0d7-a0eac38bffaa",
+      "name": "Задачи: delete (команда)",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1,
+      "position": [
+        1664,
+        704
+      ]
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $json.chat_id }}",
+        "text": "Не вижу id задачи 🙃\n\nИспользуйте:\n`/done <id>` или `/delete <id>`\n\nПосмотреть id: /list",
+        "additionalFields": {
+          "parse_mode": "Markdown"
+        }
+      },
+      "id": "af5b7856-a006-490f-8fbf-45a4627ba54f",
+      "name": "Telegram: не указан id",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1,
+      "position": [
+        1424,
+        768
+      ],
+      "webhookId": "11d92129-18a8-4c4a-860d-c8b5a1b93fbd"
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $json.chat_id }}",
+        "text": "Готово ✅\n\nСписок: /list",
+        "additionalFields": {}
+      },
+      "id": "21e8b5d1-bbcf-405e-b439-74e6ff06f270",
+      "name": "Telegram: команда выполнена",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1,
+      "position": [
+        1904,
+        672
+      ],
+      "webhookId": "7bda4e0d-d037-491f-95b8-0684d082d6b3"
+    }
+  ],
+  "connections": {
+    "Telegram Trigger": {
+      "main": [
+        [
+          {
+            "node": "Нормализовать апдейт",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Нормализовать апдейт": {
+      "main": [
+        [
+          {
+            "node": "Маршрутизация: callback или сообщение",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Задачи: done (кнопка)": {
+      "main": [
+        [
+          {
+            "node": "Telegram: ответить на кнопку",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Задачи: delete (кнопка)": {
+      "main": [
+        [
+          {
+            "node": "Telegram: ответить на кнопку",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Telegram: ответить на кнопку": {
+      "main": [
+        [
+          {
+            "node": "Задачи: получить открытые (для edit)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Состояние: upsert awaiting_task_text": {
+      "main": [
+        [
+          {
+            "node": "Telegram: попросить текст задачи",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Состояние: if awaiting_task_text": {
+      "main": [
+        [
+          {
+            "node": "Задачи: insert (текст из следующего сообщения)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Задачи: insert (текст из следующего сообщения)": {
+      "main": [
+        [
+          {
+            "node": "Состояние: delete (после сохранения)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Состояние: delete (после сохранения)": {
+      "main": [
+        [
+          {
+            "node": "Telegram: задача создана",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Состояние: delete (cancel)": {
+      "main": [
+        [
+          {
+            "node": "Telegram: отменено",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Есть id?": {
+      "main": [
+        [
+          {
+            "node": "done или delete?",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Telegram: не указан id",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "done или delete?": {
+      "main": [
+        [
+          {
+            "node": "Задачи: done (команда)",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Задачи: delete (команда)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Задачи: done (команда)": {
+      "main": [
+        [
+          {
+            "node": "Telegram: команда выполнена",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Задачи: delete (команда)": {
+      "main": [
+        [
+          {
+            "node": "Telegram: команда выполнена",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "availableInMCP": false
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {},
+  "versionId": "e0d09c03-6dd1-417b-9576-d5048ee35de6",
+  "activeVersionId": null,
+  "versionCounter": 101,
+  "triggerCount": 0,
+  "shared": [
+    {
+      "updatedAt": "2026-02-20T06:45:52.117Z",
+      "createdAt": "2026-02-20T06:45:52.117Z",
+      "role": "workflow:owner",
+      "workflowId": "GPXze5JSTjQaEneF",
+      "projectId": "XeBXiP5yJsi5DYCS",
+      "project": {
+        "updatedAt": "2026-02-24T05:09:56.120Z",
+        "createdAt": "2026-02-20T06:29:02.050Z",
+        "id": "XeBXiP5yJsi5DYCS",
+        "name": "Konstantin Kulebaev <konstantinkulebaev@gmail.com>",
+        "type": "personal",
+        "icon": null,
+        "description": null,
+        "creatorId": "ebcf2b09-cd83-42f3-b5e0-89c4fcaad4a1"
+      }
+    }
+  ],
+  "tags": [],
+  "activeVersion": null
+}

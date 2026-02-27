@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-02-21T15:54:08.726Z",
+  "updatedAt": "2026-02-26T17:48:55.622Z",
   "createdAt": "2026-02-21T04:49:46.166Z",
   "id": "0CMIOWXHMIKBh1x5",
   "name": "Wedding Contract Bot",
@@ -10,7 +10,7 @@
     {
       "parameters": {
         "updates": [
-          "*"
+          "message"
         ],
         "additionalFields": {}
       },
@@ -624,9 +624,9 @@
     "templateCredsSetupCompleted": true
   },
   "pinData": {},
-  "versionId": "f2715727-2402-4c7a-803c-5ac08f738020",
-  "activeVersionId": "f2715727-2402-4c7a-803c-5ac08f738020",
-  "versionCounter": 552,
+  "versionId": "1f8ed62d-91f4-4b0f-9fd2-fdf8169b8520",
+  "activeVersionId": "1f8ed62d-91f4-4b0f-9fd2-fdf8169b8520",
+  "versionCounter": 557,
   "triggerCount": 1,
   "shared": [
     {
@@ -649,15 +649,15 @@
   ],
   "tags": [],
   "activeVersion": {
-    "updatedAt": "2026-02-21T15:54:25.926Z",
-    "createdAt": "2026-02-21T15:54:08.727Z",
-    "versionId": "f2715727-2402-4c7a-803c-5ac08f738020",
+    "updatedAt": "2026-02-26T17:49:00.055Z",
+    "createdAt": "2026-02-26T17:48:55.624Z",
+    "versionId": "1f8ed62d-91f4-4b0f-9fd2-fdf8169b8520",
     "workflowId": "0CMIOWXHMIKBh1x5",
     "nodes": [
       {
         "parameters": {
           "updates": [
-            "*"
+            "message"
           ],
           "additionalFields": {}
         },
@@ -1261,16 +1261,16 @@
         ]
       }
     },
-    "authors": "Admin Admin",
-    "name": "Version f2715727",
+    "authors": "Konstantin Kulebaev",
+    "name": "Version 1f8ed62d",
     "description": "",
     "autosaved": true,
     "workflowPublishHistory": [
       {
-        "createdAt": "2026-02-21T15:54:25.924Z",
-        "id": 59,
+        "createdAt": "2026-02-26T17:49:00.052Z",
+        "id": 90,
         "workflowId": "0CMIOWXHMIKBh1x5",
-        "versionId": "f2715727-2402-4c7a-803c-5ac08f738020",
+        "versionId": "1f8ed62d-91f4-4b0f-9fd2-fdf8169b8520",
         "event": "activated",
         "userId": "ebcf2b09-cd83-42f3-b5e0-89c4fcaad4a1"
       }

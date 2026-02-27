@@ -1,0 +1,1117 @@
+{
+  "updatedAt": "2026-02-27T07:00:27.598Z",
+  "createdAt": "2026-02-26T11:21:16.371Z",
+  "id": "00pp3qkuKl3MTYOF",
+  "name": "TODO Bot",
+  "description": null,
+  "active": false,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "updates": [
+          "message"
+        ],
+        "additionalFields": {}
+      },
+      "id": "912ed634-36a6-4e4a-a0c0-cedb73229dc7",
+      "name": "Telegram Trigger",
+      "type": "n8n-nodes-base.telegramTrigger",
+      "typeVersion": 1,
+      "position": [
+        -688,
+        2672
+      ],
+      "webhookId": "81588973-45bb-415a-9381-f895a5c03baf",
+      "credentials": {
+        "telegramApi": {
+          "id": "r3Y0m44ZhEj3p6do",
+          "name": "Telegram account | Testing Bot"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "deleteRows",
+        "dataTableId": {
+          "__rl": true,
+          "value": "EFwIB3QH2P66Jb4r",
+          "mode": "list",
+          "cachedResultName": "TODO State",
+          "cachedResultUrl": "/projects/XeBXiP5yJsi5DYCS/datatables/EFwIB3QH2P66Jb4r"
+        },
+        "matchType": "allConditions",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "chat_id",
+              "keyValue": "={{ $json.chat_id }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "1b62891a-e1cd-44c9-a6c4-83c4671b3b83",
+      "name": "State: Delete (перед /new)",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1,
+      "position": [
+        -688,
+        1840
+      ],
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "operation": "upsert",
+        "dataTableId": {
+          "__rl": true,
+          "value": "EFwIB3QH2P66Jb4r",
+          "mode": "list",
+          "cachedResultName": "TODO State",
+          "cachedResultUrl": "/projects/XeBXiP5yJsi5DYCS/datatables/EFwIB3QH2P66Jb4r"
+        },
+        "matchType": "allConditions",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "chat_id",
+              "keyValue": "={{ $('Code: разобрать команду').item.json.chat_id }}"
+            }
+          ]
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "chat_id": "={{ $('Code: разобрать команду').item.json.chat_id }}",
+            "mode": "awaiting_task_text"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "chat_id",
+              "displayName": "chat_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "mode",
+              "displayName": "mode",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "id": "07c793ec-7c94-4459-966c-66f4f016034d",
+      "name": "State: Insert awaiting_task_text",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1,
+      "position": [
+        -464,
+        1840
+      ],
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $json.chat_id }}",
+        "text": "=Напиши текст задачи 📝  \nОдним сообщением",
+        "additionalFields": {
+          "parse_mode": "Markdown"
+        }
+      },
+      "id": "eaf8c71c-2eac-420a-a099-353a058086fa",
+      "name": "Telegram: попросить текст задачи",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1,
+      "position": [
+        -240,
+        1840
+      ],
+      "webhookId": "79ffb82e-312d-4af8-99b6-6ba85f3da75b",
+      "credentials": {
+        "telegramApi": {
+          "id": "r3Y0m44ZhEj3p6do",
+          "name": "Telegram account | Testing Bot"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "dataTableId": {
+          "__rl": true,
+          "value": "UeQfD8Xf4jJ9Ax3y",
+          "mode": "list",
+          "cachedResultName": "TODO Tasks",
+          "cachedResultUrl": "/projects/XeBXiP5yJsi5DYCS/datatables/UeQfD8Xf4jJ9Ax3y"
+        },
+        "matchType": "allConditions",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "chat_id",
+              "keyValue": "={{ $json.message.chat.id }}"
+            },
+            {
+              "keyName": "status",
+              "keyValue": "open"
+            }
+          ]
+        }
+      },
+      "id": "17bcc9c1-7e9c-441b-82b7-404c02a9c3a2",
+      "name": "Tasks: Get open (/list)",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1,
+      "position": [
+        -240,
+        2480
+      ],
+      "alwaysOutputData": false
+    },
+    {
+      "parameters": {
+        "jsCode": "const items = $input.all().map(i => i.json);\nlet rows = items;\nif (items.length === 1 && Array.isArray(items[0].data)) rows = items[0].data;\n\nlet text;\nlet reply_markup;\n\nif (!rows || rows.length === 0) {\n  text = '📭 Открытых задач нет.\\n\\nДобавить новую: /new';\n  reply_markup = { inline_keyboard: [] };\n} else {\n  const lines = rows.map((r, idx) => `${idx+1}. [${r.id}] ${r.text}`);\n  const keyboard = rows.map(r => ([\n    { text: '✅ Done', callback_data: `done:${r.id}` },\n    { text: '🗑 Delete', callback_data: `del:${r.id}` }\n  ]));\n  text = '📌 **Открытые задачи**\\n\\n' + lines.join('\\n') + '\\n\\n' +\n         'Закрыть: `/done <id>`\\nУдалить: `/delete <id>`';\n  reply_markup = { inline_keyboard: keyboard };\n}\n\nreturn [{ chat_id: $json.chat_id, text, reply_markup }];"
+      },
+      "id": "d714b617-d6be-4884-9bff-59a93024d9e3",
+      "name": "Code: собрать текст+клавиатуру (/list)",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -688,
+        2064
+      ]
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $json.chat_id }}",
+        "text": "={{ $json.text }}",
+        "replyMarkup": "=📋 Твои задачи:\n\n{{ JSON.stringify($json.reply_markup) }}",
+        "forceReply": {},
+        "replyKeyboardOptions": {},
+        "replyKeyboardRemove": {},
+        "additionalFields": {
+          "parse_mode": "Markdown"
+        }
+      },
+      "id": "85cdadac-4bb6-4cc3-8240-7baa828ad038",
+      "name": "Telegram: отправить список (/list)",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1,
+      "position": [
+        -464,
+        2064
+      ],
+      "webhookId": "8e3f92ef-e3a1-49aa-b8d7-e2a8cbe3c3dd",
+      "credentials": {
+        "telegramApi": {
+          "id": "r3Y0m44ZhEj3p6do",
+          "name": "Telegram account | Testing Bot"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const arg = ($json.arg || '').trim();\nconst cleaned = arg.replace(/^\\[|\\]$/g, '').trim();\nconst id = Number(cleaned);\nreturn [{ ...$json, row_id_arg: Number.isFinite(id) ? id : '' }];"
+      },
+      "id": "40883725-045e-48a2-a436-d101831401f9",
+      "name": "Code: вытащить id из аргумента",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -688,
+        3600
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 1
+          },
+          "conditions": [
+            {
+              "id": "c3b6b1a1-2ab8-4bf0-9b1e-1cc956020d12",
+              "leftValue": "={{$json.row_id_arg}}",
+              "rightValue": 0,
+              "operator": {
+                "type": "number",
+                "operation": "gt"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "1683f12e-bb4e-4a1a-89bb-0ddbd2924fd7",
+      "name": "Есть id?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [
+        -464,
+        3600
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "dataTableId": {
+          "__rl": true,
+          "value": "UeQfD8Xf4jJ9Ax3y",
+          "mode": "list",
+          "cachedResultName": "TODO Tasks",
+          "cachedResultUrl": "/projects/XeBXiP5yJsi5DYCS/datatables/UeQfD8Xf4jJ9Ax3y"
+        },
+        "matchType": "allConditions",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "chat_id",
+              "keyValue": "={{ $json.chat_id }}"
+            },
+            {
+              "keyValue": "={{ $json.row_id_arg }}"
+            }
+          ]
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "status": "done"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "chat_id",
+              "displayName": "chat_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "text",
+              "displayName": "text",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "status",
+              "displayName": "status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "id": "6b912c06-5ccc-4253-a05e-a87419f6fd45",
+      "name": "Tasks: Update done (/done)",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1,
+      "position": [
+        -240,
+        2864
+      ],
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "operation": "deleteRows",
+        "dataTableId": {
+          "__rl": true,
+          "value": "UeQfD8Xf4jJ9Ax3y",
+          "mode": "list",
+          "cachedResultName": "TODO Tasks",
+          "cachedResultUrl": "/projects/XeBXiP5yJsi5DYCS/datatables/UeQfD8Xf4jJ9Ax3y"
+        },
+        "matchType": "allConditions",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "chat_id",
+              "keyValue": "={{ $json.chat_id }}"
+            },
+            {
+              "keyValue": "={{ $json.row_id_arg }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "7ca577c6-fe7e-4dde-b780-94ce961c2f87",
+      "name": "Tasks: Delete (/delete)",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1,
+      "position": [
+        -240,
+        3056
+      ],
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $json.chat_id }}",
+        "text": "Не вижу id задачи 🙃\n\nИспользуйте:\n`/done <id>` или `/delete <id>`\n\nПосмотреть id: /list",
+        "additionalFields": {
+          "parse_mode": "Markdown"
+        }
+      },
+      "id": "3e329c3e-124f-4141-9f2b-94be6b078467",
+      "name": "Telegram: не указан id",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1,
+      "position": [
+        -240,
+        3696
+      ],
+      "webhookId": "19fb00da-4b26-48e9-9e27-f0aaf72da857",
+      "credentials": {
+        "telegramApi": {
+          "id": "r3Y0m44ZhEj3p6do",
+          "name": "Telegram account | Testing Bot"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $json.chat_id }}",
+        "text": "Готово ✅\n\nСписок: /list",
+        "additionalFields": {}
+      },
+      "id": "cf2a4bb2-47d7-42a6-b5dc-7dafc7eae0ef",
+      "name": "Telegram: команда выполнена",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1,
+      "position": [
+        -16,
+        2960
+      ],
+      "webhookId": "0670000d-d353-47f3-b62a-a51743093da7",
+      "credentials": {
+        "telegramApi": {
+          "id": "r3Y0m44ZhEj3p6do",
+          "name": "Telegram account | Testing Bot"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "rowExists",
+        "dataTableId": {
+          "__rl": true,
+          "value": "EFwIB3QH2P66Jb4r",
+          "mode": "list",
+          "cachedResultName": "TODO State",
+          "cachedResultUrl": "/projects/XeBXiP5yJsi5DYCS/datatables/EFwIB3QH2P66Jb4r"
+        },
+        "matchType": "allConditions",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "chat_id",
+              "keyValue": "={{ $json.chat_id }}"
+            },
+            {
+              "keyName": "mode",
+              "keyValue": "awaiting_task_text"
+            }
+          ]
+        }
+      },
+      "id": "4f5c1367-322b-4091-aea3-6988c7372bb4",
+      "name": "State: If awaiting_task_text?",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1,
+      "position": [
+        -16,
+        3696
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 1
+          },
+          "conditions": [
+            {
+              "id": "31bda7a0-5ac7-45a4-9f1d-d081c689a0a6",
+              "leftValue": "={{$json.text_trim}}",
+              "rightValue": "^/",
+              "operator": {
+                "type": "string",
+                "operation": "notRegex"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "04d792bd-310c-4d98-a921-4f253317fbff",
+      "name": "Это НЕ команда?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [
+        208,
+        3696
+      ]
+    },
+    {
+      "parameters": {
+        "dataTableId": {
+          "__rl": true,
+          "value": "UeQfD8Xf4jJ9Ax3y",
+          "mode": "list",
+          "cachedResultName": "TODO Tasks",
+          "cachedResultUrl": "/projects/XeBXiP5yJsi5DYCS/datatables/UeQfD8Xf4jJ9Ax3y"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "chat_id": "={{ $json.chat_id }}",
+            "text": "={{ $json.text_trim }}",
+            "status": "open"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "chat_id",
+              "displayName": "chat_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "text",
+              "displayName": "text",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "status",
+              "displayName": "status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {
+          "optimizeBulk": false
+        }
+      },
+      "id": "16023845-afec-42f7-917a-2733c3940ed1",
+      "name": "Tasks: Insert (из следующего сообщения)",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1,
+      "position": [
+        432,
+        3696
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "deleteRows",
+        "dataTableId": {
+          "__rl": true,
+          "value": "EFwIB3QH2P66Jb4r",
+          "mode": "list",
+          "cachedResultName": "TODO State",
+          "cachedResultUrl": "/projects/XeBXiP5yJsi5DYCS/datatables/EFwIB3QH2P66Jb4r"
+        },
+        "matchType": "allConditions",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "chat_id",
+              "keyValue": "={{ $json.chat_id }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "c9bfb0f2-3cc0-4b4a-88b1-3862e28c5734",
+      "name": "State: Delete (после сохранения)",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1,
+      "position": [
+        656,
+        3696
+      ],
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $json.chat_id }}",
+        "text": "К сожалению, я не знаю такую команду 🙃\n\nДоступно:\n/new — добавить задачу\n/list — список задач\n/done <id> — закрыть\n/delete <id> — удалить\n/cancel — отмена",
+        "additionalFields": {}
+      },
+      "id": "f9334094-33d8-4cea-8cd8-e302fccead0e",
+      "name": "Telegram: неизвестная команда",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1,
+      "position": [
+        -192,
+        3248
+      ],
+      "webhookId": "cdbb5855-8fb8-415b-b7ad-a9652f4e8275",
+      "credentials": {
+        "telegramApi": {
+          "id": "r3Y0m44ZhEj3p6do",
+          "name": "Telegram account | Testing Bot"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "0e134020-bd85-4873-be48-975ff4ef4a21",
+              "leftValue": "={{ $json.command }}",
+              "rightValue": "delete",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        -240,
+        3504
+      ],
+      "id": "a070150a-b8a4-4d9c-910f-ebdcc740e93b",
+      "name": "Это delete?"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.message.text }}",
+                    "rightValue": "/new",
+                    "operator": {
+                      "type": "string",
+                      "operation": "startsWith"
+                    },
+                    "id": "5583d02e-481d-42cf-b833-0a4d17f7a7b4"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "new"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "02a428af-5d56-4418-9c06-10d0ebf84026",
+                    "leftValue": "={{ $json.message.text }}",
+                    "rightValue": "/list",
+                    "operator": {
+                      "type": "string",
+                      "operation": "startsWith"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "list"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "a89accb8-f0a7-4f43-bb59-47b2d1554555",
+                    "leftValue": "={{ $json.message.text }}",
+                    "rightValue": "=/done",
+                    "operator": {
+                      "type": "string",
+                      "operation": "startsWith"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "done"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "fb08f7e0-6d7a-4000-9b14-86b7f0ec6911",
+                    "leftValue": "={{ $json.message.text }}",
+                    "rightValue": "/delete",
+                    "operator": {
+                      "type": "string",
+                      "operation": "startsWith"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "delete"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "d5a00d8b-6705-4355-beae-589e7deb8183",
+                    "leftValue": "={{ $json.message.text }}",
+                    "rightValue": "/edit",
+                    "operator": {
+                      "type": "string",
+                      "operation": "startsWith"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "edit"
+            }
+          ]
+        },
+        "options": {
+          "fallbackOutput": "extra"
+        }
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.4,
+      "position": [
+        -464,
+        2608
+      ],
+      "id": "34500074-0f14-496f-94f8-a068263a7585",
+      "name": "Роутер команд"
+    },
+    {
+      "parameters": {
+        "dataTableId": {
+          "__rl": true,
+          "value": "UeQfD8Xf4jJ9Ax3y",
+          "mode": "list",
+          "cachedResultName": "TODO Tasks",
+          "cachedResultUrl": "/projects/XeBXiP5yJsi5DYCS/datatables/UeQfD8Xf4jJ9Ax3y"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "chat_id": "={{ $json.message.chat.id }}",
+            "text": "={{ $json.message.text.split(' ').slice(1).join(' ').trim() }}",
+            "status": "open"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "chat_id",
+              "displayName": "chat_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "text",
+              "displayName": "text",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "status",
+              "displayName": "status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {
+          "optimizeBulk": false
+        }
+      },
+      "id": "4d120571-9121-423c-ae72-b23747503023",
+      "name": "Tasks: Insert (из следующего сообщения)1",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1,
+      "position": [
+        -240,
+        2288
+      ]
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $json.chat_id }}",
+        "text": "=Готово ✅  \nЗадача добавлена в список.\n\nСписок задач: /list",
+        "additionalFields": {
+          "parse_mode": "Markdown"
+        }
+      },
+      "id": "60d1f094-0487-480d-841a-7b1b7887a14f",
+      "name": "Telegram: задача создана",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1,
+      "position": [
+        -16,
+        2288
+      ],
+      "webhookId": "6ec164b7-2a5d-4c19-b79f-f05dfb708093",
+      "credentials": {
+        "telegramApi": {
+          "id": "r3Y0m44ZhEj3p6do",
+          "name": "Telegram account | Testing Bot"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Telegram Trigger": {
+      "main": [
+        [
+          {
+            "node": "Роутер команд",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "State: Delete (перед /new)": {
+      "main": [
+        [
+          {
+            "node": "State: Insert awaiting_task_text",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "State: Insert awaiting_task_text": {
+      "main": [
+        [
+          {
+            "node": "Telegram: попросить текст задачи",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Tasks: Get open (/list)": {
+      "main": [
+        []
+      ]
+    },
+    "Code: собрать текст+клавиатуру (/list)": {
+      "main": [
+        [
+          {
+            "node": "Telegram: отправить список (/list)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code: вытащить id из аргумента": {
+      "main": [
+        [
+          {
+            "node": "Есть id?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Есть id?": {
+      "main": [
+        [
+          {
+            "node": "Это delete?",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Telegram: не указан id",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Tasks: Update done (/done)": {
+      "main": [
+        [
+          {
+            "node": "Telegram: команда выполнена",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Tasks: Delete (/delete)": {
+      "main": [
+        [
+          {
+            "node": "Telegram: команда выполнена",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Telegram: не указан id": {
+      "main": [
+        [
+          {
+            "node": "State: If awaiting_task_text?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "State: If awaiting_task_text?": {
+      "main": [
+        [
+          {
+            "node": "Это НЕ команда?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Это НЕ команда?": {
+      "main": [
+        [
+          {
+            "node": "Tasks: Insert (из следующего сообщения)",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        []
+      ]
+    },
+    "Tasks: Insert (из следующего сообщения)": {
+      "main": [
+        [
+          {
+            "node": "State: Delete (после сохранения)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "State: Delete (после сохранения)": {
+      "main": [
+        []
+      ]
+    },
+    "Это delete?": {
+      "main": [
+        [],
+        []
+      ]
+    },
+    "Роутер команд": {
+      "main": [
+        [
+          {
+            "node": "Tasks: Insert (из следующего сообщения)1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Tasks: Get open (/list)",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Tasks: Update done (/done)",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Tasks: Delete (/delete)",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [],
+        [
+          {
+            "node": "Telegram: неизвестная команда",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Tasks: Insert (из следующего сообщения)1": {
+      "main": [
+        [
+          {
+            "node": "Telegram: задача создана",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "availableInMCP": false
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {},
+  "versionId": "4c0a83f9-2187-43ba-b6ec-bf9e73369e0f",
+  "activeVersionId": null,
+  "versionCounter": 140,
+  "triggerCount": 0,
+  "shared": [
+    {
+      "updatedAt": "2026-02-26T11:21:16.371Z",
+      "createdAt": "2026-02-26T11:21:16.371Z",
+      "role": "workflow:owner",
+      "workflowId": "00pp3qkuKl3MTYOF",
+      "projectId": "XeBXiP5yJsi5DYCS",
+      "project": {
+        "updatedAt": "2026-02-24T05:09:56.120Z",
+        "createdAt": "2026-02-20T06:29:02.050Z",
+        "id": "XeBXiP5yJsi5DYCS",
+        "name": "Konstantin Kulebaev <konstantinkulebaev@gmail.com>",
+        "type": "personal",
+        "icon": null,
+        "description": null,
+        "creatorId": "ebcf2b09-cd83-42f3-b5e0-89c4fcaad4a1"
+      }
+    }
+  ],
+  "tags": [],
+  "activeVersion": null
+}

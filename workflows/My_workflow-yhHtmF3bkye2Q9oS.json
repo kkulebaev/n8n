@@ -1,0 +1,183 @@
+{
+  "updatedAt": "2026-03-01T06:59:52.935Z",
+  "createdAt": "2026-03-01T05:27:56.840Z",
+  "id": "yhHtmF3bkye2Q9oS",
+  "name": "My workflow",
+  "description": null,
+  "active": false,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "4ffe89dd-7587-436a-8790-d87ccb50ffc9",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "operation": "sendPhoto",
+        "chatId": "-1003492889105",
+        "binaryData": true,
+        "additionalFields": {
+          "caption": "test2"
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        784,
+        0
+      ],
+      "id": "df6bae51-1853-47e9-8ef8-485dd0457d79",
+      "name": "Send a photo message",
+      "webhookId": "29c9011b-7309-45db-9bac-14691cafed8b",
+      "credentials": {
+        "telegramApi": {
+          "id": "cFWyBVK65yLswTqU",
+          "name": "Telegram account | ADS Helper Bot"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "url": "https://tgstat.ru/channel/VOQ1VKblLzI4Yjdi/stat-widget.png",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        208,
+        0
+      ],
+      "id": "03999dc8-2ab0-4935-a7c7-24611294816d",
+      "name": "HTTP Request"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "Опиши статистику моего канала в положительном ключе, чтобы дополнительно мотивировать людей покупать рекламу, статистику прикладываю картинкой",
+        "options": {
+          "passthroughBinaryImages": true
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        416,
+        0
+      ],
+      "id": "62efc5c0-8db3-4361-bf70-e81b8e7dc015",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenRouter",
+      "typeVersion": 1,
+      "position": [
+        288,
+        208
+      ],
+      "id": "10307728-5923-4ff5-a648-790d1de43f80",
+      "name": "OpenRouter Chat Model",
+      "credentials": {
+        "openRouterApi": {
+          "id": "1zzojstTYEhKX8jD",
+          "name": "OpenRouter account | konstantinkulebaev"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send a photo message": {
+      "main": [
+        []
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Send a photo message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenRouter Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {},
+  "versionId": "8e96bb8a-ab19-4cd2-ae43-ad7712bcd1e6",
+  "activeVersionId": null,
+  "versionCounter": 63,
+  "triggerCount": 0,
+  "shared": [
+    {
+      "updatedAt": "2026-03-01T05:27:56.840Z",
+      "createdAt": "2026-03-01T05:27:56.840Z",
+      "role": "workflow:owner",
+      "workflowId": "yhHtmF3bkye2Q9oS",
+      "projectId": "XeBXiP5yJsi5DYCS",
+      "project": {
+        "updatedAt": "2026-02-24T05:09:56.120Z",
+        "createdAt": "2026-02-20T06:29:02.050Z",
+        "id": "XeBXiP5yJsi5DYCS",
+        "name": "Konstantin Kulebaev <konstantinkulebaev@gmail.com>",
+        "type": "personal",
+        "icon": null,
+        "description": null,
+        "creatorId": "ebcf2b09-cd83-42f3-b5e0-89c4fcaad4a1"
+      }
+    }
+  ],
+  "tags": [],
+  "activeVersion": null
+}

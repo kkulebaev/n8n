@@ -1,0 +1,200 @@
+{
+  "updatedAt": "2026-03-01T16:12:42.266Z",
+  "createdAt": "2026-03-01T05:27:56.840Z",
+  "id": "yhHtmF3bkye2Q9oS",
+  "name": "Statistics from TGStat to ADS",
+  "description": null,
+  "active": false,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "operation": "sendPhoto",
+        "chatId": "-1003492889105",
+        "binaryData": true,
+        "additionalFields": {
+          "caption": "={{ $('Собрать JSON для текста').item.json.text }}",
+          "parse_mode": "HTML"
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        896,
+        -240
+      ],
+      "id": "df6bae51-1853-47e9-8ef8-485dd0457d79",
+      "name": "Отправить пост в канал",
+      "webhookId": "29c9011b-7309-45db-9bac-14691cafed8b",
+      "credentials": {
+        "telegramApi": {
+          "id": "cFWyBVK65yLswTqU",
+          "name": "Telegram account | ADS Helper Bot"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "url": "https://tgstat.ru/channel/VOQ1VKblLzI4Yjdi/stat-widget.png",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        672,
+        -240
+      ],
+      "id": "b8ef6b09-da5d-4e11-915d-3c6b527da0af",
+      "name": "Запрос на картинку TGStat"
+    },
+    {
+      "parameters": {
+        "jsCode": "function fmtInt(n) {\n  if (n === null || n === undefined || Number.isNaN(Number(n))) return \"—\";\n  const s = Math.round(Number(n)).toString();\n  return s.replace(/\\B(?=(\\d{3})+(?!\\d))/g, \" \");\n}\n\nfunction fmtPct(x) {\n  if (x === null || x === undefined || Number.isNaN(Number(x))) return \"—\";\n  const v = Number(x);\n  return (Math.round(v * 10) / 10).toString(); // 1 знак после запятой\n}\n\nfunction fmtNum(x) {\n  if (x === null || x === undefined || Number.isNaN(Number(x))) return \"—\";\n  const v = Number(x);\n  // для ИЦ часто удобно 1 знак, но можно и как есть\n  return (Math.round(v * 10) / 10).toString();\n}\n\nconst root = $json;\nconst resp = root.response;\n\nconst reportDate = new Date().toLocaleDateString(\"ru-RU\");\n\nconst stats = {\n  channel_title: resp.title ?? \"—\",\n  username: resp.username ?? \"—\",\n  report_date: reportDate,\n\n  subs_total: fmtInt(resp.participants_count),\n  avg_post_reach: fmtInt(resp.avg_post_reach),\n\n  err: fmtPct(resp.err_percent),\n  err24: fmtPct(resp.err24_percent),\n\n  ad12: fmtInt(resp.adv_post_reach_12h),\n  ad24: fmtInt(resp.adv_post_reach_24h),\n  ad48: fmtInt(resp.adv_post_reach_48h),\n\n  citation_index: fmtNum(resp.ci_index),\n  citation_channels: fmtInt(resp.mentioning_channels_count),\n  mentions: fmtInt(resp.mentions_count),\n  reposts: fmtInt(resp.forwards_count),\n\n  posts_count: fmtInt(resp.posts_count),\n};\n\nconst text =\n`📊 <b>Статистика Telegram-канала ${stats.channel_title} (${stats.report_date})</b>\n\nКанал уверенно растёт и показывает стабильные рекламные показатели в нише 18+ с живой, вовлечённой аудиторией.\n\n🔹 Подписчики: ${stats.subs_total}\n\n🔹 Охваты:\n— средний охват поста: ${stats.avg_post_reach}\n— ERR ${stats.err}% — высокий уровень видимости контента\n— ERR₍24₎ ${stats.err24}% — сильный интерес в первые сутки\n\n🔹 Рекламные показатели:\n— ${stats.ad12} просмотров за 12 часов\n— ${stats.ad24} просмотров за 24 часа\n— ${stats.ad48} просмотров за 48 часов\n➡️ реклама добирает охват со временем, а не “проседает” после публикации\n\n🔹 Цитируемость и распространение:\n— индекс цитирования: ${stats.citation_index}\n— ${stats.citation_channels} канала(ов) упоминают канал\n— ${stats.mentions} упоминаний и ${stats.reposts} репостов\n➡️ контент активно расходится по Telegram\n\n🔹 Возраст канала: ${ Math.round(\n  DateTime.now()\n    .diff(DateTime.fromISO('2025-09-17'), 'months')\n    .months\n) } месяцев\n➡️ молодая аудитория без выгорания и рекламной слепоты`;\n\nreturn [{ json: { text, stats, raw: resp } }];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        448,
+        -240
+      ],
+      "id": "4580d000-0e5e-4950-9ca4-e36009db206a",
+      "name": "Собрать JSON для текста"
+    },
+    {
+      "parameters": {
+        "url": "https://api.tgstat.ru/channels/stat",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "token",
+              "value": "e6be55ed5eee0503abe3260ba1ab6e88"
+            },
+            {
+              "name": "channelId",
+              "value": "2989560267"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        224,
+        -240
+      ],
+      "id": "26ec9ab0-eb64-4601-add1-33f17787b0e7",
+      "name": "Запрос на данные TGStat"
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "weeks",
+              "triggerAtDay": [
+                1
+              ],
+              "triggerAtHour": 8
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        0,
+        -240
+      ],
+      "id": "063bad92-4ab3-44cf-8f08-3c4d637e8e89",
+      "name": "Каждую неделю в понедельник в 8:00"
+    }
+  ],
+  "connections": {
+    "Отправить пост в канал": {
+      "main": [
+        []
+      ]
+    },
+    "Запрос на картинку TGStat": {
+      "main": [
+        [
+          {
+            "node": "Отправить пост в канал",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Собрать JSON для текста": {
+      "main": [
+        [
+          {
+            "node": "Запрос на картинку TGStat",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Запрос на данные TGStat": {
+      "main": [
+        [
+          {
+            "node": "Собрать JSON для текста",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Каждую неделю в понедельник в 8:00": {
+      "main": [
+        [
+          {
+            "node": "Запрос на данные TGStat",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {},
+  "versionId": "f882f855-f570-4705-9f87-ce24fa54781b",
+  "activeVersionId": null,
+  "versionCounter": 292,
+  "triggerCount": 0,
+  "shared": [
+    {
+      "updatedAt": "2026-03-01T05:27:56.840Z",
+      "createdAt": "2026-03-01T05:27:56.840Z",
+      "role": "workflow:owner",
+      "workflowId": "yhHtmF3bkye2Q9oS",
+      "projectId": "XeBXiP5yJsi5DYCS",
+      "project": {
+        "updatedAt": "2026-02-24T05:09:56.120Z",
+        "createdAt": "2026-02-20T06:29:02.050Z",
+        "id": "XeBXiP5yJsi5DYCS",
+        "name": "Konstantin Kulebaev <konstantinkulebaev@gmail.com>",
+        "type": "personal",
+        "icon": null,
+        "description": null,
+        "creatorId": "ebcf2b09-cd83-42f3-b5e0-89c4fcaad4a1"
+      }
+    }
+  ],
+  "tags": [],
+  "activeVersion": null
+}

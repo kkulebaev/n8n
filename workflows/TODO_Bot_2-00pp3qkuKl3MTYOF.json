@@ -1,11 +1,11 @@
 {
-  "updatedAt": "2026-02-27T07:52:35.629Z",
+  "updatedAt": "2026-03-03T08:45:21.357Z",
   "createdAt": "2026-02-26T11:21:16.371Z",
   "id": "00pp3qkuKl3MTYOF",
   "name": "TODO Bot 2",
   "description": null,
   "active": false,
-  "isArchived": false,
+  "isArchived": true,
   "nodes": [
     {
       "parameters": {
@@ -1092,9 +1092,9 @@
     "templateCredsSetupCompleted": true
   },
   "pinData": {},
-  "versionId": "85bb6399-4ec8-4a77-b0d9-8e6900c008ef",
+  "versionId": "e8ecc024-1d91-4f2e-adb8-4980c455e2c6",
   "activeVersionId": null,
-  "versionCounter": 304,
+  "versionCounter": 305,
   "triggerCount": 0,
   "shared": [
     {

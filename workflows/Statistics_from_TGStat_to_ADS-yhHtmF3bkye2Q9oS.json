@@ -1,10 +1,10 @@
 {
-  "updatedAt": "2026-03-01T16:12:42.266Z",
+  "updatedAt": "2026-03-04T11:56:39.469Z",
   "createdAt": "2026-03-01T05:27:56.840Z",
   "id": "yhHtmF3bkye2Q9oS",
   "name": "Statistics from TGStat to ADS",
   "description": null,
-  "active": false,
+  "active": true,
   "isArchived": false,
   "nodes": [
     {
@@ -13,15 +13,15 @@
         "chatId": "-1003492889105",
         "binaryData": true,
         "additionalFields": {
-          "caption": "={{ $('Собрать JSON для текста').item.json.text }}",
+          "caption": "={{ $(\"Собрать JSON для текста\").item.json.text }}",
           "parse_mode": "HTML"
         }
       },
       "type": "n8n-nodes-base.telegram",
       "typeVersion": 1.2,
       "position": [
-        896,
-        -240
+        1488,
+        -224
       ],
       "id": "df6bae51-1853-47e9-8ef8-485dd0457d79",
       "name": "Отправить пост в канал",
@@ -41,21 +41,21 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.4,
       "position": [
-        672,
-        -240
+        1264,
+        -224
       ],
       "id": "b8ef6b09-da5d-4e11-915d-3c6b527da0af",
       "name": "Запрос на картинку TGStat"
     },
     {
       "parameters": {
-        "jsCode": "function fmtInt(n) {\n  if (n === null || n === undefined || Number.isNaN(Number(n))) return \"—\";\n  const s = Math.round(Number(n)).toString();\n  return s.replace(/\\B(?=(\\d{3})+(?!\\d))/g, \" \");\n}\n\nfunction fmtPct(x) {\n  if (x === null || x === undefined || Number.isNaN(Number(x))) return \"—\";\n  const v = Number(x);\n  return (Math.round(v * 10) / 10).toString(); // 1 знак после запятой\n}\n\nfunction fmtNum(x) {\n  if (x === null || x === undefined || Number.isNaN(Number(x))) return \"—\";\n  const v = Number(x);\n  // для ИЦ часто удобно 1 знак, но можно и как есть\n  return (Math.round(v * 10) / 10).toString();\n}\n\nconst root = $json;\nconst resp = root.response;\n\nconst reportDate = new Date().toLocaleDateString(\"ru-RU\");\n\nconst stats = {\n  channel_title: resp.title ?? \"—\",\n  username: resp.username ?? \"—\",\n  report_date: reportDate,\n\n  subs_total: fmtInt(resp.participants_count),\n  avg_post_reach: fmtInt(resp.avg_post_reach),\n\n  err: fmtPct(resp.err_percent),\n  err24: fmtPct(resp.err24_percent),\n\n  ad12: fmtInt(resp.adv_post_reach_12h),\n  ad24: fmtInt(resp.adv_post_reach_24h),\n  ad48: fmtInt(resp.adv_post_reach_48h),\n\n  citation_index: fmtNum(resp.ci_index),\n  citation_channels: fmtInt(resp.mentioning_channels_count),\n  mentions: fmtInt(resp.mentions_count),\n  reposts: fmtInt(resp.forwards_count),\n\n  posts_count: fmtInt(resp.posts_count),\n};\n\nconst text =\n`📊 <b>Статистика Telegram-канала ${stats.channel_title} (${stats.report_date})</b>\n\nКанал уверенно растёт и показывает стабильные рекламные показатели в нише 18+ с живой, вовлечённой аудиторией.\n\n🔹 Подписчики: ${stats.subs_total}\n\n🔹 Охваты:\n— средний охват поста: ${stats.avg_post_reach}\n— ERR ${stats.err}% — высокий уровень видимости контента\n— ERR₍24₎ ${stats.err24}% — сильный интерес в первые сутки\n\n🔹 Рекламные показатели:\n— ${stats.ad12} просмотров за 12 часов\n— ${stats.ad24} просмотров за 24 часа\n— ${stats.ad48} просмотров за 48 часов\n➡️ реклама добирает охват со временем, а не “проседает” после публикации\n\n🔹 Цитируемость и распространение:\n— индекс цитирования: ${stats.citation_index}\n— ${stats.citation_channels} канала(ов) упоминают канал\n— ${stats.mentions} упоминаний и ${stats.reposts} репостов\n➡️ контент активно расходится по Telegram\n\n🔹 Возраст канала: ${ Math.round(\n  DateTime.now()\n    .diff(DateTime.fromISO('2025-09-17'), 'months')\n    .months\n) } месяцев\n➡️ молодая аудитория без выгорания и рекламной слепоты`;\n\nreturn [{ json: { text, stats, raw: resp } }];"
+        "jsCode": "const _status = $json?.status;\nif (_status && _status !== \"ok\") {\n  const details = $json?.error || $json?.message || 'n/a';\n  throw new Error(`TGStat error: status=${_status}; details=${details}`);\n}"
       },
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        448,
-        -240
+        1040,
+        -224
       ],
       "id": "4580d000-0e5e-4950-9ca4-e36009db206a",
       "name": "Собрать JSON для текста"
@@ -81,8 +81,8 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.4,
       "position": [
-        224,
-        -240
+        816,
+        -224
       ],
       "id": "26ec9ab0-eb64-4601-add1-33f17787b0e7",
       "name": "Запрос на данные TGStat"
@@ -104,17 +104,246 @@
       "type": "n8n-nodes-base.scheduleTrigger",
       "typeVersion": 1.3,
       "position": [
-        0,
-        -240
+        -80,
+        -224
       ],
       "id": "063bad92-4ab3-44cf-8f08-3c4d637e8e89",
       "name": "Каждую неделю в понедельник в 8:00"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ \"https://api.telegram.org/bot\" + $env.TELEGRAM_ADS_BOT_TOKEN + \"/sendMessage\" }}",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ { chat_id: \"-1003492889105\", text: \"Нажмите кнопку ниже, чтобы написать по размещению рекламы\", reply_markup: { inline_keyboard: [[ { text: \"Размещение рекламы\", url: \"https://t.me/kulebaevadaria_nv\" } ]] } } }}",
+        "options": {}
+      },
+      "name": "CTA: кнопка",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        1712,
+        -224
+      ],
+      "id": "c796f3b5-e0a4-4cf5-bb28-b78e60a2cf17"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ \"https://api.telegram.org/bot\" + $env.TELEGRAM_ADS_BOT_TOKEN + \"/deleteMessage\" }}",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ { chat_id: \"-1003492889105\", message_id: $(\"DataTable: load last ids\").first().json.photo_message_id } }}",
+        "options": {}
+      },
+      "name": "Delete: last photo",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        368,
+        -224
+      ],
+      "id": "f6e122ac-8cea-4881-8e29-0a6f58842de5",
+      "continueOnFail": true
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ \"https://api.telegram.org/bot\" + $env.TELEGRAM_ADS_BOT_TOKEN + \"/deleteMessage\" }}",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ { chat_id: \"-1003492889105\", message_id: $(\"DataTable: load last ids\").first().json.cta_message_id } }}",
+        "options": {}
+      },
+      "name": "Delete: last CTA",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        592,
+        -224
+      ],
+      "id": "88f34f96-a2c9-44da-bf4c-aad4756878f4",
+      "continueOnFail": true
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "dataTableId": {
+          "mode": "id",
+          "value": "9O73HEHGRRxeAkBy"
+        },
+        "matchType": "allConditions",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "key",
+              "keyValue": "main"
+            }
+          ]
+        },
+        "limit": 1
+      },
+      "name": "DataTable: load last ids",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        144,
+        -224
+      ],
+      "id": "ef95e29c-8032-48b9-afbe-e9740878b271",
+      "continueOnFail": true
+    },
+    {
+      "parameters": {
+        "operation": "upsert",
+        "dataTableId": {
+          "mode": "id",
+          "value": "9O73HEHGRRxeAkBy"
+        },
+        "matchType": "allConditions",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "key",
+              "keyValue": "main"
+            }
+          ]
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "key": "main",
+            "photo_message_id": "={{ $(\"Отправить пост в канал\").first().json.result.message_id }}",
+            "cta_message_id": "={{ $(\"CTA: кнопка\").first().json.result.message_id }}"
+          }
+        },
+        "options": {}
+      },
+      "name": "DataTable: save last ids",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        1936,
+        -224
+      ],
+      "id": "5a9b632d-dcc2-4a55-862c-b758717b5488",
+      "continueOnFail": true
+    },
+    {
+      "name": "IF: TGStat ok",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [
+        960,
+        -320
+      ],
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "leftValue": "={{ $json.status }}",
+              "rightValue": "ok",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ]
+        }
+      },
+      "id": "cdd7cf9d-6e44-4146-891c-7d6494a50e11"
+    },
+    {
+      "name": "Notify: TGStat error",
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1,
+      "position": [
+        1180,
+        -160
+      ],
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "0GNr1mrgOjgfbGgJ"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "time": "={{ $now.toMillis() }}",
+            "title": "TGStat лимит/ошибка — пост не обновлён",
+            "message": "={{ \"TGStat вернул status=\" + ($json.status || \"unknown\") + \"; error=\" + ($json.error || $json.message || \"n/a\") }}",
+            "url": "https://kkulebaev-n8n.ru/workflow/yhHtmF3bkye2Q9oS"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "time",
+              "displayName": "time",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "number",
+              "removed": false
+            },
+            {
+              "id": "title",
+              "displayName": "title",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "message",
+              "displayName": "message",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "url",
+              "displayName": "url",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true
+        },
+        "options": {
+          "waitForSubWorkflow": true
+        }
+      },
+      "id": "d18b6b19-dab3-4dc2-bb8e-284d08da3f98"
     }
   ],
   "connections": {
     "Отправить пост в канал": {
       "main": [
-        []
+        [
+          {
+            "node": "CTA: кнопка",
+            "type": "main",
+            "index": 0
+          }
+        ]
       ]
     },
     "Запрос на картинку TGStat": {
@@ -143,7 +372,7 @@
       "main": [
         [
           {
-            "node": "Собрать JSON для текста",
+            "node": "IF: TGStat ok",
             "type": "main",
             "index": 0
           }
@@ -154,28 +383,107 @@
       "main": [
         [
           {
+            "node": "DataTable: load last ids",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "CTA: кнопка": {
+      "main": [
+        [
+          {
+            "node": "DataTable: save last ids",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Delete: last photo": {
+      "main": [
+        [
+          {
+            "node": "Delete: last CTA",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Delete: last CTA": {
+      "main": [
+        [
+          {
             "node": "Запрос на данные TGStat",
             "type": "main",
             "index": 0
           }
         ]
       ]
+    },
+    "DataTable: load last ids": {
+      "main": [
+        [
+          {
+            "node": "Delete: last photo",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "DataTable: save last ids": {
+      "main": [
+        []
+      ]
+    },
+    "IF: TGStat ok": {
+      "main": [
+        [
+          {
+            "node": "DataTable: load last ids",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Notify: TGStat error",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Notify: TGStat error": {
+      "main": [
+        []
+      ]
     }
   },
   "settings": {
     "executionOrder": "v1",
     "binaryMode": "separate",
-    "availableInMCP": false
+    "availableInMCP": false,
+    "timezone": "Europe/Moscow",
+    "callerPolicy": "workflowsFromSameOwner",
+    "errorWorkflow": "0GNr1mrgOjgfbGgJ"
   },
-  "staticData": null,
+  "staticData": {
+    "node:Каждую неделю в понедельник в 8:00": {
+      "recurrenceRules": []
+    }
+  },
   "meta": {
     "templateCredsSetupCompleted": true
   },
   "pinData": {},
-  "versionId": "f882f855-f570-4705-9f87-ce24fa54781b",
-  "activeVersionId": null,
-  "versionCounter": 292,
-  "triggerCount": 0,
+  "versionId": "6ec6d4e0-a4d0-4314-a480-9380b438285a",
+  "activeVersionId": "6ec6d4e0-a4d0-4314-a480-9380b438285a",
+  "versionCounter": 371,
+  "triggerCount": 1,
   "shared": [
     {
       "updatedAt": "2026-03-01T05:27:56.840Z",
@@ -196,5 +504,489 @@
     }
   ],
   "tags": [],
-  "activeVersion": null
+  "activeVersion": {
+    "updatedAt": "2026-03-04T11:56:39.472Z",
+    "createdAt": "2026-03-04T11:56:39.472Z",
+    "versionId": "6ec6d4e0-a4d0-4314-a480-9380b438285a",
+    "workflowId": "yhHtmF3bkye2Q9oS",
+    "nodes": [
+      {
+        "parameters": {
+          "operation": "sendPhoto",
+          "chatId": "-1003492889105",
+          "binaryData": true,
+          "additionalFields": {
+            "caption": "={{ $(\"Собрать JSON для текста\").item.json.text }}",
+            "parse_mode": "HTML"
+          }
+        },
+        "type": "n8n-nodes-base.telegram",
+        "typeVersion": 1.2,
+        "position": [
+          1488,
+          -224
+        ],
+        "id": "df6bae51-1853-47e9-8ef8-485dd0457d79",
+        "name": "Отправить пост в канал",
+        "webhookId": "29c9011b-7309-45db-9bac-14691cafed8b",
+        "credentials": {
+          "telegramApi": {
+            "id": "cFWyBVK65yLswTqU",
+            "name": "Telegram account | ADS Helper Bot"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "url": "https://tgstat.ru/channel/VOQ1VKblLzI4Yjdi/stat-widget.png",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.4,
+        "position": [
+          1264,
+          -224
+        ],
+        "id": "b8ef6b09-da5d-4e11-915d-3c6b527da0af",
+        "name": "Запрос на картинку TGStat"
+      },
+      {
+        "parameters": {
+          "jsCode": "const _status = $json?.status;\nif (_status && _status !== \"ok\") {\n  const details = $json?.error || $json?.message || 'n/a';\n  throw new Error(`TGStat error: status=${_status}; details=${details}`);\n}"
+        },
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          1040,
+          -224
+        ],
+        "id": "4580d000-0e5e-4950-9ca4-e36009db206a",
+        "name": "Собрать JSON для текста"
+      },
+      {
+        "parameters": {
+          "url": "https://api.tgstat.ru/channels/stat",
+          "sendQuery": true,
+          "queryParameters": {
+            "parameters": [
+              {
+                "name": "token",
+                "value": "e6be55ed5eee0503abe3260ba1ab6e88"
+              },
+              {
+                "name": "channelId",
+                "value": "2989560267"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.4,
+        "position": [
+          816,
+          -224
+        ],
+        "id": "26ec9ab0-eb64-4601-add1-33f17787b0e7",
+        "name": "Запрос на данные TGStat"
+      },
+      {
+        "parameters": {
+          "rule": {
+            "interval": [
+              {
+                "field": "weeks",
+                "triggerAtDay": [
+                  1
+                ],
+                "triggerAtHour": 8
+              }
+            ]
+          }
+        },
+        "type": "n8n-nodes-base.scheduleTrigger",
+        "typeVersion": 1.3,
+        "position": [
+          -80,
+          -224
+        ],
+        "id": "063bad92-4ab3-44cf-8f08-3c4d637e8e89",
+        "name": "Каждую неделю в понедельник в 8:00"
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "={{ \"https://api.telegram.org/bot\" + $env.TELEGRAM_ADS_BOT_TOKEN + \"/sendMessage\" }}",
+          "sendBody": true,
+          "specifyBody": "json",
+          "jsonBody": "={{ { chat_id: \"-1003492889105\", text: \"Нажмите кнопку ниже, чтобы написать по размещению рекламы\", reply_markup: { inline_keyboard: [[ { text: \"Размещение рекламы\", url: \"https://t.me/kulebaevadaria_nv\" } ]] } } }}",
+          "options": {}
+        },
+        "name": "CTA: кнопка",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.4,
+        "position": [
+          1712,
+          -224
+        ],
+        "id": "c796f3b5-e0a4-4cf5-bb28-b78e60a2cf17"
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "={{ \"https://api.telegram.org/bot\" + $env.TELEGRAM_ADS_BOT_TOKEN + \"/deleteMessage\" }}",
+          "sendBody": true,
+          "specifyBody": "json",
+          "jsonBody": "={{ { chat_id: \"-1003492889105\", message_id: $(\"DataTable: load last ids\").first().json.photo_message_id } }}",
+          "options": {}
+        },
+        "name": "Delete: last photo",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.4,
+        "position": [
+          368,
+          -224
+        ],
+        "id": "f6e122ac-8cea-4881-8e29-0a6f58842de5",
+        "continueOnFail": true
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "={{ \"https://api.telegram.org/bot\" + $env.TELEGRAM_ADS_BOT_TOKEN + \"/deleteMessage\" }}",
+          "sendBody": true,
+          "specifyBody": "json",
+          "jsonBody": "={{ { chat_id: \"-1003492889105\", message_id: $(\"DataTable: load last ids\").first().json.cta_message_id } }}",
+          "options": {}
+        },
+        "name": "Delete: last CTA",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.4,
+        "position": [
+          592,
+          -224
+        ],
+        "id": "88f34f96-a2c9-44da-bf4c-aad4756878f4",
+        "continueOnFail": true
+      },
+      {
+        "parameters": {
+          "operation": "get",
+          "dataTableId": {
+            "mode": "id",
+            "value": "9O73HEHGRRxeAkBy"
+          },
+          "matchType": "allConditions",
+          "filters": {
+            "conditions": [
+              {
+                "keyName": "key",
+                "keyValue": "main"
+              }
+            ]
+          },
+          "limit": 1
+        },
+        "name": "DataTable: load last ids",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          144,
+          -224
+        ],
+        "id": "ef95e29c-8032-48b9-afbe-e9740878b271",
+        "continueOnFail": true
+      },
+      {
+        "parameters": {
+          "operation": "upsert",
+          "dataTableId": {
+            "mode": "id",
+            "value": "9O73HEHGRRxeAkBy"
+          },
+          "matchType": "allConditions",
+          "filters": {
+            "conditions": [
+              {
+                "keyName": "key",
+                "keyValue": "main"
+              }
+            ]
+          },
+          "columns": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "key": "main",
+              "photo_message_id": "={{ $(\"Отправить пост в канал\").first().json.result.message_id }}",
+              "cta_message_id": "={{ $(\"CTA: кнопка\").first().json.result.message_id }}"
+            }
+          },
+          "options": {}
+        },
+        "name": "DataTable: save last ids",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          1936,
+          -224
+        ],
+        "id": "5a9b632d-dcc2-4a55-862c-b758717b5488",
+        "continueOnFail": true
+      },
+      {
+        "name": "IF: TGStat ok",
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 2,
+        "position": [
+          960,
+          -320
+        ],
+        "parameters": {
+          "conditions": {
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "strict"
+            },
+            "conditions": [
+              {
+                "leftValue": "={{ $json.status }}",
+                "rightValue": "ok",
+                "operator": {
+                  "type": "string",
+                  "operation": "equals"
+                }
+              }
+            ]
+          }
+        },
+        "id": "cdd7cf9d-6e44-4146-891c-7d6494a50e11"
+      },
+      {
+        "name": "Notify: TGStat error",
+        "type": "n8n-nodes-base.executeWorkflow",
+        "typeVersion": 1,
+        "position": [
+          1180,
+          -160
+        ],
+        "parameters": {
+          "workflowId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "0GNr1mrgOjgfbGgJ"
+          },
+          "workflowInputs": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "time": "={{ $now.toMillis() }}",
+              "title": "TGStat лимит/ошибка — пост не обновлён",
+              "message": "={{ \"TGStat вернул status=\" + ($json.status || \"unknown\") + \"; error=\" + ($json.error || $json.message || \"n/a\") }}",
+              "url": "https://kkulebaev-n8n.ru/workflow/yhHtmF3bkye2Q9oS"
+            },
+            "matchingColumns": [],
+            "schema": [
+              {
+                "id": "time",
+                "displayName": "time",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "canBeUsedToMatch": true,
+                "type": "number",
+                "removed": false
+              },
+              {
+                "id": "title",
+                "displayName": "title",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "canBeUsedToMatch": true,
+                "type": "string",
+                "removed": false
+              },
+              {
+                "id": "message",
+                "displayName": "message",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "canBeUsedToMatch": true,
+                "type": "string",
+                "removed": false
+              },
+              {
+                "id": "url",
+                "displayName": "url",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "canBeUsedToMatch": true,
+                "type": "string",
+                "removed": false
+              }
+            ],
+            "attemptToConvertTypes": false,
+            "convertFieldsToString": true
+          },
+          "options": {
+            "waitForSubWorkflow": true
+          }
+        },
+        "id": "d18b6b19-dab3-4dc2-bb8e-284d08da3f98"
+      }
+    ],
+    "connections": {
+      "Отправить пост в канал": {
+        "main": [
+          [
+            {
+              "node": "CTA: кнопка",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Запрос на картинку TGStat": {
+        "main": [
+          [
+            {
+              "node": "Отправить пост в канал",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Собрать JSON для текста": {
+        "main": [
+          [
+            {
+              "node": "Запрос на картинку TGStat",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Запрос на данные TGStat": {
+        "main": [
+          [
+            {
+              "node": "IF: TGStat ok",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Каждую неделю в понедельник в 8:00": {
+        "main": [
+          [
+            {
+              "node": "DataTable: load last ids",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "CTA: кнопка": {
+        "main": [
+          [
+            {
+              "node": "DataTable: save last ids",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Delete: last photo": {
+        "main": [
+          [
+            {
+              "node": "Delete: last CTA",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Delete: last CTA": {
+        "main": [
+          [
+            {
+              "node": "Запрос на данные TGStat",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "DataTable: load last ids": {
+        "main": [
+          [
+            {
+              "node": "Delete: last photo",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "DataTable: save last ids": {
+        "main": [
+          []
+        ]
+      },
+      "IF: TGStat ok": {
+        "main": [
+          [
+            {
+              "node": "DataTable: load last ids",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Notify: TGStat error",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Notify: TGStat error": {
+        "main": [
+          []
+        ]
+      }
+    },
+    "authors": "Konstantin Kulebaev",
+    "name": null,
+    "description": null,
+    "autosaved": false,
+    "workflowPublishHistory": [
+      {
+        "createdAt": "2026-03-04T11:56:39.574Z",
+        "id": 107,
+        "workflowId": "yhHtmF3bkye2Q9oS",
+        "versionId": "6ec6d4e0-a4d0-4314-a480-9380b438285a",
+        "event": "deactivated",
+        "userId": "ebcf2b09-cd83-42f3-b5e0-89c4fcaad4a1"
+      },
+      {
+        "createdAt": "2026-03-04T11:56:39.625Z",
+        "id": 108,
+        "workflowId": "yhHtmF3bkye2Q9oS",
+        "versionId": "6ec6d4e0-a4d0-4314-a480-9380b438285a",
+        "event": "activated",
+        "userId": "ebcf2b09-cd83-42f3-b5e0-89c4fcaad4a1"
+      }
+    ]
+  }
 }

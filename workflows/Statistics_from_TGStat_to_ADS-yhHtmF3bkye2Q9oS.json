@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-03-04T11:56:39.469Z",
+  "updatedAt": "2026-03-06T03:10:22.924Z",
   "createdAt": "2026-03-01T05:27:56.840Z",
   "id": "yhHtmF3bkye2Q9oS",
   "name": "Statistics from TGStat to ADS",
@@ -20,7 +20,7 @@
       "type": "n8n-nodes-base.telegram",
       "typeVersion": 1.2,
       "position": [
-        1488,
+        1712,
         -224
       ],
       "id": "df6bae51-1853-47e9-8ef8-485dd0457d79",
@@ -41,7 +41,7 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.4,
       "position": [
-        1264,
+        1488,
         -224
       ],
       "id": "b8ef6b09-da5d-4e11-915d-3c6b527da0af",
@@ -54,7 +54,7 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        1040,
+        1264,
         -224
       ],
       "id": "4580d000-0e5e-4950-9ca4-e36009db206a",
@@ -82,7 +82,7 @@
       "typeVersion": 4.4,
       "position": [
         816,
-        -224
+        -128
       ],
       "id": "26ec9ab0-eb64-4601-add1-33f17787b0e7",
       "name": "Запрос на данные TGStat"
@@ -105,7 +105,7 @@
       "typeVersion": 1.3,
       "position": [
         -80,
-        -224
+        -128
       ],
       "id": "063bad92-4ab3-44cf-8f08-3c4d637e8e89",
       "name": "Каждую неделю в понедельник в 8:00"
@@ -123,7 +123,7 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.4,
       "position": [
-        1712,
+        1936,
         -224
       ],
       "id": "c796f3b5-e0a4-4cf5-bb28-b78e60a2cf17"
@@ -142,7 +142,7 @@
       "typeVersion": 4.4,
       "position": [
         368,
-        -224
+        -128
       ],
       "id": "f6e122ac-8cea-4881-8e29-0a6f58842de5",
       "continueOnFail": true
@@ -161,7 +161,7 @@
       "typeVersion": 4.4,
       "position": [
         592,
-        -224
+        -128
       ],
       "id": "88f34f96-a2c9-44da-bf4c-aad4756878f4",
       "continueOnFail": true
@@ -189,7 +189,7 @@
       "typeVersion": 1.1,
       "position": [
         144,
-        -224
+        -128
       ],
       "id": "ef95e29c-8032-48b9-afbe-e9740878b271",
       "continueOnFail": true
@@ -224,20 +224,13 @@
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
       "position": [
-        1936,
+        2160,
         -224
       ],
       "id": "5a9b632d-dcc2-4a55-862c-b758717b5488",
       "continueOnFail": true
     },
     {
-      "name": "IF: TGStat ok",
-      "type": "n8n-nodes-base.if",
-      "typeVersion": 2,
-      "position": [
-        960,
-        -320
-      ],
       "parameters": {
         "conditions": {
           "options": {
@@ -255,82 +248,36 @@
               }
             }
           ]
-        }
+        },
+        "options": {}
       },
+      "name": "IF: TGStat ok",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [
+        1040,
+        -128
+      ],
       "id": "cdd7cf9d-6e44-4146-891c-7d6494a50e11"
     },
     {
-      "name": "Notify: TGStat error",
-      "type": "n8n-nodes-base.executeWorkflow",
-      "typeVersion": 1,
-      "position": [
-        1180,
-        -160
-      ],
       "parameters": {
         "workflowId": {
           "__rl": true,
           "mode": "id",
           "value": "0GNr1mrgOjgfbGgJ"
         },
-        "workflowInputs": {
-          "mappingMode": "defineBelow",
-          "value": {
-            "time": "={{ $now.toMillis() }}",
-            "title": "TGStat лимит/ошибка — пост не обновлён",
-            "message": "={{ \"TGStat вернул status=\" + ($json.status || \"unknown\") + \"; error=\" + ($json.error || $json.message || \"n/a\") }}",
-            "url": "https://kkulebaev-n8n.ru/workflow/yhHtmF3bkye2Q9oS"
-          },
-          "matchingColumns": [],
-          "schema": [
-            {
-              "id": "time",
-              "displayName": "time",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "canBeUsedToMatch": true,
-              "type": "number",
-              "removed": false
-            },
-            {
-              "id": "title",
-              "displayName": "title",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "canBeUsedToMatch": true,
-              "type": "string",
-              "removed": false
-            },
-            {
-              "id": "message",
-              "displayName": "message",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "canBeUsedToMatch": true,
-              "type": "string",
-              "removed": false
-            },
-            {
-              "id": "url",
-              "displayName": "url",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "canBeUsedToMatch": true,
-              "type": "string",
-              "removed": false
-            }
-          ],
-          "attemptToConvertTypes": false,
-          "convertFieldsToString": true
-        },
         "options": {
           "waitForSubWorkflow": true
         }
       },
+      "name": "Notify: TGStat error",
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1,
+      "position": [
+        1264,
+        -32
+      ],
       "id": "d18b6b19-dab3-4dc2-bb8e-284d08da3f98"
     }
   ],
@@ -443,7 +390,7 @@
       "main": [
         [
           {
-            "node": "DataTable: load last ids",
+            "node": "Собрать JSON для текста",
             "type": "main",
             "index": 0
           }
@@ -480,9 +427,9 @@
     "templateCredsSetupCompleted": true
   },
   "pinData": {},
-  "versionId": "6ec6d4e0-a4d0-4314-a480-9380b438285a",
-  "activeVersionId": "6ec6d4e0-a4d0-4314-a480-9380b438285a",
-  "versionCounter": 371,
+  "versionId": "fb5e2e7c-0871-4ab1-be1d-8eab308b219f",
+  "activeVersionId": "fb5e2e7c-0871-4ab1-be1d-8eab308b219f",
+  "versionCounter": 378,
   "triggerCount": 1,
   "shared": [
     {
@@ -505,9 +452,9 @@
   ],
   "tags": [],
   "activeVersion": {
-    "updatedAt": "2026-03-04T11:56:39.472Z",
-    "createdAt": "2026-03-04T11:56:39.472Z",
-    "versionId": "6ec6d4e0-a4d0-4314-a480-9380b438285a",
+    "updatedAt": "2026-03-06T03:10:40.633Z",
+    "createdAt": "2026-03-06T03:10:22.925Z",
+    "versionId": "fb5e2e7c-0871-4ab1-be1d-8eab308b219f",
     "workflowId": "yhHtmF3bkye2Q9oS",
     "nodes": [
       {
@@ -523,7 +470,7 @@
         "type": "n8n-nodes-base.telegram",
         "typeVersion": 1.2,
         "position": [
-          1488,
+          1712,
           -224
         ],
         "id": "df6bae51-1853-47e9-8ef8-485dd0457d79",
@@ -544,7 +491,7 @@
         "type": "n8n-nodes-base.httpRequest",
         "typeVersion": 4.4,
         "position": [
-          1264,
+          1488,
           -224
         ],
         "id": "b8ef6b09-da5d-4e11-915d-3c6b527da0af",
@@ -557,7 +504,7 @@
         "type": "n8n-nodes-base.code",
         "typeVersion": 2,
         "position": [
-          1040,
+          1264,
           -224
         ],
         "id": "4580d000-0e5e-4950-9ca4-e36009db206a",
@@ -585,7 +532,7 @@
         "typeVersion": 4.4,
         "position": [
           816,
-          -224
+          -128
         ],
         "id": "26ec9ab0-eb64-4601-add1-33f17787b0e7",
         "name": "Запрос на данные TGStat"
@@ -608,7 +555,7 @@
         "typeVersion": 1.3,
         "position": [
           -80,
-          -224
+          -128
         ],
         "id": "063bad92-4ab3-44cf-8f08-3c4d637e8e89",
         "name": "Каждую неделю в понедельник в 8:00"
@@ -626,7 +573,7 @@
         "type": "n8n-nodes-base.httpRequest",
         "typeVersion": 4.4,
         "position": [
-          1712,
+          1936,
           -224
         ],
         "id": "c796f3b5-e0a4-4cf5-bb28-b78e60a2cf17"
@@ -645,7 +592,7 @@
         "typeVersion": 4.4,
         "position": [
           368,
-          -224
+          -128
         ],
         "id": "f6e122ac-8cea-4881-8e29-0a6f58842de5",
         "continueOnFail": true
@@ -664,7 +611,7 @@
         "typeVersion": 4.4,
         "position": [
           592,
-          -224
+          -128
         ],
         "id": "88f34f96-a2c9-44da-bf4c-aad4756878f4",
         "continueOnFail": true
@@ -692,7 +639,7 @@
         "typeVersion": 1.1,
         "position": [
           144,
-          -224
+          -128
         ],
         "id": "ef95e29c-8032-48b9-afbe-e9740878b271",
         "continueOnFail": true
@@ -727,20 +674,13 @@
         "type": "n8n-nodes-base.dataTable",
         "typeVersion": 1.1,
         "position": [
-          1936,
+          2160,
           -224
         ],
         "id": "5a9b632d-dcc2-4a55-862c-b758717b5488",
         "continueOnFail": true
       },
       {
-        "name": "IF: TGStat ok",
-        "type": "n8n-nodes-base.if",
-        "typeVersion": 2,
-        "position": [
-          960,
-          -320
-        ],
         "parameters": {
           "conditions": {
             "options": {
@@ -758,82 +698,36 @@
                 }
               }
             ]
-          }
+          },
+          "options": {}
         },
+        "name": "IF: TGStat ok",
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 2,
+        "position": [
+          1040,
+          -128
+        ],
         "id": "cdd7cf9d-6e44-4146-891c-7d6494a50e11"
       },
       {
-        "name": "Notify: TGStat error",
-        "type": "n8n-nodes-base.executeWorkflow",
-        "typeVersion": 1,
-        "position": [
-          1180,
-          -160
-        ],
         "parameters": {
           "workflowId": {
             "__rl": true,
             "mode": "id",
             "value": "0GNr1mrgOjgfbGgJ"
           },
-          "workflowInputs": {
-            "mappingMode": "defineBelow",
-            "value": {
-              "time": "={{ $now.toMillis() }}",
-              "title": "TGStat лимит/ошибка — пост не обновлён",
-              "message": "={{ \"TGStat вернул status=\" + ($json.status || \"unknown\") + \"; error=\" + ($json.error || $json.message || \"n/a\") }}",
-              "url": "https://kkulebaev-n8n.ru/workflow/yhHtmF3bkye2Q9oS"
-            },
-            "matchingColumns": [],
-            "schema": [
-              {
-                "id": "time",
-                "displayName": "time",
-                "required": false,
-                "defaultMatch": false,
-                "display": true,
-                "canBeUsedToMatch": true,
-                "type": "number",
-                "removed": false
-              },
-              {
-                "id": "title",
-                "displayName": "title",
-                "required": false,
-                "defaultMatch": false,
-                "display": true,
-                "canBeUsedToMatch": true,
-                "type": "string",
-                "removed": false
-              },
-              {
-                "id": "message",
-                "displayName": "message",
-                "required": false,
-                "defaultMatch": false,
-                "display": true,
-                "canBeUsedToMatch": true,
-                "type": "string",
-                "removed": false
-              },
-              {
-                "id": "url",
-                "displayName": "url",
-                "required": false,
-                "defaultMatch": false,
-                "display": true,
-                "canBeUsedToMatch": true,
-                "type": "string",
-                "removed": false
-              }
-            ],
-            "attemptToConvertTypes": false,
-            "convertFieldsToString": true
-          },
           "options": {
             "waitForSubWorkflow": true
           }
         },
+        "name": "Notify: TGStat error",
+        "type": "n8n-nodes-base.executeWorkflow",
+        "typeVersion": 1,
+        "position": [
+          1264,
+          -32
+        ],
         "id": "d18b6b19-dab3-4dc2-bb8e-284d08da3f98"
       }
     ],
@@ -946,7 +840,7 @@
         "main": [
           [
             {
-              "node": "DataTable: load last ids",
+              "node": "Собрать JSON для текста",
               "type": "main",
               "index": 0
             }
@@ -967,23 +861,15 @@
       }
     },
     "authors": "Konstantin Kulebaev",
-    "name": null,
-    "description": null,
-    "autosaved": false,
+    "name": "Version fb5e2e7c",
+    "description": "",
+    "autosaved": true,
     "workflowPublishHistory": [
       {
-        "createdAt": "2026-03-04T11:56:39.574Z",
-        "id": 107,
+        "createdAt": "2026-03-06T03:10:40.631Z",
+        "id": 117,
         "workflowId": "yhHtmF3bkye2Q9oS",
-        "versionId": "6ec6d4e0-a4d0-4314-a480-9380b438285a",
-        "event": "deactivated",
-        "userId": "ebcf2b09-cd83-42f3-b5e0-89c4fcaad4a1"
-      },
-      {
-        "createdAt": "2026-03-04T11:56:39.625Z",
-        "id": 108,
-        "workflowId": "yhHtmF3bkye2Q9oS",
-        "versionId": "6ec6d4e0-a4d0-4314-a480-9380b438285a",
+        "versionId": "fb5e2e7c-0871-4ab1-be1d-8eab308b219f",
         "event": "activated",
         "userId": "ebcf2b09-cd83-42f3-b5e0-89c4fcaad4a1"
       }

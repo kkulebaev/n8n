@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-02-21T14:23:01.770Z",
+  "updatedAt": "2026-03-05T10:34:31.153Z",
   "createdAt": "2026-02-20T16:12:51.953Z",
   "id": "MZGat0oMrVNlNiwJ",
   "name": "Create wedding contract on Google Drive",
@@ -10,7 +10,8 @@
     {
       "parameters": {
         "operation": "get",
-        "documentURL": "={{ $json.id }}"
+        "documentURL": "={{ $json.id }}",
+        "simple": false
       },
       "type": "n8n-nodes-base.googleDocs",
       "typeVersion": 2,
@@ -408,6 +409,96 @@
       ],
       "id": "e5339453-d43e-4668-9485-90107f023838",
       "name": "Input"
+    },
+    {
+      "parameters": {
+        "operation": "Upload File to PDF.co",
+        "binaryData": true,
+        "name": "={{ $('Get a document').item.json.title }}"
+      },
+      "type": "n8n-nodes-pdfco.PDFco Api",
+      "typeVersion": 1,
+      "position": [
+        1568,
+        272
+      ],
+      "id": "c667efaf-2e56-4b6f-b407-bff77c8f5870",
+      "name": "PDFco Api",
+      "credentials": {
+        "pdfcoApi": {
+          "id": "9UFGDY4XvqtJAdEh",
+          "name": "PDF.co account | konstantinkulebaev@gmail.com"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "Search in PDF",
+        "url": "={{ $json.url }}",
+        "searchString": "________________",
+        "advancedOptions": {}
+      },
+      "type": "n8n-nodes-pdfco.PDFco Api",
+      "typeVersion": 1,
+      "position": [
+        1792,
+        272
+      ],
+      "id": "f41fa98d-b0f7-47f4-96a2-34af3200b5c7",
+      "name": "PDFco Api2",
+      "credentials": {
+        "pdfcoApi": {
+          "id": "9UFGDY4XvqtJAdEh",
+          "name": "PDF.co account | konstantinkulebaev@gmail.com"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "Add Text/Images to PDF",
+        "url": "={{ $('PDFco Api').item.json.url }}",
+        "images": {
+          "metadataValues": [
+            {
+              "imageUrl": "=https://static.wfolio.ru/file/AqiFFw_TXMM4LDwoI2TPSYAM1lHVLAGB/F3eUE25SDaCAfvVnJFFcPW47UngGX3YK/uR6fMRXAE9lYX0nrzzTXMmKO-2Jttg4a/EouOUuAqkg8s_ZKe8Sxkwfd46d_CMAUv/lzLqFyuNCW2_QGjpXOEpXOhFPPl4EqaX/bdkDXXqg04g.png",
+              "x": "={{ $json.body[0].left - 20 }}",
+              "y": "={{ $json.body[0].top - 30 }}",
+              "width": "=160",
+              "height": "=",
+              "pages": "={{ $json.body[0].pageIndex.toString() }}"
+            }
+          ]
+        },
+        "advancedOptions": {}
+      },
+      "type": "n8n-nodes-pdfco.PDFco Api",
+      "typeVersion": 1,
+      "position": [
+        2016,
+        272
+      ],
+      "id": "2465e5ba-1a5b-4b76-9c3d-53f22c3a8540",
+      "name": "PDFco Api1",
+      "credentials": {
+        "pdfcoApi": {
+          "id": "9UFGDY4XvqtJAdEh",
+          "name": "PDF.co account | konstantinkulebaev@gmail.com"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "url": "={{ $json.url }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        2240,
+        272
+      ],
+      "id": "719d3bb4-ef4f-4deb-9d8a-f201e8768204",
+      "name": "HTTP Request"
     }
   ],
   "connections": {
@@ -446,7 +537,13 @@
     },
     "Download file": {
       "main": [
-        []
+        [
+          {
+            "node": "PDFco Api",
+            "type": "main",
+            "index": 0
+          }
+        ]
       ]
     },
     "Switch": {
@@ -517,6 +614,39 @@
           }
         ]
       ]
+    },
+    "PDFco Api": {
+      "main": [
+        [
+          {
+            "node": "PDFco Api2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "PDFco Api2": {
+      "main": [
+        [
+          {
+            "node": "PDFco Api1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "PDFco Api1": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "settings": {
@@ -529,9 +659,9 @@
     "templateCredsSetupCompleted": true
   },
   "pinData": {},
-  "versionId": "237f0a9f-203e-4f39-a901-95e5b660f727",
-  "activeVersionId": "237f0a9f-203e-4f39-a901-95e5b660f727",
-  "versionCounter": 379,
+  "versionId": "9b851e30-74cd-4537-9718-829635485089",
+  "activeVersionId": "9b851e30-74cd-4537-9718-829635485089",
+  "versionCounter": 483,
   "triggerCount": 0,
   "shared": [
     {
@@ -554,15 +684,16 @@
   ],
   "tags": [],
   "activeVersion": {
-    "updatedAt": "2026-02-21T14:23:06.128Z",
-    "createdAt": "2026-02-21T14:22:27.470Z",
-    "versionId": "237f0a9f-203e-4f39-a901-95e5b660f727",
+    "updatedAt": "2026-03-05T10:34:34.953Z",
+    "createdAt": "2026-03-05T10:34:11.770Z",
+    "versionId": "9b851e30-74cd-4537-9718-829635485089",
     "workflowId": "MZGat0oMrVNlNiwJ",
     "nodes": [
       {
         "parameters": {
           "operation": "get",
-          "documentURL": "={{ $json.id }}"
+          "documentURL": "={{ $json.id }}",
+          "simple": false
         },
         "type": "n8n-nodes-base.googleDocs",
         "typeVersion": 2,
@@ -960,6 +1091,96 @@
         ],
         "id": "e5339453-d43e-4668-9485-90107f023838",
         "name": "Input"
+      },
+      {
+        "parameters": {
+          "operation": "Upload File to PDF.co",
+          "binaryData": true,
+          "name": "={{ $('Get a document').item.json.title }}"
+        },
+        "type": "n8n-nodes-pdfco.PDFco Api",
+        "typeVersion": 1,
+        "position": [
+          1568,
+          272
+        ],
+        "id": "c667efaf-2e56-4b6f-b407-bff77c8f5870",
+        "name": "PDFco Api",
+        "credentials": {
+          "pdfcoApi": {
+            "id": "9UFGDY4XvqtJAdEh",
+            "name": "PDF.co account | konstantinkulebaev@gmail.com"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "operation": "Search in PDF",
+          "url": "={{ $json.url }}",
+          "searchString": "________________",
+          "advancedOptions": {}
+        },
+        "type": "n8n-nodes-pdfco.PDFco Api",
+        "typeVersion": 1,
+        "position": [
+          1792,
+          272
+        ],
+        "id": "f41fa98d-b0f7-47f4-96a2-34af3200b5c7",
+        "name": "PDFco Api2",
+        "credentials": {
+          "pdfcoApi": {
+            "id": "9UFGDY4XvqtJAdEh",
+            "name": "PDF.co account | konstantinkulebaev@gmail.com"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "operation": "Add Text/Images to PDF",
+          "url": "={{ $('PDFco Api').item.json.url }}",
+          "images": {
+            "metadataValues": [
+              {
+                "imageUrl": "=https://static.wfolio.ru/file/AqiFFw_TXMM4LDwoI2TPSYAM1lHVLAGB/F3eUE25SDaCAfvVnJFFcPW47UngGX3YK/uR6fMRXAE9lYX0nrzzTXMmKO-2Jttg4a/EouOUuAqkg8s_ZKe8Sxkwfd46d_CMAUv/lzLqFyuNCW2_QGjpXOEpXOhFPPl4EqaX/bdkDXXqg04g.png",
+                "x": "={{ $json.body[0].left - 20 }}",
+                "y": "={{ $json.body[0].top - 30 }}",
+                "width": "=160",
+                "height": "=",
+                "pages": "={{ $json.body[0].pageIndex.toString() }}"
+              }
+            ]
+          },
+          "advancedOptions": {}
+        },
+        "type": "n8n-nodes-pdfco.PDFco Api",
+        "typeVersion": 1,
+        "position": [
+          2016,
+          272
+        ],
+        "id": "2465e5ba-1a5b-4b76-9c3d-53f22c3a8540",
+        "name": "PDFco Api1",
+        "credentials": {
+          "pdfcoApi": {
+            "id": "9UFGDY4XvqtJAdEh",
+            "name": "PDF.co account | konstantinkulebaev@gmail.com"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "url": "={{ $json.url }}",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.4,
+        "position": [
+          2240,
+          272
+        ],
+        "id": "719d3bb4-ef4f-4deb-9d8a-f201e8768204",
+        "name": "HTTP Request"
       }
     ],
     "connections": {
@@ -998,7 +1219,13 @@
       },
       "Download file": {
         "main": [
-          []
+          [
+            {
+              "node": "PDFco Api",
+              "type": "main",
+              "index": 0
+            }
+          ]
         ]
       },
       "Switch": {
@@ -1069,18 +1296,51 @@
             }
           ]
         ]
+      },
+      "PDFco Api": {
+        "main": [
+          [
+            {
+              "node": "PDFco Api2",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "PDFco Api2": {
+        "main": [
+          [
+            {
+              "node": "PDFco Api1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "PDFco Api1": {
+        "main": [
+          [
+            {
+              "node": "HTTP Request",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
       }
     },
-    "authors": "Admin Admin",
-    "name": "Version 237f0a9f",
+    "authors": "Konstantin Kulebaev",
+    "name": "Version 9b851e30",
     "description": "",
     "autosaved": true,
     "workflowPublishHistory": [
       {
-        "createdAt": "2026-02-21T14:23:06.118Z",
-        "id": 35,
+        "createdAt": "2026-03-05T10:34:34.951Z",
+        "id": 114,
         "workflowId": "MZGat0oMrVNlNiwJ",
-        "versionId": "237f0a9f-203e-4f39-a901-95e5b660f727",
+        "versionId": "9b851e30-74cd-4537-9718-829635485089",
         "event": "activated",
         "userId": "ebcf2b09-cd83-42f3-b5e0-89c4fcaad4a1"
       }

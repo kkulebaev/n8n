@@ -1,0 +1,94 @@
+{
+  "updatedAt": "2026-03-26T13:36:34.751Z",
+  "createdAt": "2026-03-26T07:23:18.102Z",
+  "id": "Eiang1Bg8BsELLwq",
+  "name": "Restore backup from GitHub",
+  "description": null,
+  "active": false,
+  "isArchived": true,
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "5c8d704b-7f1b-497c-8b44-da28b5616a00",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "githubRepo": "kkulebaev/n8n",
+        "conflictResolution": "overwrite",
+        "activateAfterRestore": true
+      },
+      "type": "n8n-nodes-backup.n8nRestore",
+      "typeVersion": 1,
+      "position": [
+        208,
+        0
+      ],
+      "id": "37c7a3c6-3f72-48d4-a358-3194d02c071f",
+      "name": "n8n Restore",
+      "credentials": {
+        "n8nApi": {
+          "id": "re6IemMaBwss91he",
+          "name": "n8n account"
+        },
+        "githubApi": {
+          "id": "9fjG4gom49S4clL3",
+          "name": "GitHub account"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "n8n Restore",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {},
+  "versionId": "da3807e2-5acb-4862-83a4-c0e880a84dcd",
+  "activeVersionId": null,
+  "versionCounter": 32,
+  "triggerCount": 0,
+  "shared": [
+    {
+      "updatedAt": "2026-03-26T07:23:18.102Z",
+      "createdAt": "2026-03-26T07:23:18.102Z",
+      "role": "workflow:owner",
+      "workflowId": "Eiang1Bg8BsELLwq",
+      "projectId": "0P84IhWFYAIENkAS",
+      "project": {
+        "updatedAt": "2026-03-26T07:17:38.502Z",
+        "createdAt": "2026-03-26T07:13:42.587Z",
+        "id": "0P84IhWFYAIENkAS",
+        "name": "Konstantin Kulebaev <konstantinkulebaev@gmail.com>",
+        "type": "personal",
+        "icon": null,
+        "description": null,
+        "creatorId": "90578190-fd4e-41d6-95c6-af516297f773"
+      }
+    }
+  ],
+  "tags": [],
+  "activeVersion": null
+}

@@ -1,0 +1,238 @@
+{
+  "updatedAt": "2026-03-26T13:39:33.239Z",
+  "createdAt": "2026-03-26T13:39:33.239Z",
+  "id": "WDTrTQEM43wGThwL",
+  "name": "Notification from TODO list",
+  "description": null,
+  "active": false,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "0GNr1mrgOjgfbGgJ",
+          "mode": "list",
+          "cachedResultUrl": "/workflow/0GNr1mrgOjgfbGgJ",
+          "cachedResultName": "Telegram Notification Service"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "message": "={{ $json.todos.map(item => `- ${item}`).join('\\n') }}",
+            "time": "={{ DateTime.now().toMillis() }}",
+            "title": "Список задач для Даши"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "time",
+              "displayName": "time",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "number",
+              "removed": false
+            },
+            {
+              "id": "title",
+              "displayName": "title",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "message",
+              "displayName": "message",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "url",
+              "displayName": "url",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true
+        },
+        "options": {
+          "waitForSubWorkflow": false
+        }
+      },
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.3,
+      "position": [
+        672,
+        0
+      ],
+      "id": "ca45fee7-557a-4aa0-93fa-b6d5cea7944e",
+      "name": "Call 'Telegram Notification Service'"
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "triggerAtHour": 5
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        0,
+        0
+      ],
+      "id": "a11e09b5-8cd4-418e-a20b-ee020f3bd3a4",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "operation": "select",
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "Task",
+          "mode": "list",
+          "cachedResultName": "Task"
+        },
+        "where": {
+          "values": [
+            {
+              "column": "assignedToId",
+              "value": "b8f96d10-8034-451a-abcf-ec024bef7b24"
+            },
+            {
+              "column": "status",
+              "value": "open"
+            }
+          ]
+        },
+        "sort": {
+          "values": [
+            {
+              "column": "numId"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        224,
+        0
+      ],
+      "id": "304ba02f-37d4-44f6-bd2e-82c1129ba33c",
+      "name": "Select rows from a table"
+    },
+    {
+      "parameters": {
+        "fieldsToAggregate": {
+          "fieldToAggregate": [
+            {
+              "fieldToAggregate": "title",
+              "renameField": true,
+              "outputFieldName": "todos"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [
+        448,
+        0
+      ],
+      "id": "03ab9f10-10e2-4bf5-a7b6-8e4e35f6e19e",
+      "name": "Aggregate"
+    }
+  ],
+  "connections": {
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Select rows from a table",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Select rows from a table": {
+      "main": [
+        [
+          {
+            "node": "Aggregate",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Aggregate": {
+      "main": [
+        [
+          {
+            "node": "Call 'Telegram Notification Service'",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "staticData": null,
+  "meta": null,
+  "pinData": {},
+  "versionId": "fb612885-6bcd-4845-af95-6578f6c080fc",
+  "activeVersionId": null,
+  "versionCounter": 1,
+  "triggerCount": 0,
+  "shared": [
+    {
+      "updatedAt": "2026-03-26T13:39:33.239Z",
+      "createdAt": "2026-03-26T13:39:33.239Z",
+      "role": "workflow:owner",
+      "workflowId": "WDTrTQEM43wGThwL",
+      "projectId": "0P84IhWFYAIENkAS",
+      "project": {
+        "updatedAt": "2026-03-26T07:17:38.502Z",
+        "createdAt": "2026-03-26T07:13:42.587Z",
+        "id": "0P84IhWFYAIENkAS",
+        "name": "Konstantin Kulebaev <konstantinkulebaev@gmail.com>",
+        "type": "personal",
+        "icon": null,
+        "description": null,
+        "creatorId": "90578190-fd4e-41d6-95c6-af516297f773"
+      }
+    }
+  ],
+  "tags": [],
+  "activeVersion": null
+}

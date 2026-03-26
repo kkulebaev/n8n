@@ -1,0 +1,584 @@
+{
+  "updatedAt": "2026-03-26T13:38:23.341Z",
+  "createdAt": "2026-03-26T13:38:23.341Z",
+  "id": "GR7HyVKteKVmzL1l",
+  "name": "Wedding Contract Bot",
+  "description": null,
+  "active": false,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "updates": [
+          "message"
+        ],
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegramTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -448,
+        288
+      ],
+      "id": "6937030e-61ca-41c6-99e9-03da7497c6aa",
+      "name": "Telegram Trigger",
+      "webhookId": "0cc60863-3baf-47ac-90ee-67651620cc97"
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Telegram Trigger').item.json.message.chat.id }}",
+        "text": "=⏳ Создаю договор… Пожалуйста, подождите",
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        448,
+        96
+      ],
+      "id": "9c9699aa-d743-48fa-8d9b-cf5881c04d57",
+      "name": "Notification \"Starting...\"",
+      "webhookId": "d8ab3642-be82-4f35-8538-ad05fb4a0d6d"
+    },
+    {
+      "parameters": {
+        "operation": "sendAndWait",
+        "chatId": "={{ $json.message.chat.id }}",
+        "message": "=📝 Чтобы создать новый договор, нажмите кнопку ниже и заполните форму",
+        "responseType": "customForm",
+        "defineForm": "json",
+        "jsonOutput": "[\n  {\n    \"fieldLabel\": \"Пакет услуг\",\n    \"fieldType\": \"dropdown\",\n    \"fieldOptions\": {\n      \"values\": [\n        {\n          \"option\": \"Стандарт (6 часов)\"\n        },\n        {\n          \"option\": \"Комфорт (10 часов)\"\n        },\n        {\n          \"option\": \"Безлимит\"\n        }\n      ]\n    },\n    \"requiredField\": true\n  },\n  {\n    \"fieldName\": \"last_name\",\n    \"fieldLabel\": \"Фамилия\",\n    \"placeholder\": \"Кулебаева\",\n    \"requiredField\": true\n  },\n  {\n    \"fieldName\": \"first_name\",\n    \"fieldLabel\": \"Имя\",\n    \"placeholder\": \"Яна\",\n    \"requiredField\": true\n  },\n  {\n    \"fieldName\": \"middle_name\",\n    \"fieldLabel\": \"Отчество\",\n    \"placeholder\": \"Константиновна\",\n    \"requiredField\": true\n  },\n  {\n    \"fieldName\": \"wedding_date\",\n    \"fieldLabel\": \"Дата свадьбы\",\n    \"fieldType\": \"date\",\n    \"formatDate\": \"dd-mm-yyyy\",\n    \"requiredField\": true\n  },\n  {\n    \"fieldName\": \"document\",\n    \"fieldLabel\": \"Паспорт\",\n    \"fieldType\": \"textarea\",\n    \"placeholder\": \"Серия XXXX, номер XXXXXX выдан УМВД России по Пензенской области 01.01.2020\",\n    \"requiredField\": true\n  }\n]\n",
+        "options": {
+          "messageButtonLabel": "Открыть форму",
+          "responseFormTitle": "Данные клиента свадебного договора",
+          "responseFormDescription": "Заполните форму и нажмите кнопку отправить",
+          "responseFormButtonLabel": "Отправить",
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        0,
+        192
+      ],
+      "id": "886b915a-91f1-483d-8676-71349fffb077",
+      "name": "/new",
+      "webhookId": "3bf6d4b8-c9da-4b02-890c-e056d5cb3566"
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $json.message.chat.id }}",
+        "text": "=🤔 Я не распознал эту команду.  \nОтправьте /help — там есть список всех доступных команд",
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        0,
+        576
+      ],
+      "id": "13b32e5c-5970-4724-9bf6-07c918b8c330",
+      "name": "Fallback message",
+      "webhookId": "3bf6d4b8-c9da-4b02-890c-e056d5cb3566"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "8e8dd75e-5a12-4d44-97ba-8faaeb23b247",
+                    "leftValue": "={{ $json.message.text }}",
+                    "rightValue": "/help",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.message.text }}",
+                    "rightValue": "/new",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "da5fdc18-9160-4e2c-ad85-5ec2a48a4adc"
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "55def5a3-e893-48f2-95ba-41dfc073ad9e",
+                    "leftValue": "={{ $json.message.text }}",
+                    "rightValue": "/start",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            }
+          ]
+        },
+        "options": {
+          "fallbackOutput": "extra",
+          "allMatchingOutputs": true
+        }
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.4,
+      "position": [
+        -224,
+        256
+      ],
+      "id": "e468236f-6898-4ea7-be66-f416d47d6df5",
+      "name": "Commands"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "656ac539-6e91-4ae0-a57c-f526a8fcfd5f",
+              "name": "last_name",
+              "value": "={{ $json.data['Фамилия'] }}",
+              "type": "string"
+            },
+            {
+              "id": "c72ddd83-a516-4366-8e35-6beafbd6abfb",
+              "name": "first_name",
+              "value": "={{ $json.data['Имя'] }}",
+              "type": "string"
+            },
+            {
+              "id": "97a031bd-7708-4374-9c89-cb01322f7999",
+              "name": "middle_name",
+              "value": "={{ $json.data['Отчество'] }}",
+              "type": "string"
+            },
+            {
+              "id": "f40e1904-e0c0-43e5-b69f-457198158d9c",
+              "name": "wedding_date",
+              "value": "={{ $json.data['Дата свадьбы'] }}",
+              "type": "string"
+            },
+            {
+              "id": "9f45187f-f3d2-43d9-999e-ad911d7545e9",
+              "name": "document",
+              "value": "={{ $json.data['Паспорт'] }}",
+              "type": "string"
+            },
+            {
+              "id": "f4e45b6f-f554-4c3b-bd99-66e31792fc4c",
+              "name": "plan",
+              "value": "={{ $json.data['Пакет услуг'].includes('Стандарт') ? 'standard' : $json.data['Пакет услуг'].includes('Комфорт') ? 'comfort' : 'unlimited' }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        224,
+        192
+      ],
+      "id": "cf82aeb8-8e2b-4c4f-a907-d17bed60d286",
+      "name": "Mapping"
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Telegram Trigger').item.json.message.chat.id }}",
+        "text": "=⚠️ Не удалось создать договор.  \nПожалуйста, попробуйте позже или обратитесь к администратору: @kkulebaev",
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        672,
+        384
+      ],
+      "id": "8e76be82-1724-43df-b52e-b641023e0221",
+      "name": "Error message",
+      "webhookId": "d8ab3642-be82-4f35-8538-ad05fb4a0d6d"
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $json.message.chat.id }}",
+        "text": "=📋 *Доступные команды:*\n\n/new — создать новый договор  \n/help — список доступных команд",
+        "additionalFields": {
+          "appendAttribution": false,
+          "parse_mode": "MarkdownV2"
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        0,
+        0
+      ],
+      "id": "b4612d21-8193-45a6-8e3a-c81197b640ed",
+      "name": "/help",
+      "webhookId": "3bf6d4b8-c9da-4b02-890c-e056d5cb3566"
+    },
+    {
+      "parameters": {
+        "operation": "sendDocument",
+        "chatId": "={{ $('Telegram Trigger').item.json.message.chat.id }}",
+        "binaryData": true,
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        672,
+        192
+      ],
+      "id": "46b291a6-c051-4278-b34c-e6e1046604a1",
+      "name": "Send a document",
+      "webhookId": "c5ff2e78-6ea8-47f4-9ab6-c9e48ce55351"
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "MZGat0oMrVNlNiwJ",
+          "mode": "list",
+          "cachedResultUrl": "/workflow/MZGat0oMrVNlNiwJ",
+          "cachedResultName": "Create wedding contract on Google Drive"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "first_name",
+              "displayName": "first_name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "last_name",
+              "displayName": "last_name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "middle_name",
+              "displayName": "middle_name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "wedding_date",
+              "displayName": "wedding_date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "plan",
+              "displayName": "plan",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "document",
+              "displayName": "document",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true
+        },
+        "options": {
+          "waitForSubWorkflow": true
+        }
+      },
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.3,
+      "position": [
+        448,
+        288
+      ],
+      "id": "e77581eb-14cd-43fb-b40a-3ca2961bc378",
+      "name": "Create wedding contract",
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $json.message.chat.id }}",
+        "text": "=👋 Добро пожаловать\n\nЯ помогу вам создать договор всего за несколько шагов 📝  \nЧтобы начать, используйте команду /new  \nСписок всех команд — /help",
+        "additionalFields": {
+          "appendAttribution": false,
+          "parse_mode": "MarkdownV2"
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        0,
+        384
+      ],
+      "id": "55dd3e2e-9c93-4ef1-b70a-7ca8510b0808",
+      "name": "/start",
+      "webhookId": "3bf6d4b8-c9da-4b02-890c-e056d5cb3566"
+    },
+    {
+      "parameters": {
+        "calendar": {
+          "__rl": true,
+          "value": "kulebaevadaria@gmail.com",
+          "mode": "list",
+          "cachedResultName": "Календарь съемок"
+        },
+        "start": "={{ DateTime.fromFormat($('Mapping').item.json.wedding_date, 'dd-MM-yyyy') }}",
+        "end": "={{ DateTime.fromFormat($('Mapping').item.json.wedding_date, 'dd-MM-yyyy').plus({ hour: 1 }) }}",
+        "useDefaultReminders": false,
+        "additionalFields": {
+          "allday": "yes",
+          "attendees": [],
+          "summary": "={{ $('/new').item.json.data['Имя'] }} {{ $('/new').item.json.data['Пакет услуг'] }}"
+        }
+      },
+      "type": "n8n-nodes-base.googleCalendar",
+      "typeVersion": 1.3,
+      "position": [
+        896,
+        192
+      ],
+      "id": "553e8d90-2fd5-47db-8d4b-d3c5992b1d2d",
+      "name": "Create an event"
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Telegram Trigger').item.json.message.chat.id }}",
+        "text": "=✅ Событие успешно создано и добавлено в Google Calendar 📅",
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        1120,
+        192
+      ],
+      "id": "d696c856-d4d2-43f1-adc2-a0b78c329b06",
+      "name": "Send a success notification",
+      "webhookId": "c5ff2e78-6ea8-47f4-9ab6-c9e48ce55351"
+    }
+  ],
+  "connections": {
+    "Telegram Trigger": {
+      "main": [
+        [
+          {
+            "node": "Commands",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "/new": {
+      "main": [
+        [
+          {
+            "node": "Mapping",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Commands": {
+      "main": [
+        [
+          {
+            "node": "/help",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "/new",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "/start",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Fallback message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Mapping": {
+      "main": [
+        [
+          {
+            "node": "Notification \"Starting...\"",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Create wedding contract",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create wedding contract": {
+      "main": [
+        [
+          {
+            "node": "Send a document",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Error message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send a document": {
+      "main": [
+        [
+          {
+            "node": "Create an event",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create an event": {
+      "main": [
+        [
+          {
+            "node": "Send a success notification",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "staticData": null,
+  "meta": null,
+  "pinData": {},
+  "versionId": "d2b6d21e-7e42-41fc-9397-d7938a0bda5d",
+  "activeVersionId": null,
+  "versionCounter": 1,
+  "triggerCount": 0,
+  "shared": [
+    {
+      "updatedAt": "2026-03-26T13:38:23.341Z",
+      "createdAt": "2026-03-26T13:38:23.341Z",
+      "role": "workflow:owner",
+      "workflowId": "GR7HyVKteKVmzL1l",
+      "projectId": "0P84IhWFYAIENkAS",
+      "project": {
+        "updatedAt": "2026-03-26T07:17:38.502Z",
+        "createdAt": "2026-03-26T07:13:42.587Z",
+        "id": "0P84IhWFYAIENkAS",
+        "name": "Konstantin Kulebaev <konstantinkulebaev@gmail.com>",
+        "type": "personal",
+        "icon": null,
+        "description": null,
+        "creatorId": "90578190-fd4e-41d6-95c6-af516297f773"
+      }
+    }
+  ],
+  "tags": [],
+  "activeVersion": null
+}

@@ -1,0 +1,180 @@
+{
+  "updatedAt": "2026-03-26T13:48:41.173Z",
+  "createdAt": "2026-03-26T13:38:03.233Z",
+  "id": "CURLU5bl2pl7VMmX",
+  "name": "Backup workspaces for n8n",
+  "description": null,
+  "active": true,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "githubRepo": "kkulebaev/n8n"
+      },
+      "type": "n8n-nodes-backup.n8nBackup",
+      "typeVersion": 1,
+      "position": [
+        416,
+        -80
+      ],
+      "id": "8e5bd664-50b4-4b72-b4e4-99cde00adfcf",
+      "name": "n8n Backup",
+      "credentials": {
+        "githubApi": {
+          "id": "9fjG4gom49S4clL3",
+          "name": "GitHub account"
+        },
+        "n8nApi": {
+          "id": "wNRc3NFJSnksPS6O",
+          "name": "n8n account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "triggerAtHour": 10
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        208,
+        -80
+      ],
+      "id": "4876aa93-6a56-4684-b815-70afb3836794",
+      "name": "Schedule Trigger"
+    }
+  ],
+  "connections": {
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "n8n Backup",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "staticData": {
+    "node:Schedule Trigger": {
+      "recurrenceRules": []
+    }
+  },
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {},
+  "versionId": "6d2c1373-8c9c-498c-a971-e49ace6f7fe9",
+  "activeVersionId": "6d2c1373-8c9c-498c-a971-e49ace6f7fe9",
+  "versionCounter": 6,
+  "triggerCount": 1,
+  "shared": [
+    {
+      "updatedAt": "2026-03-26T13:38:03.233Z",
+      "createdAt": "2026-03-26T13:38:03.233Z",
+      "role": "workflow:owner",
+      "workflowId": "CURLU5bl2pl7VMmX",
+      "projectId": "0P84IhWFYAIENkAS",
+      "project": {
+        "updatedAt": "2026-03-26T07:17:38.502Z",
+        "createdAt": "2026-03-26T07:13:42.587Z",
+        "id": "0P84IhWFYAIENkAS",
+        "name": "Konstantin Kulebaev <konstantinkulebaev@gmail.com>",
+        "type": "personal",
+        "icon": null,
+        "description": null,
+        "creatorId": "90578190-fd4e-41d6-95c6-af516297f773"
+      }
+    }
+  ],
+  "tags": [],
+  "activeVersion": {
+    "updatedAt": "2026-03-26T13:49:37.629Z",
+    "createdAt": "2026-03-26T13:48:41.185Z",
+    "versionId": "6d2c1373-8c9c-498c-a971-e49ace6f7fe9",
+    "workflowId": "CURLU5bl2pl7VMmX",
+    "nodes": [
+      {
+        "parameters": {
+          "githubRepo": "kkulebaev/n8n"
+        },
+        "type": "n8n-nodes-backup.n8nBackup",
+        "typeVersion": 1,
+        "position": [
+          416,
+          -80
+        ],
+        "id": "8e5bd664-50b4-4b72-b4e4-99cde00adfcf",
+        "name": "n8n Backup",
+        "credentials": {
+          "githubApi": {
+            "id": "9fjG4gom49S4clL3",
+            "name": "GitHub account"
+          },
+          "n8nApi": {
+            "id": "wNRc3NFJSnksPS6O",
+            "name": "n8n account 2"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "rule": {
+            "interval": [
+              {
+                "triggerAtHour": 10
+              }
+            ]
+          }
+        },
+        "type": "n8n-nodes-base.scheduleTrigger",
+        "typeVersion": 1.3,
+        "position": [
+          208,
+          -80
+        ],
+        "id": "4876aa93-6a56-4684-b815-70afb3836794",
+        "name": "Schedule Trigger"
+      }
+    ],
+    "connections": {
+      "Schedule Trigger": {
+        "main": [
+          [
+            {
+              "node": "n8n Backup",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "authors": "Konstantin Kulebaev",
+    "name": "Version 6d2c1373",
+    "description": "",
+    "autosaved": true,
+    "workflowPublishHistory": [
+      {
+        "createdAt": "2026-03-26T13:49:37.616Z",
+        "id": 2,
+        "workflowId": "CURLU5bl2pl7VMmX",
+        "versionId": "6d2c1373-8c9c-498c-a971-e49ace6f7fe9",
+        "event": "activated",
+        "userId": "90578190-fd4e-41d6-95c6-af516297f773"
+      }
+    ]
+  }
+}

@@ -1,0 +1,200 @@
+{
+  "updatedAt": "2026-03-26T13:42:46.923Z",
+  "createdAt": "2026-03-26T13:36:24.561Z",
+  "id": "EFpZTOgCbXoO1mYH",
+  "name": "Telegram Notification Service",
+  "description": null,
+  "active": true,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "workflowInputs": {
+          "values": [
+            {
+              "name": "time",
+              "type": "number"
+            },
+            {
+              "name": "title"
+            },
+            {
+              "name": "message"
+            },
+            {
+              "name": "url"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "c4941160-4729-4ab7-ae1d-b307d91138ec",
+      "name": "When Executed by Another Workflow",
+      "alwaysOutputData": false
+    },
+    {
+      "parameters": {
+        "chatId": "8593464393",
+        "text": "=🔔 *{{ $json.title }}*\n_{{ DateTime.fromMillis($json.time).setLocale('ru').toLocaleString({ month: 'long', day: 'numeric', hour: 'numeric', minute: '2-digit' }) }}_\n\n{{ $json.message }}\n\n{{ $json.url }}",
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        224,
+        0
+      ],
+      "id": "48774e42-c649-49bc-b12d-7061daaf6cd1",
+      "name": "Send a text message",
+      "webhookId": "2272f267-4423-4a50-9a57-885a1197c49d",
+      "credentials": {
+        "telegramApi": {
+          "id": "NJEiKjTtXY89noPw",
+          "name": "Telegram account | Notification Bot"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "When Executed by Another Workflow": {
+      "main": [
+        [
+          {
+            "node": "Send a text message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {},
+  "versionId": "46a91acc-ff64-499f-a7f4-51b93e5efdce",
+  "activeVersionId": "46a91acc-ff64-499f-a7f4-51b93e5efdce",
+  "versionCounter": 4,
+  "triggerCount": 0,
+  "shared": [
+    {
+      "updatedAt": "2026-03-26T13:36:24.561Z",
+      "createdAt": "2026-03-26T13:36:24.561Z",
+      "role": "workflow:owner",
+      "workflowId": "EFpZTOgCbXoO1mYH",
+      "projectId": "0P84IhWFYAIENkAS",
+      "project": {
+        "updatedAt": "2026-03-26T07:17:38.502Z",
+        "createdAt": "2026-03-26T07:13:42.587Z",
+        "id": "0P84IhWFYAIENkAS",
+        "name": "Konstantin Kulebaev <konstantinkulebaev@gmail.com>",
+        "type": "personal",
+        "icon": null,
+        "description": null,
+        "creatorId": "90578190-fd4e-41d6-95c6-af516297f773"
+      }
+    }
+  ],
+  "tags": [],
+  "activeVersion": {
+    "updatedAt": "2026-03-26T13:42:59.844Z",
+    "createdAt": "2026-03-26T13:42:46.934Z",
+    "versionId": "46a91acc-ff64-499f-a7f4-51b93e5efdce",
+    "workflowId": "EFpZTOgCbXoO1mYH",
+    "nodes": [
+      {
+        "parameters": {
+          "workflowInputs": {
+            "values": [
+              {
+                "name": "time",
+                "type": "number"
+              },
+              {
+                "name": "title"
+              },
+              {
+                "name": "message"
+              },
+              {
+                "name": "url"
+              }
+            ]
+          }
+        },
+        "type": "n8n-nodes-base.executeWorkflowTrigger",
+        "typeVersion": 1.1,
+        "position": [
+          0,
+          0
+        ],
+        "id": "c4941160-4729-4ab7-ae1d-b307d91138ec",
+        "name": "When Executed by Another Workflow",
+        "alwaysOutputData": false
+      },
+      {
+        "parameters": {
+          "chatId": "8593464393",
+          "text": "=🔔 *{{ $json.title }}*\n_{{ DateTime.fromMillis($json.time).setLocale('ru').toLocaleString({ month: 'long', day: 'numeric', hour: 'numeric', minute: '2-digit' }) }}_\n\n{{ $json.message }}\n\n{{ $json.url }}",
+          "additionalFields": {
+            "appendAttribution": false
+          }
+        },
+        "type": "n8n-nodes-base.telegram",
+        "typeVersion": 1.2,
+        "position": [
+          224,
+          0
+        ],
+        "id": "48774e42-c649-49bc-b12d-7061daaf6cd1",
+        "name": "Send a text message",
+        "webhookId": "2272f267-4423-4a50-9a57-885a1197c49d",
+        "credentials": {
+          "telegramApi": {
+            "id": "NJEiKjTtXY89noPw",
+            "name": "Telegram account | Notification Bot"
+          }
+        }
+      }
+    ],
+    "connections": {
+      "When Executed by Another Workflow": {
+        "main": [
+          [
+            {
+              "node": "Send a text message",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "authors": "Konstantin Kulebaev",
+    "name": "Version 46a91acc",
+    "description": "",
+    "autosaved": true,
+    "workflowPublishHistory": [
+      {
+        "createdAt": "2026-03-26T13:42:59.830Z",
+        "id": 1,
+        "workflowId": "EFpZTOgCbXoO1mYH",
+        "versionId": "46a91acc-ff64-499f-a7f4-51b93e5efdce",
+        "event": "activated",
+        "userId": "90578190-fd4e-41d6-95c6-af516297f773"
+      }
+    ]
+  }
+}

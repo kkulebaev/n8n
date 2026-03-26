@@ -1,0 +1,621 @@
+{
+  "updatedAt": "2026-03-26T13:38:39.145Z",
+  "createdAt": "2026-03-26T13:38:39.145Z",
+  "id": "PUGtJOcEG8ftO7uz",
+  "name": "Create wedding contract on Google Drive",
+  "description": null,
+  "active": false,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "operation": "get",
+        "documentURL": "={{ $json.id }}",
+        "simple": false
+      },
+      "type": "n8n-nodes-base.googleDocs",
+      "typeVersion": 2,
+      "position": [
+        896,
+        416
+      ],
+      "id": "7a850891-4a97-4f6f-b354-4fb02035171f",
+      "name": "Get a document"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentURL": "={{ $json.documentId }}",
+        "actionsUi": {
+          "actionFields": [
+            {
+              "action": "replaceAll",
+              "text": "<Дата договора>",
+              "replaceText": "={{ DateTime.now().setLocale('ru').format(\"dd MMMM yyyy\") }}"
+            },
+            {
+              "action": "replaceAll",
+              "text": "<ФИО>",
+              "replaceText": "={{ $('Input').item.json.last_name }} {{ $('Input').item.json.first_name }} {{ $('Input').item.json.middle_name }}"
+            },
+            {
+              "action": "replaceAll",
+              "text": "<Дата свадьбы>",
+              "replaceText": "={{ DateTime.fromFormat($('Input').item.json.wedding_date, \"dd-MM-yyyy\").setLocale('ru').format(\"dd MMMM yyyy\") }}"
+            },
+            {
+              "action": "replaceAll",
+              "text": "<Паспорт>",
+              "replaceText": "={{ $('Input').item.json.document }}"
+            },
+            {
+              "action": "replaceAll",
+              "text": "<Инициалы>",
+              "replaceText": "={{ $('Input').item.json.last_name }} {{ $('Input').item.json.first_name[0] }}.{{ $('Input').item.json.middle_name[0] }}."
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.googleDocs",
+      "typeVersion": 2,
+      "position": [
+        1120,
+        416
+      ],
+      "id": "de7aeea2-bd42-40f7-becf-a1c288a1f0e1",
+      "name": "Update a document"
+    },
+    {
+      "parameters": {
+        "resource": "folder",
+        "name": "={{ DateTime.fromFormat($json.wedding_date, 'dd-MM-yyyy').format('yyyy-MM-dd') }}",
+        "driveId": {
+          "__rl": true,
+          "mode": "list",
+          "value": "My Drive"
+        },
+        "folderId": {
+          "__rl": true,
+          "value": "1N6SKwyouAdfHeL9Mq0UaIxTJ6qNcGQia",
+          "mode": "id"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        224,
+        416
+      ],
+      "id": "6548fbc4-2492-4300-b102-ebb2b2b4653a",
+      "name": "Create folder"
+    },
+    {
+      "parameters": {
+        "operation": "download",
+        "fileId": {
+          "__rl": true,
+          "value": "={{ $json.documentId }}",
+          "mode": "id"
+        },
+        "options": {
+          "binaryPropertyName": "data",
+          "googleFileConversion": {
+            "conversion": {
+              "docsToFormat": "application/pdf",
+              "drawingsToFormat": "application/pdf",
+              "slidesToFormat": "application/pdf",
+              "sheetsToFormat": "application/pdf"
+            }
+          },
+          "fileName": "=Договор {{ $('Input').item.json.wedding_date }}.pdf"
+        }
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        1344,
+        416
+      ],
+      "id": "a4d4159f-6105-4b57-968e-bca06b6f1416",
+      "name": "Download file"
+    },
+    {
+      "parameters": {
+        "name": "=Договор {{ $('Input').item.json.wedding_date }}.pdf",
+        "driveId": {
+          "__rl": true,
+          "mode": "list",
+          "value": "My Drive"
+        },
+        "folderId": {
+          "__rl": true,
+          "value": "={{ $('Create folder').item.json.id }}",
+          "mode": "id"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        0,
+        0
+      ],
+      "id": "084c1225-0849-4a78-a142-56663cf8f2f5",
+      "name": "Upload file"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $('Input').item.json.plan }}",
+                    "rightValue": "standard",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "8ad65ad8-befa-4188-8151-23d67552fdc1"
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "07ddfb07-909e-4598-8c81-4cd6d19dfdfb",
+                    "leftValue": "={{ $('Input').item.json.plan }}",
+                    "rightValue": "comfort",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "a5acee46-b956-4295-af90-39f419c3e876",
+                    "leftValue": "={{ $('Input').item.json.plan }}",
+                    "rightValue": "unlimited",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            }
+          ]
+        },
+        "options": {
+          "allMatchingOutputs": false
+        }
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.4,
+      "position": [
+        448,
+        400
+      ],
+      "id": "efc6e116-57f0-4adf-9b5d-d5f07d3ecabb",
+      "name": "Switch"
+    },
+    {
+      "parameters": {
+        "operation": "copy",
+        "fileId": {
+          "__rl": true,
+          "value": "1Y1pbsngz4qcE_sc3c0jL1O4rOjoXAZD8xaT3yBvrh6U",
+          "mode": "id"
+        },
+        "name": "=Договор {{ $('Input').item.json.wedding_date }}",
+        "sameFolder": false,
+        "driveId": {
+          "__rl": true,
+          "value": "My Drive",
+          "mode": "list",
+          "cachedResultName": "My Drive",
+          "cachedResultUrl": "https://drive.google.com/drive/my-drive"
+        },
+        "folderId": {
+          "__rl": true,
+          "value": "={{ $json.id }}",
+          "mode": "id"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        672,
+        224
+      ],
+      "id": "34ed31a8-9251-4367-8abb-a9be42b7c80a",
+      "name": "Copy Standard Contract"
+    },
+    {
+      "parameters": {
+        "operation": "copy",
+        "fileId": {
+          "__rl": true,
+          "value": "14ncolBjy2bSB6ki8vls_yYR-Zw1-O7Fh5Aitj3hxvIA",
+          "mode": "id"
+        },
+        "name": "=Договор {{ $('Input').item.json.wedding_date }}",
+        "sameFolder": false,
+        "driveId": {
+          "__rl": true,
+          "value": "My Drive",
+          "mode": "list",
+          "cachedResultName": "My Drive",
+          "cachedResultUrl": "https://drive.google.com/drive/my-drive"
+        },
+        "folderId": {
+          "__rl": true,
+          "value": "={{ $json.id }}",
+          "mode": "id"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        672,
+        608
+      ],
+      "id": "7e1d8f50-2f09-4f68-8729-ac7fb1fdd584",
+      "name": "Copy Unlimited Contract"
+    },
+    {
+      "parameters": {
+        "operation": "copy",
+        "fileId": {
+          "__rl": true,
+          "value": "1ApuacRF8BLoFCkLLD8v1NNP2tZPtwo3QG2ggaDzOj5s",
+          "mode": "id"
+        },
+        "name": "=Договор {{ $('Input').item.json.wedding_date }}",
+        "sameFolder": false,
+        "driveId": {
+          "__rl": true,
+          "value": "My Drive",
+          "mode": "list",
+          "cachedResultName": "My Drive",
+          "cachedResultUrl": "https://drive.google.com/drive/my-drive"
+        },
+        "folderId": {
+          "__rl": true,
+          "value": "={{ $json.id }}",
+          "mode": "id"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        672,
+        416
+      ],
+      "id": "88c40156-1915-4f88-bbc0-623627a6ae5f",
+      "name": "Copy Comfort Contract"
+    },
+    {
+      "parameters": {
+        "workflowInputs": {
+          "values": [
+            {
+              "name": "first_name"
+            },
+            {
+              "name": "last_name"
+            },
+            {
+              "name": "middle_name"
+            },
+            {
+              "name": "wedding_date"
+            },
+            {
+              "name": "plan"
+            },
+            {
+              "name": "document"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        0,
+        416
+      ],
+      "id": "c97fcc9e-d1bd-4c60-b046-71fe98735f76",
+      "name": "Input"
+    },
+    {
+      "parameters": {
+        "operation": "Upload File to PDF.co",
+        "binaryData": true,
+        "name": "={{ $('Get a document').item.json.title }}"
+      },
+      "type": "n8n-nodes-pdfco.PDFco Api",
+      "typeVersion": 1,
+      "position": [
+        1568,
+        416
+      ],
+      "id": "b859c2e2-d17b-47aa-9fba-e91e34f35608",
+      "name": "PDFco Api",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "operation": "Search in PDF",
+        "url": "={{ $json.url }}",
+        "searchString": "________________",
+        "advancedOptions": {}
+      },
+      "type": "n8n-nodes-pdfco.PDFco Api",
+      "typeVersion": 1,
+      "position": [
+        1792,
+        416
+      ],
+      "id": "327cfbd0-72a7-4941-89aa-3f25e83cc3ba",
+      "name": "PDFco Api2",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "operation": "Add Text/Images to PDF",
+        "url": "={{ $('PDFco Api').item.json.url }}",
+        "images": {
+          "metadataValues": [
+            {
+              "imageUrl": "=https://static.wfolio.ru/file/AqiFFw_TXMM4LDwoI2TPSYAM1lHVLAGB/F3eUE25SDaCAfvVnJFFcPW47UngGX3YK/uR6fMRXAE9lYX0nrzzTXMmKO-2Jttg4a/EouOUuAqkg8s_ZKe8Sxkwfd46d_CMAUv/lzLqFyuNCW2_QGjpXOEpXOhFPPl4EqaX/bdkDXXqg04g.png",
+              "x": "={{ $json.body[0].left - 20 }}",
+              "y": "={{ $json.body[0].top - 30 }}",
+              "width": "=160",
+              "height": "=",
+              "pages": "={{ $json.body[0].pageIndex.toString() }}"
+            }
+          ]
+        },
+        "advancedOptions": {}
+      },
+      "type": "n8n-nodes-pdfco.PDFco Api",
+      "typeVersion": 1,
+      "position": [
+        2016,
+        416
+      ],
+      "id": "767a0b71-44b9-4acf-b545-ceab596f4e2b",
+      "name": "PDFco Api1",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "url": "={{ $json.url }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        2240,
+        416
+      ],
+      "id": "9d1929d7-1a4c-4a70-8c41-58c4f4a2f128",
+      "name": "HTTP Request"
+    }
+  ],
+  "connections": {
+    "Get a document": {
+      "main": [
+        [
+          {
+            "node": "Update a document",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create folder": {
+      "main": [
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update a document": {
+      "main": [
+        [
+          {
+            "node": "Download file",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Download file": {
+      "main": [
+        [
+          {
+            "node": "PDFco Api",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch": {
+      "main": [
+        [
+          {
+            "node": "Copy Standard Contract",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Copy Comfort Contract",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Copy Unlimited Contract",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Copy Standard Contract": {
+      "main": [
+        [
+          {
+            "node": "Get a document",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Copy Unlimited Contract": {
+      "main": [
+        [
+          {
+            "node": "Get a document",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Copy Comfort Contract": {
+      "main": [
+        [
+          {
+            "node": "Get a document",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Input": {
+      "main": [
+        [
+          {
+            "node": "Create folder",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "PDFco Api": {
+      "main": [
+        [
+          {
+            "node": "PDFco Api2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "PDFco Api2": {
+      "main": [
+        [
+          {
+            "node": "PDFco Api1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "PDFco Api1": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "staticData": null,
+  "meta": null,
+  "pinData": {},
+  "versionId": "0aee26fc-4456-47ab-a84b-706196b4c00a",
+  "activeVersionId": null,
+  "versionCounter": 1,
+  "triggerCount": 0,
+  "shared": [
+    {
+      "updatedAt": "2026-03-26T13:38:39.145Z",
+      "createdAt": "2026-03-26T13:38:39.145Z",
+      "role": "workflow:owner",
+      "workflowId": "PUGtJOcEG8ftO7uz",
+      "projectId": "0P84IhWFYAIENkAS",
+      "project": {
+        "updatedAt": "2026-03-26T07:17:38.502Z",
+        "createdAt": "2026-03-26T07:13:42.587Z",
+        "id": "0P84IhWFYAIENkAS",
+        "name": "Konstantin Kulebaev <konstantinkulebaev@gmail.com>",
+        "type": "personal",
+        "icon": null,
+        "description": null,
+        "creatorId": "90578190-fd4e-41d6-95c6-af516297f773"
+      }
+    }
+  ],
+  "tags": [],
+  "activeVersion": null
+}
